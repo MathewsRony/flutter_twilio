@@ -74,7 +74,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_background_call);
-
+        Log.e(TAG, "******* BackgroundCallJavaActivity onCreate");
         this.container = findViewById(R.id.container);
         this.image = findViewById(R.id.image);
         this.textDisplayName = findViewById(R.id.textDisplayName);
