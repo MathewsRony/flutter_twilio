@@ -131,7 +131,9 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     protected void onDestroy() {
         super.onDestroy();
         if (wakeLock != null) {
-            wakeLock.release();
+            if (wakeLock.isHeld()) {
+                wakeLock.release();
+            }
         }
 
         this.unregisterReceiver();

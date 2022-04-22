@@ -56,6 +56,8 @@ public class NotificationUtils {
 
         // Click intent
         Intent intent = new Intent(context, BackgroundCallJavaActivity.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.setAction(TwilioConstants.ACTION_INCOMING_CALL);
         intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
         intent.setFlags(
@@ -69,13 +71,15 @@ public class NotificationUtils {
                 context,
                 0,
                 intent,
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ?
                        PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
 
         //Reject intent
         Intent rejectIntent = new Intent(context, IncomingCallNotificationService.class);
+        rejectIntent.setAction(Intent.ACTION_MAIN);
+        rejectIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         rejectIntent.setAction(TwilioConstants.ACTION_REJECT);
         rejectIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
         @SuppressLint("UnspecifiedImmutableFlag")
@@ -83,12 +87,14 @@ public class NotificationUtils {
                 context,
                 0,
                 rejectIntent,
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ?
                      PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
         // Accept intent
         Intent acceptIntent = new Intent(context, IncomingCallNotificationService.class);
+        acceptIntent.setAction(Intent.ACTION_MAIN);
+        acceptIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         acceptIntent.setAction(TwilioConstants.ACTION_ACCEPT);
         acceptIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
         @SuppressLint("UnspecifiedImmutableFlag")
@@ -96,7 +102,7 @@ public class NotificationUtils {
                 context,
                 0,
                 acceptIntent,
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ?
                        PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
