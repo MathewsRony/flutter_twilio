@@ -51,6 +51,11 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
                 @Override
                 public void onCallInvite(@NonNull CallInvite callInvite) {
                     Log.e("********Twilio ", "onCallInvite");
+                    Log.e("********Twilio ", "#############################FIREBASE");
+                    Log.e(TAG,"onCallInvite:"+callInvite.getCallSid());
+                    String from=callInvite.getFrom();
+                    Log.e(TAG,"tw_from:"+from);
+                    Log.e("********Twilio ", "#############################");
                     handleInvite(callInvite);
                 }
 

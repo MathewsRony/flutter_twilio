@@ -144,6 +144,11 @@ public class TwilioUtils {
     }
 
     public void acceptInvite(CallInvite callInvite, Call.Listener listener) {
+        Log.e("********Twilio ", "#############################acceptInvite");
+        Log.e(TAG,"onCallInvite:"+callInvite.getCallSid());
+        String from=callInvite.getFrom();
+        Log.e(TAG,"tw_from:"+from);
+        Log.e("********Twilio ", "#############################");
         Log.e(TAG, "*******************************************22");
         if (this.activeCall != null) {
             Log.e(TAG, "*******************************************23");
