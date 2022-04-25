@@ -24,7 +24,7 @@ buildscript {
 rootProject.allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
 
     }
 }
@@ -37,13 +37,14 @@ android {
         sourceCompatibility versions.java
         targetCompatibility versions.java
     }
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
     defaultConfig {
         minSdkVersion 21
+        targetSdkVersion 31
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
