@@ -57,8 +57,8 @@ public class NotificationUtils {
 
         // Click intent
         Intent intent = new Intent(context, BackgroundCallJavaActivity.class);
-        intent.setAction(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+//        intent.setAction(Intent.ACTION_MAIN);
+//        intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.setAction(TwilioConstants.ACTION_INCOMING_CALL);
         intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
         Log.d(" call Invite 3", callInvite.getCallSid());
@@ -74,14 +74,14 @@ public class NotificationUtils {
                 0,
                 intent,
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
 
         //Reject intent
         Intent rejectIntent = new Intent(context, IncomingCallNotificationService.class);
-        rejectIntent.setAction(Intent.ACTION_MAIN);
-        rejectIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+//        rejectIntent.setAction(Intent.ACTION_MAIN);
+//        rejectIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         rejectIntent.setAction(TwilioConstants.ACTION_REJECT);
         rejectIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
         @SuppressLint("UnspecifiedImmutableFlag")
@@ -95,8 +95,8 @@ public class NotificationUtils {
 
         // Accept intent
         Intent acceptIntent = new Intent(context, IncomingCallNotificationService.class);
-        acceptIntent.setAction(Intent.ACTION_MAIN);
-        acceptIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+//        acceptIntent.setAction(Intent.ACTION_MAIN);
+//        acceptIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         acceptIntent.setAction(TwilioConstants.ACTION_ACCEPT);
         acceptIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
         @SuppressLint("UnspecifiedImmutableFlag")
