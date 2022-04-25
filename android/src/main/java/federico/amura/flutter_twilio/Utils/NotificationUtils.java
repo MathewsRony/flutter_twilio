@@ -14,6 +14,7 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.Lifecycle;
 
 import com.twilio.voice.CallInvite;
 
@@ -23,6 +24,7 @@ import java.util.Map;
 import federico.amura.flutter_twilio.BackgroundCallJavaActivity;
 import federico.amura.flutter_twilio.IncomingCallNotificationService;
 import federico.amura.flutter_twilio.R;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 public class NotificationUtils {
 
@@ -118,7 +120,9 @@ public class NotificationUtils {
         builder.setExtras(extras);
         builder.setVibrate(new long[]{0, 400, 400, 400, 400, 400, 400, 400});
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && isAppVisible())
         builder.addAction(android.R.drawable.ic_menu_delete, context.getString(R.string.btn_reject), piRejectIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && isAppVisible())
         builder.addAction(android.R.drawable.ic_menu_call, context.getString(R.string.btn_accept), piAcceptIntent);
         builder.setFullScreenIntent(pendingIntent, true);
         builder.setColor(Color.rgb(20, 10, 200));
@@ -157,5 +161,13 @@ public class NotificationUtils {
 
     public static void cancel(Context context, int id) {
         NotificationManagerCompat.from(context).cancel(id);
+    }
+
+    private static boolean isAppVisible() {
+        return ProcessLifecycleOwner
+                .get()
+                .getLifecycle()
+                .getCurrentState()
+                .isAtLeast(Lifecycle.State.STARTED);
     }
 }
