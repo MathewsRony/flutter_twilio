@@ -68,7 +68,7 @@ public class NotificationUtils {
                         Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
                         Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
         );
-        @SuppressLint("UnspecifiedImmutableFlag")
+       // @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context,
                 0,
@@ -84,8 +84,8 @@ public class NotificationUtils {
 //        rejectIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         rejectIntent.setAction(TwilioConstants.ACTION_REJECT);
         rejectIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
-        @SuppressLint("UnspecifiedImmutableFlag")
-        PendingIntent piRejectIntent = PendingIntent.getService(
+        //@SuppressLint("UnspecifiedImmutableFlag")
+        PendingIntent piRejectIntent = PendingIntent.getActivity(
                 context,
                 0,
                 rejectIntent,
@@ -99,8 +99,8 @@ public class NotificationUtils {
 //        acceptIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         acceptIntent.setAction(TwilioConstants.ACTION_ACCEPT);
         acceptIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
-        @SuppressLint("UnspecifiedImmutableFlag")
-        PendingIntent piAcceptIntent = PendingIntent.getService(
+        //@SuppressLint("UnspecifiedImmutableFlag")
+        PendingIntent piAcceptIntent = PendingIntent.getActivity(
                 context,
                 0,
                 acceptIntent,
@@ -136,13 +136,13 @@ public class NotificationUtils {
             if (highPriority) {
                 channel = new NotificationChannel(
                         TwilioConstants.VOICE_CHANNEL_HIGH_IMPORTANCE,
-                        "Bivo high importance notification call channel",
+                        "basic_channel",
                         NotificationManager.IMPORTANCE_HIGH
                 );
             } else {
                 channel = new NotificationChannel(
                         TwilioConstants.VOICE_CHANNEL_LOW_IMPORTANCE,
-                        "Bivo low importance notification call channel",
+                        "basic_channel",
                         NotificationManager.IMPORTANCE_LOW
                 );
             }
