@@ -74,7 +74,6 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_background_call);
-
         Log.e(TAG, "******* BackgroundCallJavaActivity onCreate");
         this.container = findViewById(R.id.container);
         this.image = findViewById(R.id.image);
@@ -133,7 +132,9 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     protected void onDestroy() {
         super.onDestroy();
         if (wakeLock != null) {
-            wakeLock.release();
+            if (wakeLock.isHeld()) {
+                wakeLock.release();
+            }
         }
 
         this.unregisterReceiver();
@@ -286,7 +287,6 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             this.close();
             return;
         }
-
         Log.e(TAG, "*******************************************18");
         this.containerActiveCall.setVisibility(View.VISIBLE);
         this.containerIncomingCall.setVisibility(View.GONE);
@@ -294,8 +294,9 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         try {
             Log.e(TAG, "*******************************************19");
             TwilioUtils.getInstance(this).acceptInvite(this.callInvite, getListener());
-        } catch (Exception exception) {
             Log.e(TAG, "*******************************************20");
+        } catch (Exception exception) {
+            Log.e(TAG, "*******************************************21");
             exception.printStackTrace();
             this.close();
         }

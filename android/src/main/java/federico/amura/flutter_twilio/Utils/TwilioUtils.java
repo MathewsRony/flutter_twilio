@@ -154,7 +154,6 @@ public class TwilioUtils {
             Log.e(TAG, "*******************************************23");
             throw new RuntimeException("There is a call in progress");
         }
-
         Log.e(TAG, "*******************************************24");
         if (callInvite == null) {
             Log.e(TAG, "*******************************************25");
@@ -167,6 +166,7 @@ public class TwilioUtils {
         this.callInvite = callInvite;
         this.activeCall = callInvite.accept(this.context, getCallListener(listener));
         Log.e(TAG, "*******************************************26");
+
     }
 
     public void rejectInvite(CallInvite callInvite) {

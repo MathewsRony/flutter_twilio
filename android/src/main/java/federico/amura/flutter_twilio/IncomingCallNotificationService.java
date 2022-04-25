@@ -41,6 +41,7 @@ public class IncomingCallNotificationService extends Service {
 
                 case TwilioConstants.ACTION_ACCEPT: {
                     Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_ACCEPT case");
+
                     CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
                     accept(callInvite);
                 }
@@ -53,6 +54,7 @@ public class IncomingCallNotificationService extends Service {
                 break;
                 case TwilioConstants.ACTION_CANCEL_CALL: {
                     Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_CANCEL_CALL case");
+
                     CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
                     handleCancelledCall(cancelledCallInvite);
                 }
@@ -60,12 +62,13 @@ public class IncomingCallNotificationService extends Service {
 
                 case TwilioConstants.ACTION_STOP_SERVICE: {
                     Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_STOP_SERVICE case");
+
                     stopServiceIncomingCall();
                 }
                 break;
             }
         }
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Override
@@ -75,33 +78,34 @@ public class IncomingCallNotificationService extends Service {
 
     private void handleIncomingCall(CallInvite callInvite) {
         if (callInvite == null) {
-            Log.i(TAG, "Incoming call. No call invite");
+            Log.e(TAG, "Incoming call. No call invite");
             return;
         }
 
-        Log.i(TAG, "Incoming call. App visible: " + isAppVisible() + ". Locked: " + isLocked());
+        Log.e(TAG, "Incoming call. App visible: " + isAppVisible() + ". Locked: " + isLocked());
         this.startServiceIncomingCall(callInvite);
     }
 
     private void accept(CallInvite callInvite) {
         Log.e(TAG, "****************************accept start****************");
-        Log.i(TAG, "Accept call invite. App visible: " + isAppVisible() + ". Locked: " + isLocked());
+        Log.e(TAG, "Accept call invite. App visible: " + isAppVisible() + ". Locked: " + isLocked());
         this.stopServiceIncomingCall();
 
         if (!isLocked() && isAppVisible()) {
-            // Inform call accepted
             Log.e(TAG, "****************************accept**************** !isLocked() && isAppVisible()");
-            Log.i(TAG, "Answering from APP");
+            // Inform call accepted
+            Log.e(TAG, "Answering from APP");
             this.informAppAcceptCall(callInvite);
         } else {
             Log.e(TAG, "****************************accept**************** else part");
-            Log.i(TAG, "Answering from custom UI");
+            Log.e(TAG, "Answering from custom UI");
             this.openBackgroundCallActivityForAcceptCall(callInvite);
         }
+        Log.e(TAG, "****************************accept end****************");
     }
 
     private void reject(CallInvite callInvite) {
-        Log.i(TAG, "Reject call invite. App visible: " + isAppVisible() + ". Locked: " + isLocked());
+        Log.e(TAG, "Reject call invite. App visible: " + isAppVisible() + ". Locked: " + isLocked());
         this.stopServiceIncomingCall();
 
         // Reject call
@@ -124,14 +128,14 @@ public class IncomingCallNotificationService extends Service {
     }
 
     private void startServiceIncomingCall(CallInvite callInvite) {
-        Log.i(TAG, "Start service incoming call");
+        Log.e(TAG, "Start service incoming call");
         SoundUtils.getInstance(this).playRinging();
         Notification notification = NotificationUtils.createIncomingCallNotification(getApplicationContext(), callInvite, true);
         startForeground(TwilioConstants.NOTIFICATION_INCOMING_CALL, notification);
     }
 
     private void stopServiceIncomingCall() {
-        Log.i(TAG, "Stop service incoming call");
+        Log.e(TAG, "Stop service incoming call");
         stopForeground(true);
         NotificationUtils.cancel(this, TwilioConstants.NOTIFICATION_INCOMING_CALL);
         SoundUtils.getInstance(this).stopRinging();
@@ -162,16 +166,22 @@ public class IncomingCallNotificationService extends Service {
     }
 
     private void openBackgroundCallActivityForAcceptCall(CallInvite callInvite) {
-        Intent intent = new Intent(this, BackgroundCallJavaActivity.class);
-        intent.setFlags(
-                Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
-                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-        );
-        intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
-        intent.setAction(TwilioConstants.ACTION_ACCEPT);
-        startActivity(intent);
-        Log.e(TAG, "openBackgroundCallActivityForAcceptCall function after startActivity");
+        try {
+            Log.e(TAG, "openBackgroundCallActivityForAcceptCall function inside");
+            Intent intent = new Intent(this, BackgroundCallJavaActivity.class);
+            intent.setFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK |
+                            Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                            Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+                            Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+            );
+            intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+            intent.setAction(TwilioConstants.ACTION_ACCEPT);
+            startActivity(intent);
+            Log.e(TAG, "openBackgroundCallActivityForAcceptCall function after startActivity");
+        } catch (Exception e) {
+            Log.e(TAG, "openBackgroundCallActivityForAcceptCall " + e.toString());
+        }
+
     }
 }

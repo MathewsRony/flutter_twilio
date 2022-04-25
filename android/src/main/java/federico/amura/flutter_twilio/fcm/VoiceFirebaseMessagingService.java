@@ -40,9 +40,9 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
      */
     @Override
     public void onMessageReceived(final RemoteMessage remoteMessage) {
-        Log.d(TAG, "Received onMessageReceived()");
-        Log.d(TAG, "Bundle data: " + remoteMessage.getData());
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Log.e(TAG, "Received onMessageReceived()");
+        Log.e(TAG, "Bundle data: " + remoteMessage.getData());
+        Log.e(TAG, "From: " + remoteMessage.getFrom());
         // If application is running in the foreground use local broadcast to handle message.
         // Otherwise use the background isolate to handle message.
 
@@ -79,12 +79,17 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleInvite(CallInvite callInvite) {
-        Log.e("***Twilio handleInvite ", "Try catch");
-        Intent intent = new Intent(this, IncomingCallNotificationService.class);
-        intent.setAction(TwilioConstants.ACTION_INCOMING_CALL);
-        intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+        try{
+            Log.e("***Twilio handleInvite ", "Try catch");
+            Intent intent = new Intent(this, IncomingCallNotificationService.class);
+            intent.setAction(TwilioConstants.ACTION_INCOMING_CALL);
+            intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
 
-        startService(intent);
+            startService(intent);
+        }catch (Exception e){
+            Log.e("***Twilio exception ", e.toString());
+        }
+
     }
 
     private void handleCanceledCallInvite(CancelledCallInvite cancelledCallInvite) {
