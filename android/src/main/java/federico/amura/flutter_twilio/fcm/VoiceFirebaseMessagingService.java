@@ -85,7 +85,7 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
             intent.setAction(TwilioConstants.ACTION_INCOMING_CALL);
             intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
 
-            Log.e("Twilio handleInvite getCallSid", callInvite.getCallSid());
+            Log.d("Twilio getCallSid 1", callInvite.getCallSid());
             startService(intent);
         }catch (Exception e){
             Log.e("***Twilio exception ", e.toString());

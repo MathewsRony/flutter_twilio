@@ -176,8 +176,11 @@ public class IncomingCallNotificationService extends Service {
                             Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
             );
             intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+
+            Log.e(TAG, "openBackgroundCallActivityForAcceptCall callInvite  "+callInvite.getCallSid());
             intent.setAction(TwilioConstants.ACTION_ACCEPT);
             startActivity(intent);
+
             Log.e(TAG, "openBackgroundCallActivityForAcceptCall function after startActivity");
         } catch (Exception e) {
             Log.e(TAG, "openBackgroundCallActivityForAcceptCall " + e.toString());
