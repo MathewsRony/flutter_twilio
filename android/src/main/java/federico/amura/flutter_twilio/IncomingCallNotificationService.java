@@ -171,7 +171,7 @@ public class IncomingCallNotificationService extends Service {
     private void openBackgroundCallActivityForAcceptCall(CallInvite callInvite) {
         try {
             Log.e(TAG, "openBackgroundCallActivityForAcceptCall function inside");
-            Intent intent = new Intent(getApplicationContext(), BackgroundCallJavaActivity.class);
+            Intent intent = new Intent(this, BackgroundCallJavaActivity.class);
             intent.setFlags(
                     Intent.FLAG_ACTIVITY_NEW_TASK |
                             Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
