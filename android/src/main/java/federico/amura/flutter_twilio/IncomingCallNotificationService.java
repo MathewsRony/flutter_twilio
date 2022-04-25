@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.lifecycle.Lifecycle;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.twilio.voice.CallInvite;
@@ -21,6 +22,7 @@ import federico.amura.flutter_twilio.Utils.NotificationUtils;
 import federico.amura.flutter_twilio.Utils.SoundUtils;
 import federico.amura.flutter_twilio.Utils.TwilioConstants;
 import federico.amura.flutter_twilio.Utils.TwilioUtils;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 public class IncomingCallNotificationService extends Service {
 
@@ -150,7 +152,11 @@ public class IncomingCallNotificationService extends Service {
     }
 
     private boolean isAppVisible() {
-        return AppForegroundStateUtils.getInstance().isForeground();
+        return ProcessLifecycleOwner
+                .get()
+                .getLifecycle()
+                .getCurrentState()
+                .isAtLeast(Lifecycle.State.STARTED);
     }
 
     // UTILS
