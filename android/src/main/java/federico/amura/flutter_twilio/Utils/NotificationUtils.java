@@ -52,6 +52,7 @@ public class NotificationUtils {
          * notification later
          */
         Bundle extras = new Bundle();
+        Log.d(" call Invite 2", callInvite.getCallSid());
         extras.putString(TwilioConstants.CALL_SID_KEY, callInvite.getCallSid());
 
         // Click intent
@@ -60,6 +61,7 @@ public class NotificationUtils {
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.setAction(TwilioConstants.ACTION_INCOMING_CALL);
         intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+        Log.d(" call Invite 3", callInvite.getCallSid());
         intent.setFlags(
                 Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
