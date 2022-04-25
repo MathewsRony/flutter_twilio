@@ -35,6 +35,7 @@ public class IncomingCallNotificationService extends Service {
                 case TwilioConstants.ACTION_INCOMING_CALL: {
                     Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_INCOMING_CALL case");
                     CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
+                    Log.e(TAG, "ACTION_INCOMING_CALL call Invite "+ callInvite.getCallSid());
                     handleIncomingCall(callInvite);
                 }
                 break;
@@ -43,6 +44,7 @@ public class IncomingCallNotificationService extends Service {
                     Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_ACCEPT case");
 
                     CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
+                    Log.e(TAG, "ACTION_ACCEPT call Invite "+ callInvite.getCallSid());
                     accept(callInvite);
                 }
                 break;
@@ -99,6 +101,7 @@ public class IncomingCallNotificationService extends Service {
         } else {
             Log.e(TAG, "****************************accept**************** else part");
             Log.e(TAG, "Answering from custom UI");
+            Log.e(TAG, "Answering from call Invite "+ callInvite.getCallSid());
             this.openBackgroundCallActivityForAcceptCall(callInvite);
         }
         Log.e(TAG, "****************************accept end****************");
