@@ -75,6 +75,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_background_call);
 
+        Log.e(TAG, "******* BackgroundCallJavaActivity onCreate");
         this.container = findViewById(R.id.container);
         this.image = findViewById(R.id.image);
         this.textDisplayName = findViewById(R.id.textDisplayName);
@@ -114,6 +115,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         this.sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         this.turnScreenOnAndKeyguardOff();
 
+        Log.e(TAG, "*******************************************11");
         handleIntent(getIntent());
         registerReceiver();
     }
@@ -222,6 +224,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     }
 
     private void handleIntent(Intent intent) {
+        Log.e(TAG, "*******************************************12");
         if (intent == null || intent.getAction() == null) {
             close();
             return;
@@ -229,6 +232,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
         switch (intent.getAction()) {
             case TwilioConstants.ACTION_INCOMING_CALL: {
+                Log.e(TAG, "*******************************************13");
                 this.callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
                 containerIncomingCall.setVisibility(View.VISIBLE);
                 containerActiveCall.setVisibility(View.GONE);
@@ -237,6 +241,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             break;
 
             case TwilioConstants.ACTION_ACCEPT: {
+                Log.e(TAG, "*******************************************14");
                 this.callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
                 containerIncomingCall.setVisibility(View.GONE);
                 containerActiveCall.setVisibility(View.VISIBLE);
@@ -246,6 +251,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             break;
 
             case TwilioConstants.ACTION_CANCEL_CALL: {
+                Log.e(TAG, "*******************************************15");
                 onCallCanceled();
             }
             break;
@@ -271,20 +277,25 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     }
 
     private void acceptCall() {
+        Log.e(TAG, "*******************************************16");
         stopServiceIncomingCall();
 
         if (this.callInvite == null) {
+            Log.e(TAG, "*******************************************17");
             Log.i(TAG, "No call invite");
             this.close();
             return;
         }
 
+        Log.e(TAG, "*******************************************18");
         this.containerActiveCall.setVisibility(View.VISIBLE);
         this.containerIncomingCall.setVisibility(View.GONE);
 
         try {
+            Log.e(TAG, "*******************************************19");
             TwilioUtils.getInstance(this).acceptInvite(this.callInvite, getListener());
         } catch (Exception exception) {
+            Log.e(TAG, "*******************************************20");
             exception.printStackTrace();
             this.close();
         }

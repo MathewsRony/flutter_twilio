@@ -144,11 +144,20 @@ public class TwilioUtils {
     }
 
     public void acceptInvite(CallInvite callInvite, Call.Listener listener) {
+        Log.e("********Twilio ", "#############################acceptInvite");
+        Log.e(TAG,"onCallInvite:"+callInvite.getCallSid());
+        String from=callInvite.getFrom();
+        Log.e(TAG,"tw_from:"+from);
+        Log.e("********Twilio ", "#############################");
+        Log.e(TAG, "*******************************************22");
         if (this.activeCall != null) {
+            Log.e(TAG, "*******************************************23");
             throw new RuntimeException("There is a call in progress");
         }
 
+        Log.e(TAG, "*******************************************24");
         if (callInvite == null) {
+            Log.e(TAG, "*******************************************25");
             throw new RuntimeException("No call invite");
         }
 
@@ -157,6 +166,7 @@ public class TwilioUtils {
         this.toDisplayName = null;
         this.callInvite = callInvite;
         this.activeCall = callInvite.accept(this.context, getCallListener(listener));
+        Log.e(TAG, "*******************************************26");
     }
 
     public void rejectInvite(CallInvite callInvite) {
