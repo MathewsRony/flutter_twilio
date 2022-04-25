@@ -120,9 +120,9 @@ public class NotificationUtils {
         builder.setExtras(extras);
         builder.setVibrate(new long[]{0, 400, 400, 400, 400, 400, 400, 400});
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && isAppVisible())
+        if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) || isAppVisible())
         builder.addAction(android.R.drawable.ic_menu_delete, context.getString(R.string.btn_reject), piRejectIntent);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && isAppVisible())
+        if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) || isAppVisible())
         builder.addAction(android.R.drawable.ic_menu_call, context.getString(R.string.btn_accept), piAcceptIntent);
         builder.setFullScreenIntent(pendingIntent, true);
         builder.setColor(Color.rgb(20, 10, 200));
