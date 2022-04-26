@@ -43,6 +43,8 @@ public class IncomingCallNotificationService extends Service {
                 break;
 
                 case TwilioConstants.ACTION_ACCEPT: {
+//                    int origin = intent.getIntExtra(TwilioConstants.ACCEPT_CALL_ORIGIN, 0);
+                    Log.d(TAG, "onStartCommand-ActionAccept" + origin);
                     Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_ACCEPT case");
 
                     CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
@@ -169,21 +171,15 @@ public class IncomingCallNotificationService extends Service {
 
     private void openBackgroundCallActivityForAcceptCall(CallInvite callInvite) {
         try {
-            Log.e(TAG, "openBackgroundCallActivityForAcceptCall function inside");
-            Intent intent = new Intent(getApplicationContext(), BackgroundCallJavaActivity.class);
-            intent.setFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK |
-                            Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                            Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
-                            Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-            );
-            intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
-
-            Log.e(TAG, "openBackgroundCallActivityForAcceptCall callInvite  "+callInvite.getCallSid());
-            intent.setAction(TwilioConstants.ACTION_ACCEPT);
-            getApplicationContext().startActivity(intent);
-
-            Log.e(TAG, "openBackgroundCallActivityForAcceptCall function after startActivity");
+            Log.i(TAG, "accept call invite!");
+            Intent activeCallIntent = new Intent();
+            activeCallIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            activeCallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            activeCallIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+//            activeCallIntent.putExtra(Constants.INCOMING_CALL_NOTIFICATION_ID, notificationId);
+//            activeCallIntent.putExtra(Constants.ACCEPT_CALL_ORIGIN, origin);
+            activeCallIntent.setAction(TwilioConstants.ACTION_ACCEPT);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(activeCallIntent);
         } catch (Exception e) {
             Log.e(TAG, "openBackgroundCallActivityForAcceptCall " + e.toString());
         }
