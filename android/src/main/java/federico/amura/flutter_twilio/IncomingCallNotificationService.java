@@ -43,8 +43,8 @@ public class IncomingCallNotificationService extends Service {
                 break;
 
                 case TwilioConstants.ACTION_ACCEPT: {
-                    int origin = intent.getIntExtra(TwilioConstants.ACCEPT_CALL_ORIGIN, 0);
-                    Log.d(TAG, "onStartCommand-ActionAccept" + origin);
+//                    int origin = intent.getIntExtra(TwilioConstants.ACCEPT_CALL_ORIGIN, 0);
+//                    Log.d(TAG, "onStartCommand-ActionAccept" + origin);
                     Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_ACCEPT case");
 
                     CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
