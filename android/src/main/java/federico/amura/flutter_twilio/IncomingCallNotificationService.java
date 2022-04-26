@@ -92,7 +92,7 @@ public class IncomingCallNotificationService extends Service {
 
     private void accept(CallInvite callInvite) {
         Log.i(TAG, "accept call invite!");
-        Intent activeCallIntent = new Intent();
+        Intent activeCallIntent = new Intent(this, BackgroundCallJavaActivity.class);
         activeCallIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         activeCallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activeCallIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
