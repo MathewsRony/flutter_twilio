@@ -81,7 +81,7 @@ public class NotificationUtils {
 
 
         //Reject intent
-        Intent rejectIntent = new Intent(context, IncomingCallNotificationService.class);
+        Intent rejectIntent = new Intent(context, BackgroundCallJavaActivity.class);
 
 //        rejectIntent.setAction(Intent.ACTION_MAIN);
 //        rejectIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -97,7 +97,7 @@ public class NotificationUtils {
         );
 
         // Accept intent
-        Intent acceptIntent = new Intent(context, IncomingCallNotificationService.class);
+        Intent acceptIntent = new Intent(context, BackgroundCallJavaActivity.class);
 //        acceptIntent.setAction(Intent.ACTION_MAIN);
 //        acceptIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         acceptIntent.setAction(TwilioConstants.ACTION_ACCEPT);
