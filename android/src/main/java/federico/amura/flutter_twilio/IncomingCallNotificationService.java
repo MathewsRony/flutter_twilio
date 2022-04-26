@@ -94,10 +94,11 @@ public class IncomingCallNotificationService extends Service {
         Log.e(TAG, "****************************accept start****************");
         Log.e(TAG, "Accept call invite. App visible: " + isAppVisible() + ". Locked: " + isLocked());
         this.stopServiceIncomingCall();
-        Log.e(TAG, "****************************accept**************** !isLocked() && isAppVisible()");
-        // Inform call accepted
-        Log.e(TAG, "Answering from APP");
-        this.informAppAcceptCall(callInvite);
+
+        Log.e(TAG, "****************************accept**************** else part");
+        Log.e(TAG, "Answering from custom UI");
+        Log.e(TAG, "Answering from call Invite "+ callInvite.getCallSid());
+        this.openBackgroundCallActivityForAcceptCall(callInvite);
         Log.e(TAG, "****************************accept end****************");
     }
 
