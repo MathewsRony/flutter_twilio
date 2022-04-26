@@ -76,13 +76,12 @@ public class NotificationUtils {
                 0,
                 intent,
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
-                     PendingIntent.FLAG_MUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
 
         //Reject intent
         Intent rejectIntent = new Intent(context, BackgroundCallJavaActivity.class);
-
 //        rejectIntent.setAction(Intent.ACTION_MAIN);
 //        rejectIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         rejectIntent.setAction(TwilioConstants.ACTION_REJECT);
@@ -93,7 +92,7 @@ public class NotificationUtils {
                 0,
                 rejectIntent,
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
-                         PendingIntent.FLAG_MUTABLE |PendingIntent.FLAG_CANCEL_CURRENT: PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
         // Accept intent
@@ -108,7 +107,7 @@ public class NotificationUtils {
                 0,
                 acceptIntent,
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
-                        PendingIntent.FLAG_MUTABLE |PendingIntent.FLAG_CANCEL_CURRENT: PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
         // Notification
