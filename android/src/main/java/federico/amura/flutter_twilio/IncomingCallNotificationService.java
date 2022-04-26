@@ -91,13 +91,23 @@ public class IncomingCallNotificationService extends Service {
     }
 
     private void accept(CallInvite callInvite) {
-        Log.i(TAG, "accept call invite!");
         Intent activeCallIntent = new Intent(this, BackgroundCallJavaActivity.class);
-        activeCallIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        activeCallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        activeCallIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
-        activeCallIntent.setAction(TwilioConstants.ACTION_ACCEPT);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(activeCallIntent);
+        Log.e(TAG, "****************************accept start****************");
+        Log.e(TAG, "Accept call invite. App visible: " + isAppVisible() + ". Locked: " + isLocked());
+        this.stopServiceIncomingCall();
+
+        if (!isLocked() && isAppVisible()) {
+            Log.e(TAG, "****************************accept**************** !isLocked() && isAppVisible()");
+            // Inform call accepted
+            Log.e(TAG, "Answering from APP");
+            this.informAppAcceptCall(callInvite);
+        } else {
+            Log.e(TAG, "****************************accept**************** else part");
+            Log.e(TAG, "Answering from custom UI");
+            Log.e(TAG, "Answering from call Invite "+ callInvite.getCallSid());
+            this.openBackgroundCallActivityForAcceptCall(callInvite);
+        }
+        Log.e(TAG, "****************************accept end****************");
     }
 
     private void reject(CallInvite callInvite) {
