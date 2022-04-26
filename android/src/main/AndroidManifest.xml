@@ -6,41 +6,38 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
     <application>
         <activity
             android:name="federico.amura.flutter_twilio.BackgroundCallJavaActivity"
             android:exported="true"
-            android:excludeFromRecents="true"
-            android:screenOrientation="portrait"
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
-            android:taskAffinity=".BackgroundCallJavaActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:turnScreenOn="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:theme="@style/Theme.AppCompat"
+            android:turnScreenOn="true" />
+<!--        <intent-filter>-->
+<!--            <action android:name="android.intent.action.MAIN" />-->
+<!--            <category android:name="android.intent.category.LAUNCHER" />-->
+<!--        </intent-filter>-->
 
-        </activity>
+<!--    </activity>-->
 
-        <service
-            android:name="federico.amura.flutter_twilio.IncomingCallNotificationService"
-            android:enabled="true"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+    <service
+        android:name="federico.amura.flutter_twilio.IncomingCallNotificationService"
+        android:enabled="true"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="com.google.firebase.MESSAGING_EVENT" />
+        </intent-filter>
+    </service>
 
-        <meta-data
-            android:name="flutterEmbedding"
-            android:value="2" />
+    <meta-data
+        android:name="flutterEmbedding"
+        android:value="2" />
 
-    </application>
+</application>
 
 
-</manifest>
+    </manifest>
