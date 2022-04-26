@@ -346,9 +346,11 @@ public class FlutterTwilioPlugin implements
 
     private void answer(CallInvite callInvite) {
         try {
+            Log.d(TAG, "answer CALL: ");
             TwilioUtils t = TwilioUtils.getInstance(this.context);
             t.acceptInvite(callInvite, getCallListener());
             responseChannel.invokeMethod("callConnecting", t.getCallDetails());
+            Log.d(TAG, "answer CALL: ");
         } catch (Exception exception) {
             exception.printStackTrace();
         }

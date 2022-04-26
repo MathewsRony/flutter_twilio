@@ -101,6 +101,12 @@ public class NotificationUtils {
 //        acceptIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         acceptIntent.setAction(TwilioConstants.ACTION_ACCEPT);
         acceptIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+        acceptIntent.setFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+        );
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent piAcceptIntent = PendingIntent.getService(
                 context,
