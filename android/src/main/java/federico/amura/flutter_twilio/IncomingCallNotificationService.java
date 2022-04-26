@@ -91,7 +91,6 @@ public class IncomingCallNotificationService extends Service {
     }
 
     private void accept(CallInvite callInvite) {
-        Intent activeCallIntent = new Intent(this, BackgroundCallJavaActivity.class);
         Log.e(TAG, "****************************accept start****************");
         Log.e(TAG, "Accept call invite. App visible: " + isAppVisible() + ". Locked: " + isLocked());
         this.stopServiceIncomingCall();
