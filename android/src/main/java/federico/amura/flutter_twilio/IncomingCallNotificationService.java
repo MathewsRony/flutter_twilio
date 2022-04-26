@@ -1,6 +1,5 @@
 package federico.amura.flutter_twilio;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.app.Notification;
@@ -29,7 +28,6 @@ public class IncomingCallNotificationService extends Service {
 
     private static final String TAG = IncomingCallNotificationService.class.getSimpleName();
 
-    private Activity activity;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = intent.getAction();
@@ -183,7 +181,7 @@ public class IncomingCallNotificationService extends Service {
 
             Log.e(TAG, "openBackgroundCallActivityForAcceptCall callInvite  "+callInvite.getCallSid());
             intent.setAction(TwilioConstants.ACTION_ACCEPT);
-            activity.startActivity(intent);
+            startActivity(intent);
 
             Log.e(TAG, "openBackgroundCallActivityForAcceptCall function after startActivity");
         } catch (Exception e) {
