@@ -168,11 +168,14 @@ public class IncomingCallNotificationService extends Service {
         intent.setAction(TwilioConstants.ACTION_CANCEL_CALL);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
-
+    private void endForeground() {
+        stopForeground(true);
+    }
     private void openBackgroundCallActivityForAcceptCall(CallInvite callInvite) {
         try {
+            endForeground();
             Log.i(TAG, "accept call invite!");
-            Intent activeCallIntent = new Intent();
+            Intent activeCallIntent = new Intent(getApplicationContext(), BackgroundCallJavaActivity.class);
             activeCallIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             activeCallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             activeCallIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
