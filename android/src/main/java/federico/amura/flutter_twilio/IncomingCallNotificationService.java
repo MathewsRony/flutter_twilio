@@ -95,7 +95,7 @@ public class IncomingCallNotificationService extends Service {
         Log.e(TAG, "Accept call invite. App visible: " + isAppVisible() + ". Locked: " + isLocked());
         this.stopServiceIncomingCall();
 
-        if (!isLocked() && isAppVisible()) {
+        if (!isLocked() ) {
             Log.e(TAG, "****************************accept**************** !isLocked() && isAppVisible()");
             // Inform call accepted
             Log.e(TAG, "Answering from APP");
