@@ -76,7 +76,7 @@ public class NotificationUtils {
                 0,
                 intent,
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
 
@@ -92,7 +92,7 @@ public class NotificationUtils {
                 0,
                 rejectIntent,
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
         // Accept intent
@@ -107,23 +107,28 @@ public class NotificationUtils {
                 0,
                 acceptIntent,
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
         // Notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, showHeadsUp))
-        .setSmallIcon(R.drawable.ic_phone_call)
-                .setContentTitle(notificationTitle)
-                .setContentText(notificationTitle)
-                .setCategory(Notification.CATEGORY_CALL)
-                .setFullScreenIntent(pendingIntent, true)
-                .setExtras(extras)
-                .setVibrate(new long[]{0, 400, 400, 400, 400, 400, 400, 400})
-                .setAutoCancel(true)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .addAction(android.R.drawable.ic_menu_delete, context.getString(R.string.btn_accept), piRejectIntent)
-                .addAction(android.R.drawable.ic_menu_call, context.getString(R.string.btn_accept), piAcceptIntent)
-                .setFullScreenIntent(pendingIntent, true);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, showHeadsUp));
+        builder.setSmallIcon(R.drawable.ic_phone_call);
+        builder.setContentTitle(notificationTitle);
+        builder.setContentText(notificationText);
+        builder.setCategory(NotificationCompat.CATEGORY_CALL);
+        builder.setAutoCancel(true);
+        builder.setExtras(extras);
+        builder.setVibrate(new long[]{0, 400, 400, 400, 400, 400, 400, 400});
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+//        if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) || isAppVisible())
+        builder.addAction(android.R.drawable.ic_menu_delete, context.getString(R.string.btn_reject), piRejectIntent);
+//        if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) || isAppVisible())
+        builder.addAction(android.R.drawable.ic_menu_call, context.getString(R.string.btn_accept), piAcceptIntent);
+        builder.setFullScreenIntent(pendingIntent, true);
+        builder.setColor(Color.rgb(20, 10, 200));
+        builder.setOngoing(true);
+        builder.setPriority(NotificationCompat.PRIORITY_MAX);
+        builder.setContentIntent(pendingIntent);
         return builder.build();
     }
 
