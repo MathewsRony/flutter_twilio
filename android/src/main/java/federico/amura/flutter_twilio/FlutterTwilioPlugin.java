@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.twilio.voice.Call;
@@ -32,7 +30,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry;
 
-public class FlutterTwilioPlugin  extends AppCompatActivity implements
+public class FlutterTwilioPlugin implements
         FlutterPlugin,
         MethodChannel.MethodCallHandler,
         ActivityAware,
@@ -40,8 +38,6 @@ public class FlutterTwilioPlugin  extends AppCompatActivity implements
 
     private static final String TAG = "FlutterTwilioPlugin";
 
-    private View containerIncomingCall;
-    private View containerActiveCall;
     private Context context;
     private MethodChannel responseChannel;
     private CustomBroadcastReceiver broadcastReceiver;
@@ -373,10 +369,6 @@ public class FlutterTwilioPlugin  extends AppCompatActivity implements
             @Override
             public void onRinging(@NonNull Call call) {
                 Log.d(TAG, "onRinging");
-                containerActiveCall = findViewById(R.id.containerActiveCall);
-                containerIncomingCall = findViewById(R.id.containerIncomingCall);
-                containerIncomingCall.setVisibility(View.GONE);
-                containerActiveCall.setVisibility(View.VISIBLE);
                 responseChannel.invokeMethod("callRinging", t.getCallDetails());
             }
 
