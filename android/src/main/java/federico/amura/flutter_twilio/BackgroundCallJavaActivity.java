@@ -247,8 +247,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
             case TwilioConstants.ACTION_ACCEPT: {
                 Log.e(TAG, "*******************************************14");
-                this.callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
-                this.checkPermissionsAndAccept();
+                this.checkPermissionsAndAccept(intent);
             }
             break;
 
@@ -277,12 +276,13 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         intent.setAction(TwilioConstants.ACTION_STOP_SERVICE);
         startService(intent);
     }
-    private void checkPermissionsAndAccept(){
+    private void checkPermissionsAndAccept(Intent intent){
         Log.d(TAG, "Clicked accept");
         if (!checkPermissionForMicrophone()) {
             Log.d(TAG, "configCallUI-requestAudioPermissions");
             requestAudioPermissions();
         } else {
+            this.callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
             Log.d(TAG, "configCallUI-newAnswerCallClickListener");
             containerIncomingCall.setVisibility(View.GONE);
             containerActiveCall.setVisibility(View.VISIBLE);
