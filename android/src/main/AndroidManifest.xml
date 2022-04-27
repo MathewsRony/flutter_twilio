@@ -16,7 +16,9 @@
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
             android:theme="@style/Theme.AppCompat"
-            android:turnScreenOn="true" />
+            android:turnScreenOn="true"
+            android:supportsPictureInPicture="true"
+            />
 <!--        <intent-filter>-->
 <!--            <action android:name="android.intent.action.MAIN" />-->
 <!--            <category android:name="android.intent.category.LAUNCHER" />-->
