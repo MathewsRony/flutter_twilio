@@ -17,6 +17,12 @@
             android:showWhenLocked="true"
             android:theme="@style/Theme.AppCompat"
             android:turnScreenOn="true" />
+<!--        <intent-filter>-->
+<!--            <action android:name="android.intent.action.MAIN" />-->
+<!--            <category android:name="android.intent.category.LAUNCHER" />-->
+<!--        </intent-filter>-->
+
+<!--    </activity>-->
 
     <service
         android:name="federico.amura.flutter_twilio.IncomingCallNotificationService"
