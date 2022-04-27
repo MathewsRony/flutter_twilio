@@ -1,10 +1,12 @@
 package federico.amura.flutter_twilio;
 
+import android.Manifest;
 import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
@@ -26,6 +28,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -47,7 +51,7 @@ import federico.amura.flutter_twilio.Utils.TwilioUtils;
 public class BackgroundCallJavaActivity extends AppCompatActivity implements SensorEventListener {
 
     private static final String TAG = "BackgroundCallActivity";
-
+    private static final int MIC_PERMISSION_REQUEST_CODE = 17893;
     private PowerManager.WakeLock wakeLock;
     private ViewGroup container;
     private ImageView image;
@@ -247,7 +251,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
                 containerIncomingCall.setVisibility(View.GONE);
                 containerActiveCall.setVisibility(View.VISIBLE);
                 updateCallDetails();
-                this.acceptCall();
+                this.checkPermissionsAndAccept();
             }
             break;
 
@@ -276,7 +280,35 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         intent.setAction(TwilioConstants.ACTION_STOP_SERVICE);
         startService(intent);
     }
+    private void checkPermissionsAndAccept(){
+        Log.d(TAG, "Clicked accept");
+        if (!checkPermissionForMicrophone()) {
+            Log.d(TAG, "configCallUI-requestAudioPermissions");
+            requestAudioPermissions();
+        } else {
+            Log.d(TAG, "configCallUI-newAnswerCallClickListener");
+            acceptCall();
+        }
+    }
+    private Boolean checkPermissionForMicrophone() {
+        int resultMic = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+        return resultMic == PackageManager.PERMISSION_GRANTED;
+    }
 
+    private void requestAudioPermissions() {
+        String[] permissions = {Manifest.permission.RECORD_AUDIO};
+        Log.d(TAG, "requestAudioPermissions");
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
+                ActivityCompat.requestPermissions(this, permissions, MIC_PERMISSION_REQUEST_CODE);
+            } else {
+                ActivityCompat.requestPermissions(this, permissions, MIC_PERMISSION_REQUEST_CODE);
+            }
+        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "requestAudioPermissions-> permission granted->newAnswerCallClickListener");
+            acceptCall();
+        }
+    }
     private void acceptCall() {
         Log.e(TAG, "*******************************************16");
         stopServiceIncomingCall();
