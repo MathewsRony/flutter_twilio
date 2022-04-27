@@ -247,7 +247,11 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
             case TwilioConstants.ACTION_ACCEPT: {
                 Log.e(TAG, "*******************************************14");
-                this.checkPermissionsAndAccept(intent);
+                this.callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
+                containerIncomingCall.setVisibility(View.GONE);
+                containerActiveCall.setVisibility(View.VISIBLE);
+                updateCallDetails();
+                this.checkPermissionsAndAccept();
             }
             break;
 
@@ -276,17 +280,13 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         intent.setAction(TwilioConstants.ACTION_STOP_SERVICE);
         startService(intent);
     }
-    private void checkPermissionsAndAccept(Intent intent){
+    private void checkPermissionsAndAccept(){
         Log.d(TAG, "Clicked accept");
         if (!checkPermissionForMicrophone()) {
             Log.d(TAG, "configCallUI-requestAudioPermissions");
             requestAudioPermissions();
         } else {
-            this.callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
             Log.d(TAG, "configCallUI-newAnswerCallClickListener");
-            containerIncomingCall.setVisibility(View.GONE);
-            containerActiveCall.setVisibility(View.VISIBLE);
-            updateCallDetails();
             acceptCall();
         }
     }
@@ -306,9 +306,6 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             }
         } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "requestAudioPermissions-> permission granted->newAnswerCallClickListener");
-            containerIncomingCall.setVisibility(View.GONE);
-            containerActiveCall.setVisibility(View.VISIBLE);
-            updateCallDetails();
             acceptCall();
         }
     }
