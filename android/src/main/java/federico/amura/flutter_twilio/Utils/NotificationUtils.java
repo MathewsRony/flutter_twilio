@@ -82,6 +82,8 @@ public class NotificationUtils {
 
         //Reject intent
         Intent rejectIntent = new Intent(context, IncomingCallNotificationService.class);
+//        rejectIntent.setAction(Intent.ACTION_MAIN);
+//        rejectIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         rejectIntent.setAction(TwilioConstants.ACTION_REJECT);
         rejectIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
         @SuppressLint("UnspecifiedImmutableFlag")
@@ -95,14 +97,10 @@ public class NotificationUtils {
 
         // Accept intent
         Intent acceptIntent = new Intent(context, IncomingCallNotificationService.class);
+//        acceptIntent.setAction(Intent.ACTION_MAIN);
+//        acceptIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         acceptIntent.setAction(TwilioConstants.ACTION_ACCEPT);
         acceptIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
-        acceptIntent.setFlags(
-                Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
-                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-        );
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent piAcceptIntent = PendingIntent.getService(
                 context,
