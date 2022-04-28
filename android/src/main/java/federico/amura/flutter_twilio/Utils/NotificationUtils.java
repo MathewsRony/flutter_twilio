@@ -134,7 +134,7 @@ public class NotificationUtils {
         builder.setContentIntent(pendingIntent);
         return builder.build();
     }
-    public static Notification createMissedCallNotification(Context context, CancelledCallInvite cancelledCallInvite, boolean showHeadsUp) {
+    public static Notification createMissedCallNotification(Context context, CallInvite callInvite, CancelledCallInvite cancelledCallInvite, boolean showHeadsUp) {
 
         Log.i("TAG", "Call canceled. buildMissedCallNotification 2 " );
         Intent returnCallIntent = new Intent(context, IncomingCallNotificationService.class);
@@ -158,6 +158,26 @@ public class NotificationUtils {
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
+        Intent intent = new Intent(context, BackgroundCallJavaActivity.class);
+//        intent.setAction(Intent.ACTION_MAIN);
+//        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setAction(TwilioConstants.ACTION_INCOMING_CALL);
+        intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+        Log.d(" call Invite 3", callInvite.getCallSid());
+        intent.setFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+        );
+        @SuppressLint("UnspecifiedImmutableFlag")
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                intent,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
+        );
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, showHeadsUp));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setSmallIcon(R.drawable.ic_call_end);
@@ -169,6 +189,7 @@ public class NotificationUtils {
             builder.setContentTitle(getApplicationName(context));
             builder.setContentText("title");
             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+            builder.setContentIntent(pendingIntent);
             return builder.build();
         } else {
 //            notification = new NotificationCompat.Builder(context)
@@ -181,6 +202,7 @@ public class NotificationUtils {
             builder.setPriority(NotificationCompat.PRIORITY_MAX);
             builder.addAction(android.R.drawable.ic_menu_call,"Decline", piReturnCallIntent);
             builder.setColor(Color.rgb(20, 10, 200));
+            builder.setContentIntent(pendingIntent);
             return  builder.build();
         }
 //        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
