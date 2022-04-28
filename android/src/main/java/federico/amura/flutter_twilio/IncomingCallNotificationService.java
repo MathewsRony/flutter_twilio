@@ -136,7 +136,6 @@ public class    IncomingCallNotificationService extends Service {
 
     private void startServiceMissedCall(CallInvite callInvite, CancelledCallInvite cancelledCallInvite) {
         Log.e(TAG, "Start service missed call");
-        SoundUtils.getInstance(this).playRinging();
         Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), callInvite,cancelledCallInvite, false);
         startForeground(TwilioConstants.NOTIFICATION_MISSED_CALL, notification);
 
