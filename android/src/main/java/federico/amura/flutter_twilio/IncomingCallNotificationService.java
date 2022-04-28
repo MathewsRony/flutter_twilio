@@ -1,5 +1,6 @@
 package federico.amura.flutter_twilio;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.app.Notification;
@@ -145,9 +146,11 @@ public class    IncomingCallNotificationService extends Service {
 //
 //        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
 //        this.informAppCancelCall();
-        stopForeground(true);
+//        stopForeground(true);
         buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
+        stopForeground(true);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     private void buildMissedCallNotification(String callerId, String to, CancelledCallInvite cancelledCallInvite) {
@@ -175,16 +178,26 @@ public class    IncomingCallNotificationService extends Service {
         returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
         returnCallIntent.putExtra(cancelledCallInvite.getTo(), to);
         returnCallIntent.putExtra(cancelledCallInvite.getFrom(), callerId);
-        PendingIntent piReturnCallIntent = PendingIntent.getService(getApplicationContext(), 0, returnCallIntent, PendingIntent.FLAG_IMMUTABLE);
-
+        returnCallIntent.setFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+        );
+        @SuppressLint("UnspecifiedImmutableFlag")
+        PendingIntent piReturnCallIntent = PendingIntent.getActivity(
+                context,
+                0,
+                returnCallIntent,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
+        );
 
         Notification notification;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(this, createChannel(getApplicationContext(), true))
-
-
                             .setSmallIcon(R.drawable.ic_call_end)
                             .setContentTitle(title)
                             .setCategory(Notification.CATEGORY_CALL)
@@ -210,77 +223,6 @@ public class    IncomingCallNotificationService extends Service {
         }
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(100, notification);
-    }
-    private void startServiceMissedCall(CallInvite callInvite, CancelledCallInvite cancelledCallInvite) {
-        Log.d("!!!!!!!!!!!!!0", callInvite.getCallSid());
-
-
-        Log.d("!!!!!!!!!!!!!1", callInvite.getCallSid());
-        String callerName = null;
-        for (Map.Entry<String, String> entry : callInvite.getCustomParameters().entrySet()) {
-            if (entry.getKey().equals("fromDisplayName")) {
-                callerName = entry.getValue();
-            }
-        }
-        if (callerName == null || callerName.trim().isEmpty()) {
-            final String contactName = PreferencesUtils.getInstance(getApplicationContext()).findContactName(callInvite.getFrom());
-            if (contactName != null && !contactName.trim().isEmpty()) {
-                callerName = contactName;
-            } else {
-                callerName = "Unknown name";
-            }
-        }
-
-        Log.d("!!!!!!!!!!!!!2", callerName);
-        String title = getApplicationContext().getString(R.string.notification_missed_call_title+R.string.notification_missed_call_text,callerName);
-        String fromId = callerName;
-
-        Log.d("!!!!!!!!!!!!!3", title);
-
-
-        Intent returnCallIntent = new Intent(getApplicationContext(), IncomingCallNotificationService.class);
-
-        returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
-        returnCallIntent.putExtra(cancelledCallInvite.getFrom(), callInvite.getFrom());
-        returnCallIntent.putExtra(cancelledCallInvite.getTo(), callInvite.getTo());
-        PendingIntent piReturnCallIntent = PendingIntent.getService(getApplicationContext(), 0, returnCallIntent, PendingIntent.FLAG_IMMUTABLE);
-
-
-        Log.d("!!!!!!!!!!!!!4", title);
-
-        Notification notification;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-            NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(this, createChannel(getApplicationContext(), true))
-
-
-                            .setSmallIcon(R.drawable.ic_call_end)
-                            .setContentTitle(title)
-                            .setCategory(Notification.CATEGORY_CALL)
-                            .setAutoCancel(true)
-                            .addAction(android.R.drawable.ic_menu_call,"Call Back", piReturnCallIntent)
-                            .setPriority(NotificationCompat.PRIORITY_HIGH)
-                            .setContentTitle(getApplicationName(getApplicationContext()))
-                            .setContentText(title)
-                            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-
-            notification = builder.build();
-        } else {
-            notification = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.ic_call_end)
-                    .setContentTitle(getApplicationName(getApplicationContext()))
-                    .setContentText(title)
-                    .setAutoCancel(true)
-                    .setOngoing(true)
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                    .setPriority(NotificationCompat.PRIORITY_MAX)
-                    .addAction(android.R.drawable.ic_menu_call, "Decline", piReturnCallIntent)
-                    .setColor(Color.rgb(20, 10, 200)).build();
-        }
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(100, notification);
-
     }
     public static String getApplicationName(Context context) {
         ApplicationInfo applicationInfo = context.getApplicationInfo();
@@ -382,6 +324,6 @@ public class    IncomingCallNotificationService extends Service {
         Log.i(TAG, "returning call!!!!");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.cancel(100);
+        notificationManager.cancel(1);
     }
 }
