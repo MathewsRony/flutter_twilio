@@ -158,7 +158,7 @@ public class    IncomingCallNotificationService extends Service {
         String fromId = callerId.replace("client:", "");
         Context context = getApplicationContext();
         String callerName = callerId;
-        Log.i(TAG, "Call canceled. buildMissedCallNotification 1 " );
+        Log.i(TAG, "Call canceled. buildMissedCallNotification 1 " +callerId);
 //        for (Map.Entry<String, String> entry : callInvite.getCustomParameters().entrySet()) {
 //            if (entry.getKey().equals("fromDisplayName")) {
 //                callerName = entry.getValue();
@@ -173,7 +173,7 @@ public class    IncomingCallNotificationService extends Service {
 //            }
 //        }
 
-        String title = getApplicationContext().getString(R.string.notification_missed_call_title+R.string.notification_missed_call_text,callerName);
+//        String title = getApplicationContext().getString(R.string.notification_missed_call_title+R.string.notification_missed_call_text,callerName);
 
         Log.i(TAG, "Call canceled. buildMissedCallNotification 2 " );
 //        Intent returnCallIntent = new Intent(getApplicationContext(), IncomingCallNotificationService.class);
@@ -204,13 +204,13 @@ public class    IncomingCallNotificationService extends Service {
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(this, createChannel(getApplicationContext(), true))
                             .setSmallIcon(R.drawable.ic_call_end)
-                            .setContentTitle(title)
+                            .setContentTitle("title")
                             .setCategory(Notification.CATEGORY_CALL)
                             .setAutoCancel(true)
 //                            .addAction(android.R.drawable.ic_menu_call,"Call Back", piReturnCallIntent)
                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                             .setContentTitle(getApplicationName(getApplicationContext()))
-                            .setContentText(title)
+                            .setContentText("title")
                             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
             Log.i(TAG, "Call canceled. buildMissedCallNotification 6 " );
@@ -220,7 +220,7 @@ public class    IncomingCallNotificationService extends Service {
             notification = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.ic_call_end)
                     .setContentTitle(getApplicationName(getApplicationContext()))
-                    .setContentText(title)
+                    .setContentText("title")
                     .setAutoCancel(true)
                     .setOngoing(true)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
