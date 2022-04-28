@@ -158,6 +158,7 @@ public class NotificationUtils {
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
+        Log.i("TAG", "Call canceled. buildMissedCallNotification 4 " );
         Intent intent = new Intent(context, BackgroundCallJavaActivity.class);
 //        intent.setAction(Intent.ACTION_MAIN);
 //        intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -170,6 +171,7 @@ public class NotificationUtils {
                         Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
                         Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
         );
+        Log.i("TAG", "Call canceled. buildMissedCallNotification 5 " );
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context,
@@ -178,6 +180,7 @@ public class NotificationUtils {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
+        Log.i("TAG", "Call canceled. buildMissedCallNotification 6  " );
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, showHeadsUp));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setSmallIcon(R.drawable.ic_call_end);
