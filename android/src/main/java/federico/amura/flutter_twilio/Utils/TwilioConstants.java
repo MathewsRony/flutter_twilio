@@ -2,6 +2,7 @@ package federico.amura.flutter_twilio.Utils;
 
 public class TwilioConstants {
     public static final int NOTIFICATION_INCOMING_CALL = 1;
+    public static final int NOTIFICATION_MISSED_CALL = 2;
 
     public static final String CALL_SID_KEY = "CALL_SID";
     public static final String SHARED_PREFERENCES_ACCESS = "shared_pref_access";
