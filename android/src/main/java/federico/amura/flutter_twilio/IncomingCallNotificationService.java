@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.os.Build;
@@ -69,11 +70,11 @@ public class    IncomingCallNotificationService extends Service {
                 case TwilioConstants.ACTION_CANCEL_CALL: {
                     Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_CANCEL_CALL case");
 
-                    CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
-                    handleCancelledCall(cancelledCallInvite);
-
-                    CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
-                    this.startServiceMissedCall(callInvite,cancelledCallInvite);
+//                    CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
+                    handleCancelledCall(intent);
+//
+//                    CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
+//                    this.startServiceMissedCall(callInvite,cancelledCallInvite);
                 }
                 break;
 
@@ -131,18 +132,82 @@ public class    IncomingCallNotificationService extends Service {
         }
     }
 
-    private void handleCancelledCall(CancelledCallInvite cancelledCallInvite) {
+    private void handleCancelledCall(Intent intent) {
+        SoundUtils.getInstance(this).stopRinging();
+        CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
         Log.i(TAG, "Call canceled. App visible: " + isAppVisible() + ". Locked: " + isLocked());
-        this.stopServiceIncomingCall();
+        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
+//        this.stopServiceIncomingCall();
 
-        if (cancelledCallInvite == null) return;
-        if (cancelledCallInvite.getFrom() == null) return;
-
-        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
-        this.informAppCancelCall();
+//        if (cancelledCallInvite == null) return;
+//        if (cancelledCallInvite.getFrom() == null) return;
+//
+//        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
+//        this.informAppCancelCall();
 
     }
 
+    private void buildMissedCallNotification(String callerId, String to, CancelledCallInvite cancelledCallInvite) {
+
+        String fromId = callerId.replace("client:", "");
+        Context context = getApplicationContext();
+        String callerName = callerId;
+//        for (Map.Entry<String, String> entry : callInvite.getCustomParameters().entrySet()) {
+//            if (entry.getKey().equals("fromDisplayName")) {
+//                callerName = entry.getValue();
+//            }
+//        }
+//        if (callerName == null || callerName.trim().isEmpty()) {
+//            final String contactName = PreferencesUtils.getInstance(getApplicationContext()).findContactName(callInvite.getFrom());
+//            if (contactName != null && !contactName.trim().isEmpty()) {
+//                callerName = contactName;
+//            } else {
+//                callerName = "Unknown name";
+//            }
+//        }
+
+        String title = getApplicationContext().getString(R.string.notification_missed_call_title+R.string.notification_missed_call_text,callerName);
+
+        Intent returnCallIntent = new Intent(getApplicationContext(), IncomingCallNotificationService.class);
+        returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
+        returnCallIntent.putExtra(cancelledCallInvite.getTo(), to);
+        returnCallIntent.putExtra(cancelledCallInvite.getFrom(), callerId);
+        PendingIntent piReturnCallIntent = PendingIntent.getService(getApplicationContext(), 0, returnCallIntent, PendingIntent.FLAG_IMMUTABLE);
+
+
+        Notification notification;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationCompat.Builder builder =
+                    new NotificationCompat.Builder(this, createChannel(getApplicationContext(), true))
+
+
+                            .setSmallIcon(R.drawable.ic_call_end)
+                            .setContentTitle(title)
+                            .setCategory(Notification.CATEGORY_CALL)
+                            .setAutoCancel(true)
+                            .addAction(android.R.drawable.ic_menu_call,"Call Back", piReturnCallIntent)
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setContentTitle(getApplicationName(getApplicationContext()))
+                            .setContentText(title)
+                            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+
+            notification = builder.build();
+        } else {
+            notification = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.ic_call_end)
+                    .setContentTitle(getApplicationName(getApplicationContext()))
+                    .setContentText(title)
+                    .setAutoCancel(true)
+                    .setOngoing(true)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                    .addAction(android.R.drawable.ic_menu_call, "Decline", piReturnCallIntent)
+                    .setColor(Color.rgb(20, 10, 200)).build();
+        }
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(100, notification);
+    }
     private void startServiceMissedCall(CallInvite callInvite, CancelledCallInvite cancelledCallInvite) {
         Log.d("!!!!!!!!!!!!!0", callInvite.getCallSid());
 
