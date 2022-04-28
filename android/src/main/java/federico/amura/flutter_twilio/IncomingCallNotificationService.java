@@ -136,10 +136,8 @@ public class    IncomingCallNotificationService extends Service {
         SoundUtils.getInstance(this).stopRinging();
         CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
         Log.i(TAG, "Call canceled. App visible: " + isAppVisible() + ". Locked: " + isLocked());
-        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
-        stopForeground(true);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
 //        this.stopServiceIncomingCall();
 
 //        if (cancelledCallInvite == null) return;
@@ -147,6 +145,8 @@ public class    IncomingCallNotificationService extends Service {
 //
 //        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
 //        this.informAppCancelCall();
+        stopForeground(true);
+        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
     }
 
