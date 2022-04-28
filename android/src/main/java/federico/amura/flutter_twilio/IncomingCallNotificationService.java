@@ -87,6 +87,7 @@ public class    IncomingCallNotificationService extends Service {
                 break;
 
                 case TwilioConstants.ACTION_RETURN_CALL:
+                    Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_RETURN_CALL case");
                     returnCall(intent);
                     break;
             }
@@ -333,6 +334,6 @@ public class    IncomingCallNotificationService extends Service {
         Log.i(TAG, "returning call!!!!");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.cancel(1);
+        notificationManager.cancel(100);
     }
 }
