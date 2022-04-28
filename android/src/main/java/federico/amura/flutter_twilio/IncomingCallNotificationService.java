@@ -207,7 +207,7 @@ public class    IncomingCallNotificationService extends Service {
                             .setContentTitle("title")
                             .setCategory(Notification.CATEGORY_CALL)
                             .setAutoCancel(true)
-//                            .addAction(android.R.drawable.ic_menu_call,"Call Back", piReturnCallIntent)
+                            .addAction(android.R.drawable.ic_menu_call,"Call Back", piReturnCallIntent)
                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                             .setContentTitle(getApplicationName(getApplicationContext()))
                             .setContentText("title")
@@ -225,7 +225,7 @@ public class    IncomingCallNotificationService extends Service {
                     .setOngoing(true)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
-//                    .addAction(android.R.drawable.ic_menu_call, "Decline", piReturnCallIntent)
+                    .addAction(android.R.drawable.ic_menu_call, "Decline", piReturnCallIntent)
                     .setColor(Color.rgb(20, 10, 200)).build();
         }
         Log.i(TAG, "Call canceled. buildMissedCallNotification 8 " );
