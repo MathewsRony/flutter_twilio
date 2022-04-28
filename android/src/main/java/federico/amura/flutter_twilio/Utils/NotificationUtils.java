@@ -162,9 +162,13 @@ public class NotificationUtils {
         Intent intent = new Intent(context, BackgroundCallJavaActivity.class);
 //        intent.setAction(Intent.ACTION_MAIN);
 //        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        Log.i("TAG", "Call canceled. buildMissedCallNotification 41 " );
         intent.setAction(TwilioConstants.ACTION_INCOMING_CALL);
+        Log.i("TAG", "Call canceled. buildMissedCallNotification 42 " );
         intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+        Log.i("TAG", "Call canceled. buildMissedCallNotification 43 " );
         Log.d(" call Invite 3", callInvite.getCallSid());
+        Log.i("TAG", "Call canceled. buildMissedCallNotification 44 " );
         intent.setFlags(
                 Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
