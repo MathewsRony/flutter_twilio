@@ -137,17 +137,17 @@ public class NotificationUtils {
     public static Notification createMissedCallNotification(Context context, CallInvite callInvite, CancelledCallInvite cancelledCallInvite, boolean showHeadsUp) {
 
         Log.i("TAG", "Call canceled. buildMissedCallNotification 2 " );
-        Intent returnCallIntent = new Intent(context, IncomingCallNotificationService.class);
+        Intent returnCallIntent = new Intent(context, BackgroundCallJavaActivity.class);
         returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
         returnCallIntent.putExtra(cancelledCallInvite.getTo(), "to");
         returnCallIntent.putExtra(cancelledCallInvite.getFrom(), "callerId");
         returnCallIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, cancelledCallInvite);
-        returnCallIntent.setFlags(
-                Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
-                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-        );
+//        returnCallIntent.setFlags(
+//                Intent.FLAG_ACTIVITY_NEW_TASK |
+//                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+//                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+//                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+//        );
         Log.i("TAG", "Call canceled. buildMissedCallNotification 3 " );
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent piReturnCallIntent = PendingIntent.getActivity(
