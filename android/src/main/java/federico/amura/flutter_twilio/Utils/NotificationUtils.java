@@ -167,8 +167,8 @@ public class NotificationUtils {
         Log.i("TAG", "Call canceled. buildMissedCallNotification 42 " );
         intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
         Log.i("TAG", "Call canceled. buildMissedCallNotification 43 " );
-        Log.d(" call Invite 3", callInvite.getCallSid());
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 44 " );
+//        Log.d(" call Invite 3", callInvite.getCallSid());
+//        Log.i("TAG", "Call canceled. buildMissedCallNotification 44 " );
         intent.setFlags(
                 Intent.FLAG_ACTIVITY_NEW_TASK |
                         Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
