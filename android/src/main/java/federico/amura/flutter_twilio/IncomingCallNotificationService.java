@@ -147,9 +147,9 @@ public class    IncomingCallNotificationService extends Service {
 //        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
 //        this.informAppCancelCall();
 //        stopForeground(true);
+        stopForeground(true);
         buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
-        stopForeground(true);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
