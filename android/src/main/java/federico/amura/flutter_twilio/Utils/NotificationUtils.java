@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.os.Build;
@@ -133,73 +134,59 @@ public class NotificationUtils {
         builder.setContentIntent(pendingIntent);
         return builder.build();
     }
-//    public static Notification createMissedCallNotification(Context context, CallInvite callInvite, CancelledCallInvite cancelledCallInvite, boolean showHeadsUp) {
-//
-//        Log.d("!!!!!!!!!!!!!0", callInvite.getCallSid());
-//        if (callInvite == null) return null;
-//
-//        Log.d("!!!!!!!!!!!!!1", callInvite.getCallSid());
-//        String callerName = null;
-//        for (Map.Entry<String, String> entry : callInvite.getCustomParameters().entrySet()) {
-//            if (entry.getKey().equals("fromDisplayName")) {
-//                callerName = entry.getValue();
-//            }
-//        }
-//        if (callerName == null || callerName.trim().isEmpty()) {
-//            final String contactName = PreferencesUtils.getInstance(context).findContactName(callInvite.getFrom());
-//            if (contactName != null && !contactName.trim().isEmpty()) {
-//                callerName = contactName;
-//            } else {
-//                callerName = "Unknown name";
-//            }
-//        }
-//
-//        Log.d("!!!!!!!!!!!!!2", callerName);
-//        String title = context.getString(R.string.notification_missed_call_title+R.string.notification_missed_call_text,callerName);
-//        String fromId = callerName;
-//
-//        Log.d("!!!!!!!!!!!!!3", title);
-//
-//
-//        Intent returnCallIntent = new Intent(context, IncomingCallNotificationService.class);
-//
-//        returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
-//        returnCallIntent.putExtra(cancelledCallInvite.getFrom(), callInvite.getFrom());
-//        returnCallIntent.putExtra(cancelledCallInvite.getTo(), callInvite.getTo());
-//        PendingIntent piReturnCallIntent = PendingIntent.getService(context, 0, returnCallIntent, PendingIntent.FLAG_IMMUTABLE);
-//
-//
-//        Log.d("!!!!!!!!!!!!!4", title);
-//
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, showHeadsUp));
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            builder.setSmallIcon(R.drawable.ic_call_end);
-//            builder.setContentTitle(title);
-//            builder.setCategory(Notification.CATEGORY_CALL);
-//            builder.setAutoCancel(true);
-//            builder.addAction(android.R.drawable.ic_menu_call, "Call Back", piReturnCallIntent);
-//            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-//            builder.setContentTitle(getApplicationName(context));
-//            builder.setContentText(title);
-//            builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-//            return builder.build();
-//        } else {
-////            notification = new NotificationCompat.Builder(context)
-//            builder.setSmallIcon(R.drawable.ic_call_end);
-//            builder.setContentTitle(getApplicationName(context));
-//            builder.setContentText(title);
-//            builder.setAutoCancel(true);
-//            builder.setOngoing(true);
-//            builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-//            builder.setPriority(NotificationCompat.PRIORITY_MAX);
-//            builder.addAction(android.R.drawable.ic_menu_call,"Decline", piReturnCallIntent);
-//            builder.setColor(Color.rgb(20, 10, 200));
-//            return  builder.build();
-//        }
-////        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-////        notificationManager.notify(100, notification);
-//
-//    }
+    public static Notification createMissedCallNotification(Context context, CancelledCallInvite cancelledCallInvite, boolean showHeadsUp) {
+
+        Log.i("TAG", "Call canceled. buildMissedCallNotification 2 " );
+        Intent returnCallIntent = new Intent(context, IncomingCallNotificationService.class);
+        returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
+        returnCallIntent.putExtra(cancelledCallInvite.getTo(), "to");
+        returnCallIntent.putExtra(cancelledCallInvite.getFrom(), "callerId");
+        returnCallIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, cancelledCallInvite);
+        returnCallIntent.setFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+        );
+        Log.i("TAG", "Call canceled. buildMissedCallNotification 3 " );
+        @SuppressLint("UnspecifiedImmutableFlag")
+        PendingIntent piReturnCallIntent = PendingIntent.getActivity(
+                context,
+                0,
+                returnCallIntent,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, showHeadsUp));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder.setSmallIcon(R.drawable.ic_call_end);
+            builder.setContentTitle("title");
+            builder.setCategory(Notification.CATEGORY_CALL);
+            builder.setAutoCancel(true);
+            builder.addAction(android.R.drawable.ic_menu_call, "Call Back", piReturnCallIntent);
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+            builder.setContentTitle(getApplicationName(context));
+            builder.setContentText("title");
+            builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+            return builder.build();
+        } else {
+//            notification = new NotificationCompat.Builder(context)
+            builder.setSmallIcon(R.drawable.ic_call_end);
+            builder.setContentTitle(getApplicationName(context));
+            builder.setContentText("title");
+            builder.setAutoCancel(true);
+            builder.setOngoing(true);
+            builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+            builder.setPriority(NotificationCompat.PRIORITY_MAX);
+            builder.addAction(android.R.drawable.ic_menu_call,"Decline", piReturnCallIntent);
+            builder.setColor(Color.rgb(20, 10, 200));
+            return  builder.build();
+        }
+//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+//        notificationManager.notify(100, notification);
+
+    }
 
     public static String getApplicationName(Context context) {
         ApplicationInfo applicationInfo = context.getApplicationInfo();

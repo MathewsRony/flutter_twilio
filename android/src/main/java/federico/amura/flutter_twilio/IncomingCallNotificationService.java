@@ -149,7 +149,9 @@ public class    IncomingCallNotificationService extends Service {
 //        this.informAppCancelCall();
 //        stopForeground(true);
         stopForeground(true);
-        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
+        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, true);
+        startForeground(TwilioConstants.NOTIFICATION_INCOMING_CALL, notification);
+//        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
@@ -191,7 +193,7 @@ public class    IncomingCallNotificationService extends Service {
         Log.i(TAG, "Call canceled. buildMissedCallNotification 3 " );
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent piReturnCallIntent = PendingIntent.getActivity(
-                context,
+                getApplicationContext(),
                 0,
                 returnCallIntent,
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
@@ -204,7 +206,7 @@ public class    IncomingCallNotificationService extends Service {
 
             Log.i(TAG, "Call canceled. buildMissedCallNotification 5 " );
             NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(this, createChannel(getApplicationContext(), true))
+                    new NotificationCompat.Builder(this, createChannel(getApplicationContext(), false))
                             .setSmallIcon(R.drawable.ic_call_end)
                             .setContentTitle("title")
                             .setCategory(Notification.CATEGORY_CALL)
