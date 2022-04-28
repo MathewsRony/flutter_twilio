@@ -158,6 +158,7 @@ public class    IncomingCallNotificationService extends Service {
         String fromId = callerId.replace("client:", "");
         Context context = getApplicationContext();
         String callerName = callerId;
+        Log.i(TAG, "Call canceled. buildMissedCallNotification 1 " );
 //        for (Map.Entry<String, String> entry : callInvite.getCustomParameters().entrySet()) {
 //            if (entry.getKey().equals("fromDisplayName")) {
 //                callerName = entry.getValue();
@@ -174,6 +175,7 @@ public class    IncomingCallNotificationService extends Service {
 
         String title = getApplicationContext().getString(R.string.notification_missed_call_title+R.string.notification_missed_call_text,callerName);
 
+        Log.i(TAG, "Call canceled. buildMissedCallNotification 2 " );
         Intent returnCallIntent = new Intent(getApplicationContext(), IncomingCallNotificationService.class);
         returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
         returnCallIntent.putExtra(cancelledCallInvite.getTo(), to);
@@ -184,6 +186,7 @@ public class    IncomingCallNotificationService extends Service {
                         Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
                         Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
         );
+        Log.i(TAG, "Call canceled. buildMissedCallNotification 3 " );
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent piReturnCallIntent = PendingIntent.getActivity(
                 context,
@@ -193,9 +196,11 @@ public class    IncomingCallNotificationService extends Service {
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
+        Log.i(TAG, "Call canceled. buildMissedCallNotification 4 " );
         Notification notification;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
+            Log.i(TAG, "Call canceled. buildMissedCallNotification 5 " );
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(this, createChannel(getApplicationContext(), true))
                             .setSmallIcon(R.drawable.ic_call_end)
@@ -208,8 +213,10 @@ public class    IncomingCallNotificationService extends Service {
                             .setContentText(title)
                             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
+            Log.i(TAG, "Call canceled. buildMissedCallNotification 6 " );
             notification = builder.build();
         } else {
+            Log.i(TAG, "Call canceled. buildMissedCallNotification 7 " );
             notification = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.ic_call_end)
                     .setContentTitle(getApplicationName(getApplicationContext()))
@@ -221,7 +228,9 @@ public class    IncomingCallNotificationService extends Service {
                     .addAction(android.R.drawable.ic_menu_call, "Decline", piReturnCallIntent)
                     .setColor(Color.rgb(20, 10, 200)).build();
         }
+        Log.i(TAG, "Call canceled. buildMissedCallNotification 8 " );
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        Log.i(TAG, "Call canceled. buildMissedCallNotification 9 " );
         notificationManager.notify(100, notification);
     }
     public static String getApplicationName(Context context) {
