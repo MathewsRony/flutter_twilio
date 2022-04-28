@@ -176,25 +176,25 @@ public class    IncomingCallNotificationService extends Service {
 //        String title = getApplicationContext().getString(R.string.notification_missed_call_title+R.string.notification_missed_call_text,callerName);
 
         Log.i(TAG, "Call canceled. buildMissedCallNotification 2 " );
-//        Intent returnCallIntent = new Intent(getApplicationContext(), IncomingCallNotificationService.class);
-//        returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
-//        returnCallIntent.putExtra(cancelledCallInvite.getTo(), to);
-//        returnCallIntent.putExtra(cancelledCallInvite.getFrom(), callerId);
+        Intent returnCallIntent = new Intent(getApplicationContext(), IncomingCallNotificationService.class);
+        returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
+        returnCallIntent.putExtra(cancelledCallInvite.getTo(), to);
+        returnCallIntent.putExtra(cancelledCallInvite.getFrom(), callerId);
 //        returnCallIntent.setFlags(
 //                Intent.FLAG_ACTIVITY_NEW_TASK |
 //                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
 //                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
 //                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
 //        );
-//        Log.i(TAG, "Call canceled. buildMissedCallNotification 3 " );
-//        @SuppressLint("UnspecifiedImmutableFlag")
-//        PendingIntent piReturnCallIntent = PendingIntent.getActivity(
-//                context,
-//                0,
-//                returnCallIntent,
-//                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
-//                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
-//        );
+        Log.i(TAG, "Call canceled. buildMissedCallNotification 3 " );
+        @SuppressLint("UnspecifiedImmutableFlag")
+        PendingIntent piReturnCallIntent = PendingIntent.getActivity(
+                context,
+                0,
+                returnCallIntent,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
+        );
 
         Log.i(TAG, "Call canceled. buildMissedCallNotification 4 " );
         Notification notification;
