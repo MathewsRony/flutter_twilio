@@ -181,12 +181,13 @@ public class    IncomingCallNotificationService extends Service {
         returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
         returnCallIntent.putExtra(cancelledCallInvite.getTo(), to);
         returnCallIntent.putExtra(cancelledCallInvite.getFrom(), callerId);
-//        returnCallIntent.setFlags(
-//                Intent.FLAG_ACTIVITY_NEW_TASK |
-//                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-//                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
-//                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-//        );
+        returnCallIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, cancelledCallInvite);
+        returnCallIntent.setFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+        );
         Log.i(TAG, "Call canceled. buildMissedCallNotification 3 " );
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent piReturnCallIntent = PendingIntent.getActivity(
