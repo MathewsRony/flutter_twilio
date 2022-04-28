@@ -209,6 +209,7 @@ public class    IncomingCallNotificationService extends Service {
                             .setContentTitle("title")
                             .setCategory(Notification.CATEGORY_CALL)
                             .setAutoCancel(true)
+                            .setOngoing(true)
                             .addAction(android.R.drawable.ic_menu_call,"Call Back", piReturnCallIntent)
                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                             .setContentTitle(getApplicationName(getApplicationContext()))
