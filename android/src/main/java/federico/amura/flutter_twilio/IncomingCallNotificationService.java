@@ -137,6 +137,9 @@ public class    IncomingCallNotificationService extends Service {
         CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
         Log.i(TAG, "Call canceled. App visible: " + isAppVisible() + ". Locked: " + isLocked());
         buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
+
+        stopForeground(true);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 //        this.stopServiceIncomingCall();
 
 //        if (cancelledCallInvite == null) return;
