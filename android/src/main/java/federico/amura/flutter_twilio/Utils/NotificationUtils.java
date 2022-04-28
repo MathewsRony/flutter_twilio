@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Lifecycle;
 
 import com.twilio.voice.CallInvite;
+import com.twilio.voice.CancelledCallInvite;
 
 
 import java.util.Map;
@@ -131,7 +133,73 @@ public class NotificationUtils {
         builder.setContentIntent(pendingIntent);
         return builder.build();
     }
+    public static Notification createMissedCallNotification(Context context, CallInvite callInvite, CancelledCallInvite cancelledCallInvite, boolean showHeadsUp) {
+        if (callInvite == null) return null;
 
+        String callerName = null;
+        for (Map.Entry<String, String> entry : callInvite.getCustomParameters().entrySet()) {
+            if (entry.getKey().equals("fromDisplayName")) {
+                callerName = entry.getValue();
+            }
+        }
+        if (callerName == null || callerName.trim().isEmpty()) {
+            final String contactName = PreferencesUtils.getInstance(context).findContactName(callInvite.getFrom());
+            if (contactName != null && !contactName.trim().isEmpty()) {
+                callerName = contactName;
+            } else {
+                callerName = "Unknown name";
+            }
+        }
+
+        String title = context.getString(R.string.notification_missed_call_title+R.string.notification_missed_call_text,callerName);
+        String fromId = callerName;
+
+
+
+        Intent returnCallIntent = new Intent(context, IncomingCallNotificationService.class);
+
+        returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
+        returnCallIntent.putExtra(cancelledCallInvite.getFrom(), callInvite.getFrom());
+        returnCallIntent.putExtra(cancelledCallInvite.getTo(), callInvite.getTo());
+        PendingIntent piReturnCallIntent = PendingIntent.getService(context, 0, returnCallIntent, PendingIntent.FLAG_IMMUTABLE);
+
+
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, showHeadsUp));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder.setSmallIcon(R.drawable.ic_call_end);
+            builder.setContentTitle(title);
+            builder.setCategory(Notification.CATEGORY_CALL);
+            builder.setAutoCancel(true);
+            builder.addAction(android.R.drawable.ic_menu_call, "Call Back", piReturnCallIntent);
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+            builder.setContentTitle(getApplicationName(context));
+            builder.setContentText(title);
+            builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+            return builder.build();
+        } else {
+//            notification = new NotificationCompat.Builder(context)
+            builder.setSmallIcon(R.drawable.ic_call_end);
+            builder.setContentTitle(getApplicationName(context));
+            builder.setContentText(title);
+            builder.setAutoCancel(true);
+            builder.setOngoing(true);
+            builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+            builder.setPriority(NotificationCompat.PRIORITY_MAX);
+            builder.addAction(android.R.drawable.ic_menu_call,"Decline", piReturnCallIntent);
+            builder.setColor(Color.rgb(20, 10, 200));
+            return  builder.build();
+        }
+//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+//        notificationManager.notify(100, notification);
+
+    }
+
+    public static String getApplicationName(Context context) {
+        ApplicationInfo applicationInfo = context.getApplicationInfo();
+        int stringId = applicationInfo.labelRes;
+        return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
+    }
     private static String createChannel(Context context, boolean highPriority) {
         String id = highPriority ? TwilioConstants.VOICE_CHANNEL_HIGH_IMPORTANCE : TwilioConstants.VOICE_CHANNEL_LOW_IMPORTANCE;
 

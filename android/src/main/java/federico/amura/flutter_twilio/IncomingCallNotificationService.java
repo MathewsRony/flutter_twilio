@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Lifecycle;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -24,7 +25,7 @@ import federico.amura.flutter_twilio.Utils.TwilioConstants;
 import federico.amura.flutter_twilio.Utils.TwilioUtils;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
-public class IncomingCallNotificationService extends Service {
+public class    IncomingCallNotificationService extends Service {
 
     private static final String TAG = IncomingCallNotificationService.class.getSimpleName();
 
@@ -61,6 +62,9 @@ public class IncomingCallNotificationService extends Service {
 
                     CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
                     handleCancelledCall(cancelledCallInvite);
+
+                    CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
+                    this.startServiceMissedCall(callInvite,cancelledCallInvite);
                 }
                 break;
 
@@ -70,6 +74,10 @@ public class IncomingCallNotificationService extends Service {
                     stopServiceIncomingCall();
                 }
                 break;
+
+                case TwilioConstants.ACTION_RETURN_CALL:
+                    returnCall(intent);
+                    break;
             }
         }
         return START_STICKY;
@@ -123,6 +131,15 @@ public class IncomingCallNotificationService extends Service {
 
         Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
         this.informAppCancelCall();
+
+    }
+
+    private void startServiceMissedCall(CallInvite callInvite, CancelledCallInvite cancelledCallInvite) {
+        Log.e(TAG, "Start service incoming call");
+        SoundUtils.getInstance(this).playRinging();
+        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), callInvite,cancelledCallInvite, false);
+        startForeground(TwilioConstants.NOTIFICATION_INCOMING_CALL, notification);
+
     }
 
     private void startServiceIncomingCall(CallInvite callInvite) {
@@ -188,5 +205,12 @@ public class IncomingCallNotificationService extends Service {
             Log.e(TAG, "openBackgroundCallActivityForAcceptCall " + e.toString());
         }
 
+    }
+    private void returnCall(Intent intent) {
+        stopForeground(true);
+        Log.i(TAG, "returning call!!!!");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.cancel(100);
     }
 }
