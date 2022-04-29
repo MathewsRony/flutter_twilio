@@ -197,7 +197,7 @@ public class NotificationUtils {
             builder.setContentTitle(getApplicationName(context));
             builder.setContentText("From "+cancelledCallInvite.getFrom());
             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-//            builder.setContentIntent(pendingIntent);
+            builder.setContentIntent(pendingIntent);
             return builder.build();
         } else {
 //            notification = new NotificationCompat.Builder(context)
