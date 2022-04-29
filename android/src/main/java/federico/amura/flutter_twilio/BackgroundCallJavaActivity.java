@@ -637,14 +637,14 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         Log.e(TAG, "*******************************************19");
 
         Map<String, Object> data  = new HashMap<String, Object>();
-        data.put("To", callInvite.getTo());
-        data.put("From", callInvite.getFrom());
+        data.put("To", callInvite.getFrom());
+        data.put("From", callInvite.getTo());
         this.containerActiveCall.setVisibility(View.VISIBLE);
         this.containerIncomingCall.setVisibility(View.GONE);
 
         try {
             Log.e(TAG, "*******************************************1"+callInvite.getTo());
-            TwilioUtils.getInstance(this).makeCall(callInvite.getTo(),data, getListener());
+            TwilioUtils.getInstance(this).makeCall(callInvite.getFrom(),data, getListener());
             Log.e(TAG, "*******************************************2"+callInvite.getFrom());
         } catch (Exception exception) {
             Log.e(TAG, "*******************************************21");
