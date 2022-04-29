@@ -50,6 +50,7 @@ public class NotificationUtils {
         }
 
         Log.d(" call getFrom 2", callInvite.getFrom());
+        Log.d(" call getFrom 3", callInvite.getCustomParameters().entrySet().toString());
         if(fromDisplayName.equals("Unknown number"))
             fromDisplayName=callInvite.getFrom();
         Log.d(" fromDisplayName", fromDisplayName);
