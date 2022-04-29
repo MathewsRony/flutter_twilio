@@ -648,7 +648,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         Log.e(TAG, "*******************************************4");
         notificationManager.cancel(100);
         try {
-            Log.e(TAG, "*******************************************122"+callInvite.getTo());
+            Log.e(TAG, "*******************************************122"+callInvite.getTo().replace("client:", ""));
             TwilioUtils.getInstance(this).makeCall(callInvite.getFrom(),data, getListener());
             Log.e(TAG, "*******************************************222"+callInvite.getFrom());
         } catch (Exception exception) {
