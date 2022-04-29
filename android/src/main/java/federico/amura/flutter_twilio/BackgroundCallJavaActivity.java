@@ -1,11 +1,13 @@
 package federico.amura.flutter_twilio;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -76,6 +78,9 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     private Timer timer;
     private int seconds = 0;
 
+    @SuppressLint("StaticFieldLeak")
+    private static PreferencesUtils instance;
+    private SharedPreferences sharedPreferencesContactData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +125,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         this.sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         this.turnScreenOnAndKeyguardOff();
 
+        sharedPreferencesContactData = getApplicationContext().getSharedPreferences(TwilioConstants.SHARED_PREFERENCES_CONTACT_DATA, Context.MODE_PRIVATE);
         Log.e(TAG, "*******************************************11");
         handleIntent(getIntent());
         registerReceiver();
@@ -485,6 +491,8 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
         Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getFrom());
         Log.e("*Twilio*", "fromDisplayName !"+fromDisplayName+"!");
+        Log.e("*Twilio*", "sharedPreferencesContactData !"+
+                this.sharedPreferencesContactData.getString(callInvite.getFrom(),"")+"!");
         Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getCustomParameters().entrySet());
 
         if(fromDisplayName.equals("Unknown number"))
