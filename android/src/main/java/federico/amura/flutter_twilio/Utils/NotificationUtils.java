@@ -188,13 +188,13 @@ public class NotificationUtils {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, showHeadsUp));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setSmallIcon(R.drawable.ic_call_end);
-            builder.setContentTitle("title");
+            builder.setContentTitle("Missed Call");
             builder.setCategory(Notification.CATEGORY_CALL);
             builder.setAutoCancel(true);
             builder.addAction(android.R.drawable.ic_menu_call, "Call Back", piReturnCallIntent);
             builder.setPriority(NotificationCompat.PRIORITY_HIGH);
             builder.setContentTitle(getApplicationName(context));
-            builder.setContentText("title");
+            builder.setContentText("From "+cancelledCallInvite.getFrom());
             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 //            builder.setContentIntent(pendingIntent);
             return builder.build();

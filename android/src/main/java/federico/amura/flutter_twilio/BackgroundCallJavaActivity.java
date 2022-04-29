@@ -39,6 +39,7 @@ import com.squareup.picasso.Picasso;
 import com.twilio.voice.Call;
 import com.twilio.voice.CallException;
 import com.twilio.voice.CallInvite;
+import com.twilio.voice.CancelledCallInvite;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -265,7 +266,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             case TwilioConstants.ACTION_RETURN_CALL:
                 Log.e(TAG, "*******************************************23");
                 Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_RETURN_CALL case");
-                this.callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
+                CancelledCallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
                 returnCall(intent,callInvite);
                 break;
 
@@ -630,7 +631,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             }
         }
     }
-    private void returnCall(Intent intent, CallInvite callInvite) {
+    private void returnCall(Intent intent, CancelledCallInvite callInvite) {
 //        stopForeground(true);
         Log.i(TAG, "returning call!!!!");
         Log.e(TAG, "*******************************************19");
