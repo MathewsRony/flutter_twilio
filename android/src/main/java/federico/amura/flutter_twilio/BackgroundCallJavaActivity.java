@@ -642,19 +642,19 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         this.containerActiveCall.setVisibility(View.VISIBLE);
         this.containerIncomingCall.setVisibility(View.GONE);
 
-        try {
-            Log.e(TAG, "*******************************************1"+callInvite.getTo());
-            TwilioUtils.getInstance(this).makeCall(callInvite.getFrom(),data, getListener());
-            Log.e(TAG, "*******************************************2"+callInvite.getFrom());
-        } catch (Exception exception) {
-            Log.e(TAG, "*******************************************21");
-            exception.printStackTrace();
-            this.close();
-        }
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         Log.e(TAG, "*******************************************3");
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         Log.e(TAG, "*******************************************4");
         notificationManager.cancel(100);
+        try {
+            Log.e(TAG, "*******************************************122"+callInvite.getTo());
+            TwilioUtils.getInstance(this).makeCall(callInvite.getFrom(),data, getListener());
+            Log.e(TAG, "*******************************************222"+callInvite.getFrom());
+        } catch (Exception exception) {
+            Log.e(TAG, "*******************************************212");
+            exception.printStackTrace();
+            this.close();
+        }
     }
 }
