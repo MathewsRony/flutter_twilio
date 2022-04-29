@@ -18,6 +18,7 @@ import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -78,9 +79,11 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     private Timer timer;
     private int seconds = 0;
 
-    @SuppressLint("StaticFieldLeak")
-    private static PreferencesUtils instance;
     private SharedPreferences sharedPreferencesContactData;
+    Handler handler = new Handler();
+    Runnable runnable;
+    int delay = 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,6 +158,20 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
     @Override
     protected void onResume() {
+
+        handler.postDelayed(runnable = new Runnable() {
+            public void run() {
+                handler.postDelayed(runnable, delay);
+                try {
+
+                    Log.e("*Twilio*", "sharedPreferencesContactData !"+ sharedPreferencesContactData.getString(callInvite.getFrom(),"")+"!");
+                    String name=sharedPreferencesContactData.getString(callInvite.getFrom(),"");
+                    textDisplayName.setText(name);
+                }catch (Exception e){
+                    Log.d(TAG, e.toString());
+                }
+            }
+        }, delay);
         super.onResume();
         this.sensorManager.registerListener(this, this.sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
@@ -439,6 +456,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     private void updateCallDetails() {
         HashMap<String, Object> call = TwilioUtils.getInstance(this).getCallDetails();
 
+
         String status = (String) call.get("status");
         if (status != null && !status.trim().equals("")) {
             switch (status) {
@@ -547,12 +565,14 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
         this.stopTimer();
         this.exited = true;
+        handler.removeCallbacks(runnable);
         this.finish();
     }
 
     @Override
     public void finish() {
         this.stopTimer();
+        handler.removeCallbacks(runnable);
         super.finish();
     }
 
