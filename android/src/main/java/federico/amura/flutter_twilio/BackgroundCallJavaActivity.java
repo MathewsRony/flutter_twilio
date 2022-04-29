@@ -482,7 +482,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         }
 
         Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getFrom());
-        Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+this.callInvite.getFrom());
+        Log.e("*Twilio*", "fromDisplayName"+fromDisplayName);
         Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getCustomParameters().entrySet());
         this.textDisplayName.setText(fromDisplayName);
 
