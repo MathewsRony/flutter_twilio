@@ -461,6 +461,8 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         // Display name
         String fromDisplayName = null;
         if (this.callInvite != null) {
+
+            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getFrom());
             for (Map.Entry<String, String> entry : callInvite.getCustomParameters().entrySet()) {
                 if (entry.getKey().equals("fromDisplayName")) {
                     fromDisplayName = entry.getValue();
@@ -475,6 +477,8 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
                     fromDisplayName = callInvite.getFrom();
                 }
             }
+        }else if(callInvite.getFrom() != null) {
+            fromDisplayName = callInvite.getFrom();
         } else {
             fromDisplayName = "Unknown name";
         }
