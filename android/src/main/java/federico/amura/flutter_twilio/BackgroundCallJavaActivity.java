@@ -145,6 +145,10 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
     @Override
     protected void onDestroy() {
+        if(sharedPreferencesContactData!=null) {
+            SharedPreferences.Editor editor = this.sharedPreferencesContactData.edit();
+            editor.clear().apply();
+        }
         super.onDestroy();
         if (wakeLock != null) {
             if (wakeLock.isHeld()) {
@@ -166,7 +170,14 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
                     Log.e("*Twilio*", "sharedPreferencesContactData !"+ sharedPreferencesContactData.getString(callInvite.getFrom(),"")+"!");
                     String name=sharedPreferencesContactData.getString(callInvite.getFrom(),"");
+
                     textDisplayName.setText(name);
+                    if(!name.equals("")|| !name.equals(callInvite.getFrom())){
+                        Log.e("*Twilio*", "!!!!!!!!!!!!!!!!shared!!!!!!!!!!!!!!!!!"+ sharedPreferencesContactData.getString(callInvite.getFrom(),"")+"!");
+
+                        handler.removeCallbacks(runnable);
+                    }
+
                 }catch (Exception e){
                     Log.d(TAG, e.toString());
                 }
