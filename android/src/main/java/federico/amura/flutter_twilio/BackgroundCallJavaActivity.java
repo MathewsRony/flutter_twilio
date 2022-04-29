@@ -40,8 +40,6 @@ import com.twilio.voice.Call;
 import com.twilio.voice.CallException;
 import com.twilio.voice.CallInvite;
 import com.twilio.voice.CancelledCallInvite;
-import com.twilio.voice.ConnectOptions;
-import com.twilio.voice.Voice;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -77,7 +75,6 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     private boolean previouslySpeaker = false;
     private Timer timer;
     private int seconds = 0;
-    private Call activeCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -640,34 +637,24 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         Log.e(TAG, "*******************************************19");
 
         Map<String, Object> data  = new HashMap<String, Object>();
-        HashMap<String, String> params = new HashMap<>();
         data.put("To", callInvite.getFrom());
         data.put("From", callInvite.getTo());
-
-        params.put("To",callInvite.getFrom().replace("client:", ""));
-        params.put("From", callInvite.getTo().replace("client:", ""));
         this.containerActiveCall.setVisibility(View.VISIBLE);
         this.containerIncomingCall.setVisibility(View.GONE);
 
-        String accessToken = PreferencesUtils.getInstance(getApplicationContext()).getAccessToken();
         try {
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-            Log.e(TAG, "*******************************************3");
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            Log.e(TAG, "*******************************************4"+accessToken);
-            notificationManager.cancel(100);
             Log.e(TAG, "*******************************************1"+callInvite.getTo());
             TwilioUtils.getInstance(this).makeCall(callInvite.getFrom(),data, getListener());
             Log.e(TAG, "*******************************************2"+callInvite.getFrom());
-            final ConnectOptions connectOptions = new ConnectOptions.Builder(accessToken)
-                    .params(params)
-                    .build();
-            this.activeCall = Voice.connect(getApplicationContext(), connectOptions, getListener());
-            Log.e(TAG, "*******************************************23");
         } catch (Exception exception) {
             Log.e(TAG, "*******************************************21");
             exception.printStackTrace();
             this.close();
         }
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        Log.e(TAG, "*******************************************3");
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        Log.e(TAG, "*******************************************4");
+        notificationManager.cancel(100);
     }
 }
