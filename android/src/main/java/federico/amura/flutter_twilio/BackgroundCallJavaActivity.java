@@ -472,7 +472,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
                 if (contactName != null && !contactName.trim().isEmpty()) {
                     fromDisplayName = contactName;
                 } else {
-                    fromDisplayName = "Unknown name";
+                    fromDisplayName = callInvite.getFrom();
                 }
             }
         } else {
