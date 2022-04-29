@@ -649,10 +649,15 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         this.containerActiveCall.setVisibility(View.VISIBLE);
         this.containerIncomingCall.setVisibility(View.GONE);
 
+        String accessToken = PreferencesUtils.getInstance(getApplicationContext()).getAccessToken();
         try {
-            String accessToken = PreferencesUtils.getInstance(getApplicationContext()).getAccessToken();
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            Log.e(TAG, "*******************************************3");
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            Log.e(TAG, "*******************************************4"+accessToken);
+            notificationManager.cancel(100);
             Log.e(TAG, "*******************************************1"+callInvite.getTo());
-//            TwilioUtils.getInstance(this).makeCall(callInvite.getFrom(),data, getListener());
+            TwilioUtils.getInstance(this).makeCall(callInvite.getFrom(),data, getListener());
             Log.e(TAG, "*******************************************2"+callInvite.getFrom());
             final ConnectOptions connectOptions = new ConnectOptions.Builder(accessToken)
                     .params(params)
@@ -664,10 +669,5 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             exception.printStackTrace();
             this.close();
         }
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        Log.e(TAG, "*******************************************3");
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        Log.e(TAG, "*******************************************4");
-        notificationManager.cancel(100);
     }
 }
