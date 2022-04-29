@@ -466,6 +466,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             for (Map.Entry<String, String> entry : callInvite.getCustomParameters().entrySet()) {
                 if (entry.getKey().equals("fromDisplayName")) {
                     fromDisplayName = entry.getValue();
+                    Log.e("*Twilio*", "entry.getValue()  "+entry.getValue());
                 }
             }
 
@@ -484,7 +485,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getFrom());
         Log.e("*Twilio*", "fromDisplayName"+fromDisplayName);
         Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getCustomParameters().entrySet());
-        this.textDisplayName.setText(fromDisplayName);
+        this.textDisplayName.setText(callInvite.getFrom());
 
         // Phone number
         this.textPhoneNumber.setText("");
