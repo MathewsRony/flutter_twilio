@@ -134,14 +134,14 @@ public class NotificationUtils {
         builder.setContentIntent(pendingIntent);
         return builder.build();
     }
-    public static Notification createMissedCallNotification(Context context, CallInvite callInvite, CancelledCallInvite cancelledCallInvite, boolean showHeadsUp) {
+    public static Notification createMissedCallNotification(Context context,  CancelledCallInvite cancelledCallInvite, boolean showHeadsUp) {
 
         Log.i("TAG", "Call canceled. buildMissedCallNotification 2 " );
         Intent returnCallIntent = new Intent(context, BackgroundCallJavaActivity.class);
         returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
         returnCallIntent.putExtra(cancelledCallInvite.getTo(), "to");
         returnCallIntent.putExtra(cancelledCallInvite.getFrom(), "callerId");
-        returnCallIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, cancelledCallInvite);
+        returnCallIntent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, cancelledCallInvite);
 //        returnCallIntent.setFlags(
 //                Intent.FLAG_ACTIVITY_NEW_TASK |
 //                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
@@ -158,32 +158,32 @@ public class NotificationUtils {
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 4 " );
-        Intent intent = new Intent(context, BackgroundCallJavaActivity.class);
-//        intent.setAction(Intent.ACTION_MAIN);
-//        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 41 " );
-        intent.setAction(TwilioConstants.ACTION_INCOMING_CALL);
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 42 " );
-        intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 43 " );
-//        Log.d(" call Invite 3", callInvite.getCallSid());
-//        Log.i("TAG", "Call canceled. buildMissedCallNotification 44 " );
-        intent.setFlags(
-                Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
-                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-        );
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 5 " );
-        @SuppressLint("UnspecifiedImmutableFlag")
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                context,
-                0,
-                intent,
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
-        );
+//        Log.i("TAG", "Call canceled. buildMissedCallNotification 4 " );
+//        Intent intent = new Intent(context, BackgroundCallJavaActivity.class);
+////        intent.setAction(Intent.ACTION_MAIN);
+////        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+//        Log.i("TAG", "Call canceled. buildMissedCallNotification 41 " );
+//        intent.setAction(TwilioConstants.ACTION_INCOMING_CALL);
+//        Log.i("TAG", "Call canceled. buildMissedCallNotification 42 " );
+//        intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+//        Log.i("TAG", "Call canceled. buildMissedCallNotification 43 " );
+////        Log.d(" call Invite 3", callInvite.getCallSid());
+////        Log.i("TAG", "Call canceled. buildMissedCallNotification 44 " );
+//        intent.setFlags(
+//                Intent.FLAG_ACTIVITY_NEW_TASK |
+//                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+//                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+//                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+//        );
+//        Log.i("TAG", "Call canceled. buildMissedCallNotification 5 " );
+//        @SuppressLint("UnspecifiedImmutableFlag")
+//        PendingIntent pendingIntent = PendingIntent.getActivity(
+//                context,
+//                0,
+//                intent,
+//                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
+//                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
+//        );
         Log.i("TAG", "Call canceled. buildMissedCallNotification 6  " );
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, showHeadsUp));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -196,7 +196,7 @@ public class NotificationUtils {
             builder.setContentTitle(getApplicationName(context));
             builder.setContentText("title");
             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-            builder.setContentIntent(pendingIntent);
+//            builder.setContentIntent(pendingIntent);
             return builder.build();
         } else {
 //            notification = new NotificationCompat.Builder(context)
@@ -209,7 +209,7 @@ public class NotificationUtils {
             builder.setPriority(NotificationCompat.PRIORITY_MAX);
             builder.addAction(android.R.drawable.ic_menu_call,"Decline", piReturnCallIntent);
             builder.setColor(Color.rgb(20, 10, 200));
-            builder.setContentIntent(pendingIntent);
+//            builder.setContentIntent(pendingIntent);
             return  builder.build();
         }
 //        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);

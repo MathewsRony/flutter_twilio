@@ -263,8 +263,10 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
             break;
             case TwilioConstants.ACTION_RETURN_CALL:
+                Log.e(TAG, "*******************************************23");
                 Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_RETURN_CALL case");
-                returnCall(intent);
+                this.callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
+                returnCall(intent,callInvite);
                 break;
 
         }
@@ -628,9 +630,15 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             }
         }
     }
-    private void returnCall(Intent intent) {
+    private void returnCall(Intent intent, CallInvite callInvite) {
 //        stopForeground(true);
         Log.i(TAG, "returning call!!!!");
+        Log.e(TAG, "*******************************************19");
+
+        Map<String, Object> data  = new HashMap<String, Object>();
+        data.put("To", callInvite.getTo());
+        data.put("From", callInvite.getFrom());
+        TwilioUtils.getInstance(this).makeCall(callInvite.getTo(),data, getListener());
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancel(100);
