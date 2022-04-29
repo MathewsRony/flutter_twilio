@@ -639,9 +639,15 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         Map<String, Object> data  = new HashMap<String, Object>();
         data.put("To", callInvite.getTo());
         data.put("From", callInvite.getFrom());
+        this.containerActiveCall.setVisibility(View.VISIBLE);
+        this.containerIncomingCall.setVisibility(View.GONE);
+        Log.e(TAG, "*******************************************1");
         TwilioUtils.getInstance(this).makeCall(callInvite.getTo(),data, getListener());
+        Log.e(TAG, "*******************************************2");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        Log.e(TAG, "*******************************************3");
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        Log.e(TAG, "*******************************************4");
         notificationManager.cancel(100);
     }
 }
