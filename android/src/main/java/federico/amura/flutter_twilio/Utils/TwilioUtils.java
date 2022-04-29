@@ -102,15 +102,18 @@ public class TwilioUtils {
     }
 
     public void makeCall(String to, Map<String, Object> data, Call.Listener listener) {
+        Log.e("********Twilio ", "#############################1");
         if (this.activeCall != null) {
             throw new RuntimeException("There is a call in progress");
         }
 
+        Log.e("********Twilio ", "#############################2");
         String accessToken = PreferencesUtils.getInstance(this.context).getAccessToken();
         if (accessToken == null) {
             throw new RuntimeException("No access token");
         }
 
+        Log.e("********Twilio ", "#############################3");
         HashMap<String, String> params = new HashMap<>();
         params.put("To", to);
         if (data != null) {
@@ -119,11 +122,13 @@ public class TwilioUtils {
             }
         }
 
+        Log.e("********Twilio ", "#############################4");
         ConnectOptions connectOptions = new ConnectOptions.Builder(accessToken)
                 .params(params)
                 .build();
 
 
+        Log.e("********Twilio ", "#############################5");
         String fromDisplayName = null;
         String toDisplayName = null;
         if (data != null && data.containsKey("fromDisplayName")) {
@@ -136,11 +141,13 @@ public class TwilioUtils {
             }
         }
 
+        Log.e("********Twilio ", "#############################6");
         this.status = "callConnecting";
         this.callInvite = null;
         this.fromDisplayName = fromDisplayName;
         this.toDisplayName = toDisplayName;
         this.activeCall = Voice.connect(this.context, connectOptions, getCallListener(listener));
+        Log.e("********Twilio ", "#############################7");
     }
 
     public void acceptInvite(CallInvite callInvite, Call.Listener listener) {
