@@ -50,6 +50,8 @@ public class NotificationUtils {
         }
 
         Log.d(" call getFrom 2", callInvite.getFrom());
+        if(fromDisplayName.equals("Unknown number"))
+            fromDisplayName=callInvite.getFrom();
         Log.d(" fromDisplayName", fromDisplayName);
         String notificationTitle = context.getString(R.string.notification_incoming_call_title);
         String notificationText = fromDisplayName;
