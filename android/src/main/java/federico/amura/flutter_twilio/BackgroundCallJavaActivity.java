@@ -478,14 +478,12 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
                 }
             }
         } else {
-            fromDisplayName = "Unknown name";
+            fromDisplayName = callInvite.getFrom();
         }
 
         Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getFrom());
         Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+this.callInvite.getFrom());
         Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getCustomParameters().entrySet());
-        if(fromDisplayName.equals("Unknown name"))
-            fromDisplayName = callInvite.getFrom();
         this.textDisplayName.setText(fromDisplayName);
 
         // Phone number
