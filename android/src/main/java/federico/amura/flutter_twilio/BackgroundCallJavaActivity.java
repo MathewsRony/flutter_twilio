@@ -638,7 +638,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
         Map<String, Object> data  = new HashMap<String, Object>();
         data.put("To", callInvite.getFrom());
-        data.put("From", callInvite.getTo());
+        data.put("From", callInvite.getTo().replace("client:", ""));
         this.containerActiveCall.setVisibility(View.VISIBLE);
         this.containerIncomingCall.setVisibility(View.GONE);
 
