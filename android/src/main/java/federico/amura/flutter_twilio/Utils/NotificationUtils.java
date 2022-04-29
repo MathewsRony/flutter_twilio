@@ -40,6 +40,7 @@ public class NotificationUtils {
                 fromDisplayName = entry.getValue();
             }
         }
+        Log.d(" fromDisplayName", fromDisplayName);
         if (fromDisplayName == null || fromDisplayName.trim().isEmpty()) {
             final String contactName = PreferencesUtils.getInstance(context).findContactName(callInvite.getFrom());
             if (contactName != null && !contactName.trim().isEmpty()) {
@@ -49,6 +50,7 @@ public class NotificationUtils {
             }
         }
 
+        Log.d(" call getFrom 2", callInvite.getFrom());
         String notificationTitle = context.getString(R.string.notification_incoming_call_title);
         String notificationText = fromDisplayName;
 
