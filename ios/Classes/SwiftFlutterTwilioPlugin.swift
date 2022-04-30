@@ -408,8 +408,8 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             callResult["speaker"] = false
         }
 
-        if self.callInvite != nill {
-            callResult["customParameters"] = self.callInvite.customParameters
+        if self.callInvite != nil {
+            callResult["customParameters"] = self.callInvite?.customParameters
         }
 
         callResult["toDisplayName"] = self.getToDisplayName()
