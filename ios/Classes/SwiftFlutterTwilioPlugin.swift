@@ -76,7 +76,9 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
     
     public func handle(_ flutterCall: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments = flutterCall.arguments as? NSDictionary
-        
+
+
+        NSLog("flutterCall.method:"+flutterCall.method)
         if flutterCall.method == "makeCall" {
             guard let callTo = arguments?["to"] as? String else {return}
             guard let callData = arguments?["data"] as? NSDictionary else {return}
