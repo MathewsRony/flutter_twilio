@@ -413,6 +413,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             callResult["customParameters"] = self.callInvite?.customParameters
         }
 
+        NSLog("getCallResult")
         callResult["toDisplayName"] = self.getToDisplayName()
         callResult["fromDisplayName"] = self.getFromDisplayName()
         callResult["outgoing"] = self.callInvite == nil
@@ -570,6 +571,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
     
     // MARK: Call Kit Actions
     func performStartCallAction(uuid: UUID) {
+        NSLog("performStartCallAction")
         let toDisplayName = self.getToDisplayName()
         let callHandle = CXHandle(type: .generic, value: toDisplayName)
         let startCallAction = CXStartCallAction(call: uuid, handle: callHandle)
@@ -604,6 +606,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
     }
     
     func reportIncomingCall(uuid: UUID) {
+        NSLog("reportIncomingCall")
         let fromDisplayName = self.getFromDisplayName()
         let callHandle = CXHandle(type: .generic, value: fromDisplayName)
         
