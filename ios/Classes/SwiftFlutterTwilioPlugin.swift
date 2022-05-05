@@ -77,6 +77,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
     public func handle(_ flutterCall: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments = flutterCall.arguments as? NSDictionary
 
+        NSLog(" public func handle " + flutterCall.method)
         if flutterCall.method == "makeCall" {
             guard let callTo = arguments?["to"] as? String else {return}
             guard let callData = arguments?["data"] as? NSDictionary else {return}
@@ -340,7 +341,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
                 return false
             }
         } else {
-            NSLog("No contact name saved for number " + phoneNumber)
+            NSLog("No contact name saved for number..... " + phoneNumber)
             return false
         }
     }
@@ -364,7 +365,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             }
             
         } else {
-            NSLog("No contact name saved for number " + phoneNumber)
+            NSLog("No contact name saved for number!!!! " + phoneNumber)
             return defaultDisplayName
         }
     }
