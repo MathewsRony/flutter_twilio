@@ -632,7 +632,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
         NSLog("performEndCallAction:1")
         if self.call == nil {
         NSLog("performEndCallAction:2")
-            return;
+            //return;
         }
 
         self.call?.disconnect()
