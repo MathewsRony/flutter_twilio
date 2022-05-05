@@ -449,13 +449,8 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             NSLog("No matching pending CallInvite. Ignoring the Cancelled CallInvite")
             return
         }
-        
-        if (self.callInvite != nil) {
-            self.callInvite!.reject()
-            self.callInvite = nil
-        } else if (self.call != nil) {
-            self.call?.disconnect()
-        }
+
+        self.callInvite!.reject()
 
         audioDevice.isEnabled = true
         performEndCallAction(uuid: self.callInvite!.uuid)
