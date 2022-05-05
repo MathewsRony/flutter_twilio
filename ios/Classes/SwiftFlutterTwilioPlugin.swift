@@ -637,26 +637,26 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
         self.result = nil
 
         self.callDisconnected(id: uuid, error: nil)
-         let endCallAction = CXEndCallAction(call: uuid)
-         let transaction = CXTransaction(action: endCallAction)
-
-         callKitCallController.request(transaction) { error in
-             if error != nil {
-                 NSLog("Error ending call:")
-                 self.result?(FlutterError.init(
-                     code: "Error",
-                     message: "Error",
-                     details: "Error"
-                 ))
-
-                 self.result = nil
-             } else {
-                 self.call = nil
-                 self.callInvite = nil
-                 self.result?("")
-                 self.result = nil
-             }
-         }
+//         let endCallAction = CXEndCallAction(call: uuid)
+//         let transaction = CXTransaction(action: endCallAction)
+//
+//         callKitCallController.request(transaction) { error in
+//             if error != nil {
+//                 NSLog("Error ending call:")
+//                 self.result?(FlutterError.init(
+//                     code: "Error",
+//                     message: "Error",
+//                     details: "Error"
+//                 ))
+//
+//                 self.result = nil
+//             } else {
+//                 self.call = nil
+//                 self.callInvite = nil
+//                 self.result?("")
+//                 self.result = nil
+//             }
+//         }
     }
     
     func performVoiceCall(uuid: UUID, completionHandler: @escaping (Bool) -> Swift.Void) {
