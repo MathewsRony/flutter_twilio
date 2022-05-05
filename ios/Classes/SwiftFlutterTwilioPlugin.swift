@@ -458,7 +458,6 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
         }
 
         audioDevice.isEnabled = true
-        action.fulfill()
         performEndCallAction(uuid: self.callInvite!.uuid)
         self.incomingPushHandled()
     }
