@@ -629,7 +629,9 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
     
     func performEndCallAction(uuid: UUID) {
 
+        NSLog("performEndCallAction:1")
         if self.call == nil {
+        NSLog("performEndCallAction:2")
             return;
         }
 
@@ -643,8 +645,10 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
          let endCallAction = CXEndCallAction(call: uuid)
          let transaction = CXTransaction(action: endCallAction)
 
+        NSLog("performEndCallAction:3")
          callKitCallController.request(transaction) { error in
              if error != nil {
+        NSLog("performEndCallAction:4")
                  NSLog("Error ending call:")
                  self.result?(FlutterError.init(
                      code: "Error",
@@ -654,6 +658,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
 
                  self.result = nil
              } else {
+        NSLog("performEndCallAction:5")
                  self.call = nil
                  self.callInvite = nil
                  self.result?("")
