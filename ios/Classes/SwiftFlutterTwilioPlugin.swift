@@ -77,8 +77,6 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
     public func handle(_ flutterCall: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments = flutterCall.arguments as? NSDictionary
 
-
-        NSLog("flutterCall.method:"+flutterCall.method)
         if flutterCall.method == "makeCall" {
             guard let callTo = arguments?["to"] as? String else {return}
             guard let callData = arguments?["data"] as? NSDictionary else {return}
@@ -452,8 +450,9 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             return
         }
 
-        self.callInvite!.reject()
-        self.call?.disconnect()
+
+        self.callInvite?.reject()
+        self.callInvite = nil
         audioDevice.isEnabled = true
         performEndCallAction(uuid: self.callInvite!.uuid)
         self.incomingPushHandled()
@@ -638,26 +637,26 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
         self.result = nil
 
         self.callDisconnected(id: uuid, error: nil)
-//         let endCallAction = CXEndCallAction(call: uuid)
-//         let transaction = CXTransaction(action: endCallAction)
-//
-//         callKitCallController.request(transaction) { error in
-//             if error != nil {
-//                 NSLog("Error ending call:")
-//                 self.result?(FlutterError.init(
-//                     code: "Error",
-//                     message: "Error",
-//                     details: "Error"
-//                 ))
-//
-//                 self.result = nil
-//             } else {
-//                 self.call = nil
-//                 self.callInvite = nil
-//                 self.result?("")
-//                 self.result = nil
-//             }
-//         }
+         let endCallAction = CXEndCallAction(call: uuid)
+         let transaction = CXTransaction(action: endCallAction)
+
+         callKitCallController.request(transaction) { error in
+             if error != nil {
+                 NSLog("Error ending call:")
+                 self.result?(FlutterError.init(
+                     code: "Error",
+                     message: "Error",
+                     details: "Error"
+                 ))
+
+                 self.result = nil
+             } else {
+                 self.call = nil
+                 self.callInvite = nil
+                 self.result?("")
+                 self.result = nil
+             }
+         }
     }
     
     func performVoiceCall(uuid: UUID, completionHandler: @escaping (Bool) -> Swift.Void) {
