@@ -450,6 +450,15 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             return
         }
         
+        if (self.callInvite != nil) {
+            self.callInvite!.reject()
+            self.callInvite = nil
+        } else if (self.call != nil) {
+            self.call?.disconnect()
+        }
+
+        audioDevice.isEnabled = true
+        action.fulfill()
         performEndCallAction(uuid: self.callInvite!.uuid)
         self.incomingPushHandled()
     }
