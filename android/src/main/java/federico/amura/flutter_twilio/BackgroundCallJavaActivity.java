@@ -531,7 +531,28 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
                 if (contactName != null && !contactName.trim().isEmpty()) {
                     fromDisplayName = contactName;
                 } else {
-                    fromDisplayName = "Unknown name";
+                    fromDisplayName = this.callInvite.getFrom();
+                }
+            }
+        }else if (this.callInvite2 != null) {
+
+            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case.........");
+            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite2.getFrom());
+            for (Map.Entry<String, String> entry : callInvite2.getCustomParameters().entrySet()) {
+                Log.e("*Twilio*", "entry.getKey() "+entry.getKey());
+
+                if (entry.getKey().equals("fromDisplayName")) {
+                    fromDisplayName = entry.getValue();
+                }
+            }
+
+            if (fromDisplayName == null || fromDisplayName.trim().isEmpty()) {
+                Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case!!!!!!!!!!!!!");
+                final String contactName = PreferencesUtils.getInstance(this).findContactName(this.callInvite2.getFrom());
+                if (contactName != null && !contactName.trim().isEmpty()) {
+                    fromDisplayName = contactName;
+                } else {
+                    fromDisplayName = this.callInvite2.getFrom();
                 }
             }
         } else {
