@@ -168,11 +168,13 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
                 handler.postDelayed(runnable, delay);
                 try {
 
+                    Log.e("*Twilio*", "sharedPreferencesContactData !");
                     Log.e("*Twilio*", "sharedPreferencesContactData !"+ sharedPreferencesContactData.getString(callInvite.getFrom(),"")+"!");
                     String name=sharedPreferencesContactData.getString(callInvite.getFrom(),"");
 
                     textDisplayName.setText(name);
                     if(!name.equals("")|| !name.equals(callInvite.getFrom())){
+                        Log.e("*Twilio*", "!!!!!!!!!!!!!!!!shared!!!!!!!!!!!!!!!!!");
                         Log.e("*Twilio*", "!!!!!!!!!!!!!!!!shared!!!!!!!!!!!!!!!!!"+ sharedPreferencesContactData.getString(callInvite.getFrom(),"")+"!");
 
                         handler.removeCallbacks(runnable);
@@ -497,6 +499,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         String fromDisplayName = null;
         if (this.callInvite != null) {
 
+            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case");
             Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getFrom());
             for (Map.Entry<String, String> entry : callInvite.getCustomParameters().entrySet()) {
                 Log.e("*Twilio*", "entry.getKey() "+entry.getKey());
@@ -507,6 +510,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             }
 
             if (fromDisplayName == null || fromDisplayName.trim().isEmpty()) {
+                Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case!!!!!!!!!!!!!");
                 final String contactName = PreferencesUtils.getInstance(this).findContactName(this.callInvite.getFrom());
                 if (contactName != null && !contactName.trim().isEmpty()) {
                     fromDisplayName = contactName;
@@ -518,8 +522,10 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             fromDisplayName = "Unknown name";
         }
 
+        Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case");
         Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getFrom());
         Log.e("*Twilio*", "fromDisplayName !"+fromDisplayName+"!");
+        Log.e("*Twilio*", "sharedPreferencesContactData !");
         Log.e("*Twilio*", "sharedPreferencesContactData !"+
                 this.sharedPreferencesContactData.getString(callInvite.getFrom(),"")+"!");
         Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getCustomParameters().entrySet());
