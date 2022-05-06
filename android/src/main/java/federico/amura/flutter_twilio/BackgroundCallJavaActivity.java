@@ -169,8 +169,8 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
                 handler.postDelayed(runnable, delay);
                 try {
 
-                    Log.e("*Twilio*", "sharedPreferencesContactData !");
-                    Log.e("*Twilio*", "sharedPreferencesContactData !"+ sharedPreferencesContactData.getString(callInvite.getFrom(),"")+"!");
+                    Log.e("*Twilio*", "sharedPreferencesContactData !!!!");
+                    Log.e("*Twilio*", "sharedPreferencesContactData !!!!!"+ sharedPreferencesContactData.getString(callInvite.getFrom(),"")+"!");
                     String name=sharedPreferencesContactData.getString(callInvite.getFrom(),"");
 
                     textDisplayName.setText(name);
@@ -546,8 +546,8 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case" + callInvite2.getTo());
             Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case" + callInvite2.getFrom());
             Log.e("*Twilio*", "fromDisplayName !" + fromDisplayName + "!");
-            Log.e("*Twilio*", "sharedPreferencesContactData !");
-            Log.e("*Twilio*", "sharedPreferencesContactData !" +
+            Log.e("*Twilio*", "sharedPreferencesContactData !!");
+            Log.e("*Twilio*", "sharedPreferencesContactData !!!" +
                     this.sharedPreferencesContactData.getString(callInvite2.getFrom(), "") + "!");
             Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case" + callInvite2.getCustomParameters().entrySet());
 
