@@ -474,6 +474,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         if (status != null && !status.trim().equals("")) {
             switch (status) {
                 case "callRinging": {
+                    Log.e("*Twilio*", "...........callRinging.........");
                     this.textCallStatus.setVisibility(View.VISIBLE);
                     textCallStatus.setText(R.string.call_status_ringing);
                 }
