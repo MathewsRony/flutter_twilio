@@ -114,12 +114,19 @@ public class    IncomingCallNotificationService extends Service {
         Log.e(TAG, "****************************accept start****************");
         Log.e(TAG, "Accept call invite. App visible: " + isAppVisible() + ". Locked: " + isLocked());
         this.stopServiceIncomingCall();
-
-        Log.e(TAG, "****************************accept**************** else part");
-        Log.e(TAG, "Answering from custom UI");
-        Log.e(TAG, "Answering from call Invite "+ callInvite.getCallSid());
-        this.openBackgroundCallActivityForAcceptCall(callInvite);
-        Log.e(TAG, "****************************accept end****************");
+        if (!isLocked() || isAppVisible()) {
+            // Inform call accepted
+            Log.i(TAG, "Answering from APP");
+            this.informAppAcceptCall(callInvite);
+        } else {
+            Log.i(TAG, "Answering from custom UI");
+            this.openBackgroundCallActivityForAcceptCall(callInvite);
+        }
+//        Log.e(TAG, "****************************accept**************** else part");
+//        Log.e(TAG, "Answering from custom UI");
+//        Log.e(TAG, "Answering from call Invite "+ callInvite.getCallSid());
+//        this.openBackgroundCallActivityForAcceptCall(callInvite);
+//        Log.e(TAG, "****************************accept end****************");
     }
 
     private void reject(CallInvite callInvite) {
@@ -273,8 +280,12 @@ public class    IncomingCallNotificationService extends Service {
     private void startServiceIncomingCall(CallInvite callInvite) {
         Log.e(TAG, "Start service incoming call");
         SoundUtils.getInstance(this).playRinging();
-        Notification notification = NotificationUtils.createIncomingCallNotification(getApplicationContext(), callInvite, true);
-        startForeground(TwilioConstants.NOTIFICATION_INCOMING_CALL, notification);
+        if(isAppVisible()){
+
+            Notification notification = NotificationUtils.createIncomingCallNotification(getApplicationContext(), callInvite, false);
+        }else {
+            Notification notification = NotificationUtils.createIncomingCallNotification(getApplicationContext(), callInvite, true);
+        }startForeground(TwilioConstants.NOTIFICATION_INCOMING_CALL, notification);
     }
 
     private void stopServiceIncomingCall() {
