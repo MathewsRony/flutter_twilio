@@ -122,11 +122,6 @@ public class    IncomingCallNotificationService extends Service {
             Log.i(TAG, "Answering from custom UI");
             this.openBackgroundCallActivityForAcceptCall(callInvite);
         }
-//        Log.e(TAG, "****************************accept**************** else part");
-//        Log.e(TAG, "Answering from custom UI");
-//        Log.e(TAG, "Answering from call Invite "+ callInvite.getCallSid());
-//        this.openBackgroundCallActivityForAcceptCall(callInvite);
-//        Log.e(TAG, "****************************accept end****************");
     }
 
     private void reject(CallInvite callInvite) {
@@ -280,12 +275,8 @@ public class    IncomingCallNotificationService extends Service {
     private void startServiceIncomingCall(CallInvite callInvite) {
         Log.e(TAG, "Start service incoming call");
         SoundUtils.getInstance(this).playRinging();
-        if(isAppVisible()){
-
-            Notification notification = NotificationUtils.createIncomingCallNotification(getApplicationContext(), callInvite, false);
-        }else {
-            Notification notification = NotificationUtils.createIncomingCallNotification(getApplicationContext(), callInvite, true);
-        }startForeground(TwilioConstants.NOTIFICATION_INCOMING_CALL, notification);
+        Notification notification = NotificationUtils.createIncomingCallNotification(getApplicationContext(), callInvite, true);
+        startForeground(TwilioConstants.NOTIFICATION_INCOMING_CALL, notification);
     }
 
     private void stopServiceIncomingCall() {
