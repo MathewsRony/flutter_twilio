@@ -443,9 +443,6 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
     
     
     public func cancelledCallInviteReceived(cancelledCallInvite: CancelledCallInvite, error: Error) {
-        self.sendPhoneCallEvents(description: "Missed Call", isError: false)
-        self.sendPhoneCallEvents(description: "LOG|cancelledCallInviteCanceled:", isError: false)
-        self.showMissedCallNotification(from: cancelledCallInvite.from, to: cancelledCallInvite.to)
         NSLog("cancelledCallInviteCanceled:")
 
         if (self.callInvite == nil || self.callInvite!.callSid != cancelledCallInvite.callSid) {
@@ -458,41 +455,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
         performEndCallAction(uuid: self.callInvite!.uuid)
         self.incomingPushHandled()
     }
-    func showMissedCallNotification(from:String?, to:String?){
-        guard UserDefaults.standard.optionalBool(forKey: "show-notifications") ?? true else{return}
-        let notificationCenter = UNUserNotificationCenter.current()
 
-
-        notificationCenter.getNotificationSettings { (settings) in
-          if settings.authorizationStatus == .authorized {
-            let content = UNMutableNotificationContent()
-            var userName:String?
-            if var from = from{
-                from = from.replacingOccurrences(of: "client:", with: "")
-                content.userInfo = ["type":"twilio-missed-call", "From":from]
-                if let to = to{
-                    content.userInfo["To"] = to
-                }
-                userName = self.clients[from]
-            }
-
-            let title = userName ?? self.clients["defaultCaller"] ?? self.defaultCaller
-            content.title = String(format:  NSLocalizedString("notification_missed_call", comment: ""),title)
-
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-            let request = UNNotificationRequest(identifier: UUID().uuidString,
-                                                content: content,
-                                                trigger: trigger)
-
-                notificationCenter.add(request) { (error) in
-                    if let error = error {
-                        print("Notification Error: ", error)
-                    }
-                }
-
-          }
-        }
-    }
     func callDisconnected(id: UUID, error: String?) {
         self.call = nil
         self.callInvite = nil
