@@ -1,42 +1,28 @@
 package federico.amura.flutter_twilio;
 
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.lifecycle.Lifecycle;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.twilio.voice.CallInvite;
 import com.twilio.voice.CancelledCallInvite;
 
 import java.util.List;
-import java.util.Map;
 
 import federico.amura.flutter_twilio.Utils.AppForegroundStateUtils;
 import federico.amura.flutter_twilio.Utils.NotificationUtils;
-import federico.amura.flutter_twilio.Utils.PreferencesUtils;
 import federico.amura.flutter_twilio.Utils.SoundUtils;
 import federico.amura.flutter_twilio.Utils.TwilioConstants;
 import federico.amura.flutter_twilio.Utils.TwilioUtils;
-import androidx.lifecycle.ProcessLifecycleOwner;
 
-public class    IncomingCallNotificationService extends Service {
+public class IncomingCallNotificationService extends Service {
 
     private static final String TAG = IncomingCallNotificationService.class.getSimpleName();
 
@@ -47,52 +33,34 @@ public class    IncomingCallNotificationService extends Service {
         if (action != null) {
             switch (action) {
                 case TwilioConstants.ACTION_INCOMING_CALL: {
-                    Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_INCOMING_CALL case");
                     CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
-                    Log.e(TAG, "ACTION_INCOMING_CALL call Invite "+ callInvite.getCallSid());
                     handleIncomingCall(callInvite);
                 }
                 break;
 
                 case TwilioConstants.ACTION_ACCEPT: {
-                    Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_ACCEPT case");
-
                     CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
-                    Log.e(TAG, "ACTION_ACCEPT call Invite "+ callInvite.getCallSid());
                     accept(callInvite);
                 }
                 break;
                 case TwilioConstants.ACTION_REJECT: {
-                    Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_REJECT case");
                     CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
                     reject(callInvite);
                 }
                 break;
                 case TwilioConstants.ACTION_CANCEL_CALL: {
-                    Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_CANCEL_CALL case");
-
-//                    CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
-                    handleCancelledCall(intent);
-//
-//                    CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
-//                    this.startServiceMissedCall(callInvite,cancelledCallInvite);
+                    CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
+                    handleCancelledCall(cancelledCallInvite);
                 }
                 break;
 
                 case TwilioConstants.ACTION_STOP_SERVICE: {
-                    Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_STOP_SERVICE case");
-
                     stopServiceIncomingCall();
                 }
                 break;
-
-                case TwilioConstants.ACTION_RETURN_CALL:
-                    Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_RETURN_CALL case");
-                    returnCall(intent);
-                    break;
             }
         }
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -102,19 +70,19 @@ public class    IncomingCallNotificationService extends Service {
 
     private void handleIncomingCall(CallInvite callInvite) {
         if (callInvite == null) {
-            Log.e(TAG, "Incoming call. No call invite");
+            Log.i(TAG, "Incoming call. No call invite");
             return;
         }
 
-        Log.e(TAG, "Incoming call. App visible: " + isAppVisible() + ". Locked: " + isLocked());
+        Log.i(TAG, "Incoming call. App visible: " + isAppVisible() + ". Locked: " + isLocked());
         this.startServiceIncomingCall(callInvite);
     }
 
     private void accept(CallInvite callInvite) {
-        Log.e(TAG, "****************************accept start****************");
-        Log.e(TAG, "Accept call invite. App visible: " + isAppVisible() + ". Locked: " + isLocked());
+        Log.i(TAG, "Accept call invite. App visible: " + isAppVisible() + ". Locked: " + isLocked());
         this.stopServiceIncomingCall();
-        if (!isLocked() || isAppVisible()) {
+
+        if (!isLocked() && isAppVisible()) {
             // Inform call accepted
             Log.i(TAG, "Answering from APP");
             this.informAppAcceptCall(callInvite);
@@ -125,7 +93,7 @@ public class    IncomingCallNotificationService extends Service {
     }
 
     private void reject(CallInvite callInvite) {
-        Log.e(TAG, "Reject call invite. App visible: " + isAppVisible() + ". Locked: " + isLocked());
+        Log.i(TAG, "Reject call invite. App visible: " + isAppVisible() + ". Locked: " + isLocked());
         this.stopServiceIncomingCall();
 
         // Reject call
@@ -136,151 +104,26 @@ public class    IncomingCallNotificationService extends Service {
         }
     }
 
-    private void handleCancelledCall(Intent intent) {
-        SoundUtils.getInstance(this).stopRinging();
-        CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
+    private void handleCancelledCall(CancelledCallInvite cancelledCallInvite) {
         Log.i(TAG, "Call canceled. App visible: " + isAppVisible() + ". Locked: " + isLocked());
+        this.stopServiceIncomingCall();
 
-        CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
+        if (cancelledCallInvite == null) return;
+        if (cancelledCallInvite.getFrom() == null) return;
 
-//        this.stopServiceIncomingCall();
-
-//        if (cancelledCallInvite == null) return;
-//        if (cancelledCallInvite.getFrom() == null) return;
-//
-//        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
-//        this.informAppCancelCall();
-//        stopForeground(true);
-        stopForeground(true);
-        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
-        startForeground(TwilioConstants.NOTIFICATION_INCOMING_CALL, notification);
-//        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
-
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
+        this.informAppCancelCall();
     }
 
-    private void buildMissedCallNotification(String callerId, String to, CancelledCallInvite cancelledCallInvite) {
-
-        String fromId = callerId.replace("client:", "");
-        Context context = getApplicationContext();
-        String callerName = callerId;
-        Log.i(TAG, "Call canceled. buildMissedCallNotification 1 " +callerId);
-//        for (Map.Entry<String, String> entry : callInvite.getCustomParameters().entrySet()) {
-//            if (entry.getKey().equals("fromDisplayName")) {
-//                callerName = entry.getValue();
-//            }
-//        }
-//        if (callerName == null || callerName.trim().isEmpty()) {
-//            final String contactName = PreferencesUtils.getInstance(getApplicationContext()).findContactName(callInvite.getFrom());
-//            if (contactName != null && !contactName.trim().isEmpty()) {
-//                callerName = contactName;
-//            } else {
-//                callerName = "Unknown name";
-//            }
-//        }
-
-//        String title = getApplicationContext().getString(R.string.notification_missed_call_title+R.string.notification_missed_call_text,callerName);
-
-        Log.i(TAG, "Call canceled. buildMissedCallNotification 2 " );
-        Intent returnCallIntent = new Intent(getApplicationContext(), IncomingCallNotificationService.class);
-        returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
-        returnCallIntent.putExtra(cancelledCallInvite.getTo(), to);
-        returnCallIntent.putExtra(cancelledCallInvite.getFrom(), callerId);
-        returnCallIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, cancelledCallInvite);
-        returnCallIntent.setFlags(
-                Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
-                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-        );
-        Log.i(TAG, "Call canceled. buildMissedCallNotification 3 " );
-        @SuppressLint("UnspecifiedImmutableFlag")
-        PendingIntent piReturnCallIntent = PendingIntent.getActivity(
-                getApplicationContext(),
-                0,
-                returnCallIntent,
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
-        );
-
-        Log.i(TAG, "Call canceled. buildMissedCallNotification 4 " );
-        Notification notification;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-            Log.i(TAG, "Call canceled. buildMissedCallNotification 5 " );
-            NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(this, createChannel(getApplicationContext(), false))
-                            .setSmallIcon(R.drawable.ic_call_end)
-                            .setContentTitle("title")
-                            .setCategory(Notification.CATEGORY_CALL)
-                            .setAutoCancel(true)
-                            .setOngoing(true)
-                            .addAction(android.R.drawable.ic_menu_call,"Call Back", piReturnCallIntent)
-                            .setPriority(NotificationCompat.PRIORITY_HIGH)
-                            .setContentTitle(getApplicationName(getApplicationContext()))
-                            .setContentText("title")
-                            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-
-            Log.i(TAG, "Call canceled. buildMissedCallNotification 6 " );
-            notification = builder.build();
-        } else {
-            Log.i(TAG, "Call canceled. buildMissedCallNotification 7 " );
-            notification = new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.ic_call_end)
-                    .setContentTitle(getApplicationName(getApplicationContext()))
-                    .setContentText("title")
-                    .setAutoCancel(true)
-                    .setOngoing(true)
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                    .setPriority(NotificationCompat.PRIORITY_MAX)
-                    .addAction(android.R.drawable.ic_menu_call, "Decline", piReturnCallIntent)
-                    .setColor(Color.rgb(20, 10, 200)).build();
-        }
-        Log.i(TAG, "Call canceled. buildMissedCallNotification 8 " );
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        Log.i(TAG, "Call canceled. buildMissedCallNotification 9 " );
-        notificationManager.notify(100, notification);
-    }
-    public static String getApplicationName(Context context) {
-        ApplicationInfo applicationInfo = context.getApplicationInfo();
-        int stringId = applicationInfo.labelRes;
-        return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
-    }
-    private static String createChannel(Context context, boolean highPriority) {
-        String id = highPriority ? TwilioConstants.VOICE_CHANNEL_HIGH_IMPORTANCE : TwilioConstants.VOICE_CHANNEL_LOW_IMPORTANCE;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel;
-            if (highPriority) {
-                channel = new NotificationChannel(
-                        TwilioConstants.VOICE_CHANNEL_HIGH_IMPORTANCE,
-                        "Bivo high importance notification call channel",
-                        NotificationManager.IMPORTANCE_HIGH
-                );
-            } else {
-                channel = new NotificationChannel(
-                        TwilioConstants.VOICE_CHANNEL_LOW_IMPORTANCE,
-                        "Bivo low importance notification call channel",
-                        NotificationManager.IMPORTANCE_LOW
-                );
-            }
-            channel.setLightColor(Color.GREEN);
-            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        return id;
-    }
     private void startServiceIncomingCall(CallInvite callInvite) {
-        Log.e(TAG, "Start service incoming call");
+        Log.i(TAG, "Start service incoming call");
         SoundUtils.getInstance(this).playRinging();
         Notification notification = NotificationUtils.createIncomingCallNotification(getApplicationContext(), callInvite, true);
         startForeground(TwilioConstants.NOTIFICATION_INCOMING_CALL, notification);
     }
 
     private void stopServiceIncomingCall() {
-        Log.e(TAG, "Stop service incoming call");
+        Log.i(TAG, "Stop service incoming call");
         stopForeground(true);
         NotificationUtils.cancel(this, TwilioConstants.NOTIFICATION_INCOMING_CALL);
         SoundUtils.getInstance(this).stopRinging();
@@ -292,11 +135,7 @@ public class    IncomingCallNotificationService extends Service {
     }
 
     private boolean isAppVisible() {
-        return ProcessLifecycleOwner
-                .get()
-                .getLifecycle()
-                .getCurrentState()
-                .isAtLeast(Lifecycle.State.STARTED);
+        return AppForegroundStateUtils.getInstance().isForeground();
     }
 
     // UTILS
@@ -315,32 +154,15 @@ public class    IncomingCallNotificationService extends Service {
     }
 
     private void openBackgroundCallActivityForAcceptCall(CallInvite callInvite) {
-        try {
-            Log.e(TAG, "openBackgroundCallActivityForAcceptCall function inside");
-            Intent intent = new Intent(getApplicationContext(), BackgroundCallJavaActivity.class);
-            intent.setFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK |
-                            Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                            Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
-                            Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-            );
-            intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
-
-            Log.e(TAG, "openBackgroundCallActivityForAcceptCall callInvite  "+callInvite.getCallSid());
-            intent.setAction(TwilioConstants.ACTION_ACCEPT);
-            getApplicationContext().startActivity(intent);
-
-            Log.e(TAG, "openBackgroundCallActivityForAcceptCall function after startActivity");
-        } catch (Exception e) {
-            Log.e(TAG, "openBackgroundCallActivityForAcceptCall " + e.toString());
-        }
-
-    }
-    private void returnCall(Intent intent) {
-        stopForeground(true);
-        Log.i(TAG, "returning call!!!!");
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.cancel(100);
+        Intent intent = new Intent(this, BackgroundCallJavaActivity.class);
+        intent.setFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+        );
+        intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+        intent.setAction(TwilioConstants.ACTION_ACCEPT);
+        startActivity(intent);
     }
 }
