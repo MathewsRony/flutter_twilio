@@ -365,7 +365,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             
         } else {
             NSLog("No contact name saved for number " + phoneNumber)
-            return defaultDisplayName
+            return phoneNumber
         }
     }
     
