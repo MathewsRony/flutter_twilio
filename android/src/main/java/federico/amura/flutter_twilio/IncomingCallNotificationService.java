@@ -292,11 +292,7 @@ public class    IncomingCallNotificationService extends Service {
     }
 
     private boolean isAppVisible() {
-        return ProcessLifecycleOwner
-                .get()
-                .getLifecycle()
-                .getCurrentState()
-                .isAtLeast(Lifecycle.State.STARTED);
+        return AppForegroundStateUtils.getInstance().isForeground();
     }
 
     // UTILS
