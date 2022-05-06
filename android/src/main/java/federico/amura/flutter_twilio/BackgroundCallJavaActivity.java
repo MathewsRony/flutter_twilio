@@ -72,6 +72,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     private CustomBroadCastReceiver customBroadCastReceiver;
     private boolean broadcastReceiverRegistered = false;
     private CallInvite callInvite;
+    private CancelledCallInvite callInvite2;
     private boolean exited = false;
     private SensorManager sensorManager;
     private Sensor sensor;
@@ -474,7 +475,6 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         if (status != null && !status.trim().equals("")) {
             switch (status) {
                 case "callRinging": {
-                    this.callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
                     Log.e("*Twilio*", "...........callRinging.........");
                     this.textCallStatus.setVisibility(View.VISIBLE);
                     textCallStatus.setText(R.string.call_status_ringing);
@@ -524,21 +524,39 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             fromDisplayName = "Unknown name";
         }
 
-        Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case1111111");
-        Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getTo());
-        Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getFrom());
-        Log.e("*Twilio*", "fromDisplayName !"+fromDisplayName+"!");
-        Log.e("*Twilio*", "sharedPreferencesContactData !");
-        Log.e("*Twilio*", "sharedPreferencesContactData !"+
-                this.sharedPreferencesContactData.getString(callInvite.getFrom(),"")+"!");
-        Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getCustomParameters().entrySet());
+        if(callInvite!=null){
+            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case1111111");
+            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case" + callInvite.getTo());
+            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case" + callInvite.getFrom());
+            Log.e("*Twilio*", "fromDisplayName !" + fromDisplayName + "!");
+            Log.e("*Twilio*", "sharedPreferencesContactData !");
+            Log.e("*Twilio*", "sharedPreferencesContactData !" +
+                    this.sharedPreferencesContactData.getString(callInvite.getFrom(), "") + "!");
+            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case" + callInvite.getCustomParameters().entrySet());
 
-        if(fromDisplayName.equals("Unknown number"))
-            fromDisplayName=callInvite.getFrom();
-        this.textDisplayName.setText(fromDisplayName);
+            if (fromDisplayName.equals("Unknown number"))
+                fromDisplayName = callInvite.getFrom();
+            this.textDisplayName.setText(fromDisplayName);
 
-        // Phone number
-        this.textPhoneNumber.setText("");
+            // Phone number
+            this.textPhoneNumber.setText("");
+        }else{
+            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case1111111");
+            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case" + callInvite2.getTo());
+            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case" + callInvite2.getFrom());
+            Log.e("*Twilio*", "fromDisplayName !" + fromDisplayName + "!");
+            Log.e("*Twilio*", "sharedPreferencesContactData !");
+            Log.e("*Twilio*", "sharedPreferencesContactData !" +
+                    this.sharedPreferencesContactData.getString(callInvite2.getFrom(), "") + "!");
+            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case" + callInvite2.getCustomParameters().entrySet());
+
+            if (fromDisplayName.equals("Unknown number"))
+                fromDisplayName = callInvite2.getFrom();
+            this.textDisplayName.setText(fromDisplayName);
+
+            // Phone number
+            this.textPhoneNumber.setText("");
+        }
 //        String phoneNumber;
 //        if (from != null && !from.trim().equals("")) {
 //            phoneNumber = from;
