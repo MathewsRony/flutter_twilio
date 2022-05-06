@@ -303,8 +303,8 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             case TwilioConstants.ACTION_RETURN_CALL:
                 Log.e(TAG, "*******************************************23");
                 Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_RETURN_CALL case");
-                CancelledCallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
-                returnCall(intent,callInvite);
+                 callInvite2 = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
+                returnCall(intent,callInvite2);
                 break;
 
         }
