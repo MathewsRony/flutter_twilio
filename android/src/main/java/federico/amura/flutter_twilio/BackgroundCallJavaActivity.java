@@ -146,10 +146,10 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
     @Override
     protected void onDestroy() {
-        if(sharedPreferencesContactData!=null) {
-            SharedPreferences.Editor editor = this.sharedPreferencesContactData.edit();
-            editor.clear().apply();
-        }
+//        if(sharedPreferencesContactData!=null) {
+//            SharedPreferences.Editor editor = this.sharedPreferencesContactData.edit();
+//            editor.clear().apply();
+//        }
         super.onDestroy();
         if (wakeLock != null) {
             if (wakeLock.isHeld()) {
@@ -541,6 +541,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             // Phone number
             this.textPhoneNumber.setText("");
         }else{
+
             Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case1111111");
             Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case" + callInvite2.getTo());
             Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case" + callInvite2.getFrom());
