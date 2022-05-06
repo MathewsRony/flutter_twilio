@@ -499,7 +499,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         String fromDisplayName = null;
         if (this.callInvite != null) {
 
-            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case");
+            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case.........");
             Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getFrom());
             for (Map.Entry<String, String> entry : callInvite.getCustomParameters().entrySet()) {
                 Log.e("*Twilio*", "entry.getKey() "+entry.getKey());
@@ -522,7 +522,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             fromDisplayName = "Unknown name";
         }
 
-        Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case");
+        Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case1111111");
         Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getFrom());
         Log.e("*Twilio*", "fromDisplayName !"+fromDisplayName+"!");
         Log.e("*Twilio*", "sharedPreferencesContactData !");
