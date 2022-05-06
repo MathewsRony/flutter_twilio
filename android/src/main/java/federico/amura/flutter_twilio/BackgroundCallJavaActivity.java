@@ -169,18 +169,32 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
                 handler.postDelayed(runnable, delay);
                 try {
 
-                    Log.e("*Twilio*", "sharedPreferencesContactData !!!!");
-                    Log.e("*Twilio*", "sharedPreferencesContactData !!!!!"+ sharedPreferencesContactData.getString(callInvite.getFrom(),"")+"!");
-                    String name=sharedPreferencesContactData.getString(callInvite.getFrom(),"");
+                    if(callInvite!=null){
+                        Log.e("*Twilio*", "sharedPreferencesContactData !!!!");
+                        Log.e("*Twilio*", "sharedPreferencesContactData !!!!!" + sharedPreferencesContactData.getString(callInvite.getFrom(), "") + "!");
+                        String name = sharedPreferencesContactData.getString(callInvite.getFrom(), "");
 
-                    textDisplayName.setText(name);
-                    if(!name.equals("")|| !name.equals(callInvite.getFrom())){
-                        Log.e("*Twilio*", "!!!!!!!!!!!!!!!!shared!!!!!!!!!!!!!!!!!");
-                        Log.e("*Twilio*", "!!!!!!!!!!!!!!!!shared!!!!!!!!!!!!!!!!!"+ sharedPreferencesContactData.getString(callInvite.getFrom(),"")+"!");
+                        textDisplayName.setText(name);
+                        if (!name.equals("") || !name.equals(callInvite.getFrom())) {
+                            Log.e("*Twilio*", "!!!!!!!!!!!!!!!!shared!!!!!!!!!!!!!!!!!");
+                            Log.e("*Twilio*", "!!!!!!!!!!!!!!!!shared!!!!!!!!!!!!!!!!!" + sharedPreferencesContactData.getString(callInvite.getFrom(), "") + "!");
 
-                        handler.removeCallbacks(runnable);
+                            handler.removeCallbacks(runnable);
+                        }
+                    }else
+                    {
+                        Log.e("*Twilio*", "sharedPreferencesContactData !!!!");
+                        Log.e("*Twilio*", "sharedPreferencesContactData !!!!!" + sharedPreferencesContactData.getString(callInvite2.getFrom(), "") + "!");
+                        String name = sharedPreferencesContactData.getString(callInvite2.getFrom(), "");
+
+                        textDisplayName.setText(name);
+                        if (!name.equals("") || !name.equals(callInvite2.getFrom())) {
+                            Log.e("*Twilio*", "!!!!!!!!!!!!!!!!shared!!!!!!!!!!!!!!!!!");
+                            Log.e("*Twilio*", "!!!!!!!!!!!!!!!!shared!!!!!!!!!!!!!!!!!" + sharedPreferencesContactData.getString(callInvite2.getFrom(), "") + "!");
+
+                            handler.removeCallbacks(runnable);
+                        }
                     }
-
                 }catch (Exception e){
                     Log.d(TAG, e.toString());
                 }
