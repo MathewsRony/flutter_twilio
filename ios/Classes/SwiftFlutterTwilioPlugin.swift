@@ -478,9 +478,10 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             NSLog("!!!!!!! title !!!!!!!!")
             NSLog("!!!!!!! "+title+" !!!!!!!!")
             NSLog(from!)
+            NSLog(callInvite.uuid.uuid)
             NSLog(to!)
             content.title = String(format:  NSLocalizedString("Missed Call", comment: from!),from!)
-
+            content
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
             let request = UNNotificationRequest(identifier: UUID().uuidString,
                                                 content: content,
@@ -650,7 +651,8 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
         callUpdate.supportsGrouping = false
         callUpdate.supportsUngrouping = false
         callUpdate.hasVideo = false
-        
+
+
         callKitProvider.reportNewIncomingCall(with: uuid, update: callUpdate) { error in
             if let error = error {
                 NSLog("Failed to report incoming call successfully: \(error.localizedDescription).")
