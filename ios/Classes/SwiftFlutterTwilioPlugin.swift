@@ -479,7 +479,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             NSLog("!!!!!!! "+title+" !!!!!!!!")
             NSLog(from!)
             NSLog(to!)
-            content.title = String(format:  NSLocalizedString("Missed Call", comment: ""),title)
+            content.title = String(format:  NSLocalizedString("Missed Call", comment: from!),from!)
 
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
             let request = UNNotificationRequest(identifier: UUID().uuidString,
