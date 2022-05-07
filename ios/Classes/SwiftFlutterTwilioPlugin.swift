@@ -457,7 +457,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
         self.incomingPushHandled()
     }
     func showMissedCallNotification(from:String?, to:String?){
-        guard UserDefaults.standard.set(forKey: "show-notifications") ?? true else{return}
+       // guard UserDefaults.standard.set(forKey: "show-notifications") ?? true else{return}
         let notificationCenter = UNUserNotificationCenter.current()
 
 
