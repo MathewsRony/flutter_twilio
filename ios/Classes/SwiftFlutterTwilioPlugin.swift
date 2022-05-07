@@ -451,9 +451,6 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             return
         }
 
-        audioDevice.isEnabled = true
-        performEndCallAction(uuid: self.callInvite!.uuid)
-        self.incomingPushHandled()
       let fromDisplayName = self.getFromDisplayName()
         let callHandle = CXHandle(type: .generic, value: fromDisplayName)
 
@@ -466,53 +463,18 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
         callUpdate.hasVideo = false
 
 
-        callKitProvider.showMissedCallNotification(with:  self.callInvite!.uuid, update: callUpdate) { error in
+        callKitProvider.showMissedCallNotification(with: uuid, update: callUpdate) { error in
             if let error = error {
                 NSLog("Failed to report incoming call successfully: \(error.localizedDescription).")
             } else {
                 NSLog("Incoming call successfully reported.")
             }
         }
+        audioDevice.isEnabled = true
+        performEndCallAction(uuid: self.callInvite!.uuid)
+        self.incomingPushHandled()
     }
-    func showMissedCallNotification(from:String?, to:String?){
-       // guard UserDefaults.standard.set(forKey: "show-notifications") ?? true else{return}
-        let notificationCenter = UNUserNotificationCenter.current()
 
-
-        notificationCenter.getNotificationSettings { (settings) in
-          if settings.authorizationStatus == .authorized {
-            let content = UNMutableNotificationContent()
-            var userName:String?
-            if var from = from{
-                from = from.replacingOccurrences(of: "client:", with: "")
-                content.userInfo = ["type":"twilio-missed-call", "From":from]
-                if let to = to{
-                    content.userInfo["To"] = to
-                }
-                userName = UserDefaults.standard.string(forKey: "_defaultDisplayName") ?? from ?? ""
-            }
-
-            let title = userName ?? UserDefaults.standard.string(forKey: "_defaultDisplayName") ?? from ?? ""
-            NSLog("!!!!!!! title !!!!!!!!")
-            NSLog("!!!!!!! "+title+" !!!!!!!!")
-            NSLog(from!)
-            NSLog(to!)
-            content.title = String(format:  NSLocalizedString("Missed Call", comment: from!),from!)
-            content
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-            let request = UNNotificationRequest(identifier: UUID().uuidString,
-                                                content: content,
-                                                trigger: trigger)
-
-                notificationCenter.add(request) { (error) in
-                    if let error = error {
-                        print("Notification Error: ", error)
-                    }
-                }
-
-          }
-        }
-    }
     func callDisconnected(id: UUID, error: String?) {
         self.call = nil
         self.callInvite = nil
