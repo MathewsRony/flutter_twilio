@@ -478,7 +478,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             NSLog("!!!!!!! title !!!!!!!!")
             NSLog("!!!!!!! "+title+" !!!!!!!!")
             NSLog(from!)
-            NSLog(callInvite.uuid.uuid)
+            NSLog(self.callInvite.uuid)
             NSLog(to!)
             content.title = String(format:  NSLocalizedString("Missed Call", comment: from!),from!)
             content
