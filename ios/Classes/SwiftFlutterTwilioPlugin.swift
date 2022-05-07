@@ -451,6 +451,9 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             return
         }
 
+        audioDevice.isEnabled = true
+        performEndCallAction(uuid: self.callInvite!.uuid)
+        self.incomingPushHandled()
       let fromDisplayName = self.getFromDisplayName()
         let callHandle = CXHandle(type: .generic, value: fromDisplayName)
 
@@ -463,16 +466,13 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
         callUpdate.hasVideo = false
 
 
-        callKitProvider.showMissedCallNotification(with: uuid, update: callUpdate) { error in
+        callKitProvider.showMissedCallNotification(with:  self.callInvite!.uuid, update: callUpdate) { error in
             if let error = error {
                 NSLog("Failed to report incoming call successfully: \(error.localizedDescription).")
             } else {
                 NSLog("Incoming call successfully reported.")
             }
         }
-        audioDevice.isEnabled = true
-        performEndCallAction(uuid: self.callInvite!.uuid)
-        self.incomingPushHandled()
     }
     func showMissedCallNotification(from:String?, to:String?){
        // guard UserDefaults.standard.set(forKey: "show-notifications") ?? true else{return}
