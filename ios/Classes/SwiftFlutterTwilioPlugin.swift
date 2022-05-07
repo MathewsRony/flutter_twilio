@@ -476,9 +476,9 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
 
             let title = userName ?? UserDefaults.standard.string(forKey: "_defaultDisplayName") ?? from ?? ""
             NSLog("!!!!!!! title !!!!!!!!")
-            NSLog("!!!!!!! "+title??"zxc"+" !!!!!!!!")
-            NSLog("!!!!!!! "+from??"asd"+" !!!!!!!!")
-            NSLog("!!!!!!! "+to??"qwe"+" !!!!!!!!")
+            NSLog("!!!!!!! "+title+" !!!!!!!!")
+            NSLog(from!)
+            NSLog(to!)
             content.title = String(format:  NSLocalizedString("Missed Call", comment: ""),title)
 
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
