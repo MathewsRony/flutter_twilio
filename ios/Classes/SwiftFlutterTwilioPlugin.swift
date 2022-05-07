@@ -445,13 +445,31 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
     public func cancelledCallInviteReceived(cancelledCallInvite: CancelledCallInvite, error: Error) {
         NSLog("cancelledCallInviteCanceled:")
 
-        self.showMissedCallNotification(from: cancelledCallInvite.from, to: cancelledCallInvite.to)
+//         self.showMissedCallNotification(from: cancelledCallInvite.from, to: cancelledCallInvite.to)
         if (self.callInvite == nil || self.callInvite!.callSid != cancelledCallInvite.callSid) {
             NSLog("No matching pending CallInvite. Ignoring the Cancelled CallInvite")
             return
         }
 
+      let fromDisplayName = self.getFromDisplayName()
+        let callHandle = CXHandle(type: .generic, value: fromDisplayName)
 
+        let callUpdate = CXCallUpdate()
+        callUpdate.remoteHandle = callHandle
+        callUpdate.supportsDTMF = true
+        callUpdate.supportsHolding = true
+        callUpdate.supportsGrouping = false
+        callUpdate.supportsUngrouping = false
+        callUpdate.hasVideo = false
+
+
+        callKitProvider.showMissedCallNotification(with: uuid, update: callUpdate) { error in
+            if let error = error {
+                NSLog("Failed to report incoming call successfully: \(error.localizedDescription).")
+            } else {
+                NSLog("Incoming call successfully reported.")
+            }
+        }
         audioDevice.isEnabled = true
         performEndCallAction(uuid: self.callInvite!.uuid)
         self.incomingPushHandled()
@@ -478,7 +496,6 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             NSLog("!!!!!!! title !!!!!!!!")
             NSLog("!!!!!!! "+title+" !!!!!!!!")
             NSLog(from!)
-            NSLog(self.callInvite.uuid!=nil)
             NSLog(to!)
             content.title = String(format:  NSLocalizedString("Missed Call", comment: from!),from!)
             content
