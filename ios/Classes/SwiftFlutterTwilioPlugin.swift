@@ -463,7 +463,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
         callUpdate.hasVideo = false
 
 
-        callKitProvider.showMissedCallNotification(with: uuid, update: callUpdate) { error in
+        callKitProvider.showMissedCallNotification(with: self.callInvite!.uuid, update: callUpdate) { error in
             if let error = error {
                 NSLog("Failed to report incoming call successfully: \(error.localizedDescription).")
             } else {
