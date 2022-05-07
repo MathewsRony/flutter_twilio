@@ -471,11 +471,11 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
                 if let to = to{
                     content.userInfo["To"] = to
                 }
-                userName = UserDefaults.standard.string(forKey: "_defaultDisplayName") ?? ""
+                userName = UserDefaults.standard.string(forKey: "_defaultDisplayName") ?? from
             }
 
-            let title = userName ?? UserDefaults.standard.string(forKey: "_defaultDisplayName") ?? ""
-            content.title = String(format:  NSLocalizedString("notification_missed_call", comment: ""),title)
+            let title = userName ?? UserDefaults.standard.string(forKey: "_defaultDisplayName") ?? from
+            content.title = String(format:  NSLocalizedString("Missed Call", comment: ""),title)
 
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
             let request = UNNotificationRequest(identifier: UUID().uuidString,
