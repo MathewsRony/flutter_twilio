@@ -458,8 +458,9 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
     }
     func showMissedCallNotification(from:String?, to:String?){
        // guard UserDefaults.standard.set(forKey: "show-notifications") ?? true else{return}
-        let notificationCenter = UNUserNotificationCenter.current().requestAuthorization
+        let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.getNotificationSettings { (settings) in
+             NSLog("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
           if settings.authorizationStatus == .authorized {
              NSLog("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!2")
             let content = UNMutableNotificationContent()
