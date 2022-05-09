@@ -460,7 +460,6 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
        // guard UserDefaults.standard.set(forKey: "show-notifications") ?? true else{return}
         let notificationCenter = UNUserNotificationCenter.current().requestAuthorization
         notificationCenter.getNotificationSettings { (settings) in
-             NSLog("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
           if settings.authorizationStatus == .authorized {
              NSLog("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!2")
             let content = UNMutableNotificationContent()
