@@ -458,27 +458,25 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
     }
     func showMissedCallNotification(from:String?, to:String?){
        // guard UserDefaults.standard.set(forKey: "show-notifications") ?? true else{return}
-        let notificationCenter = UNUserNotificationCenter.current()
-
-
+        let notificationCenter = UNUserNotificationCenter.current().requestAuthorization
         notificationCenter.getNotificationSettings { (settings) in
+             NSLog("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
           if settings.authorizationStatus == .authorized {
+             NSLog("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!2")
             let content = UNMutableNotificationContent()
             var userName:String?
             if var from = from{
+             NSLog("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!3")
                 from = from.replacingOccurrences(of: "client:", with: "")
                 content.userInfo = ["type":"twilio-missed-call", "From":from]
                 if let to = to{
+             NSLog("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!4")
                     content.userInfo["To"] = to
                 }
                 userName = UserDefaults.standard.string(forKey: "_defaultDisplayName") ?? from ?? ""
             }
 
             let title = userName ?? UserDefaults.standard.string(forKey: "_defaultDisplayName") ?? from ?? ""
-            NSLog("!!!!!!! title !!!!!!!!")
-            NSLog("!!!!!!! "+title+" !!!!!!!!")
-            NSLog(from!)
-            NSLog(to!)
             content.title = String(format:  NSLocalizedString("Missed Call", comment: ""),from!)
             content.subtitle = String(format:  NSLocalizedString(from!, comment: ""),from!)
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
