@@ -45,6 +45,7 @@ class FlutterTwilio {
   }
 
   static FlutterTwilioStatus getEventType(String event) {
+    print(event);
     if (event == "callConnecting") return FlutterTwilioStatus.connecting;
     if (event == "callDisconnected") return FlutterTwilioStatus.disconnected;
     if (event == "callRinging") return FlutterTwilioStatus.ringing;
