@@ -52,7 +52,7 @@ class FlutterTwilio {
     if (event == "callConnected") return FlutterTwilioStatus.connected;
     if (event == "callReconnecting") return FlutterTwilioStatus.reconnecting;
     if (event == "callReconnected") return FlutterTwilioStatus.reconnected;
-    if (event == "callMissedCall") return FlutterTwilioStatus.disconnected;
+    if (event == "callMissedCall") return FlutterTwilioStatus.missedCall;
     return FlutterTwilioStatus.unknown;
   }
 
