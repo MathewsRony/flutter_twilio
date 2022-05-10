@@ -493,16 +493,16 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
         }
     }
     func callDisconnected(id: UUID, error: String?) {
-        self.call = nil
-        self.callInvite = nil
-        self.fromDisplayName = nil
-        self.toDisplayName = nil
-        self.callKitCompletionCallback = nil
+//         self.call = nil
+//         self.callInvite = nil
+//         self.fromDisplayName = nil
+//         self.toDisplayName = nil
+//         self.callKitCompletionCallback = nil
         self.userInitiatedDisconnect = false
 
         DispatchQueue.main.async {
             self.callStatus = "callDisconnected"
-            self.channel?.invokeMethod("callDisconnected", arguments: nil)
+            self.channel?.invokeMethod("callDisconnected", arguments: self.getCallResult())
         }
 
 
