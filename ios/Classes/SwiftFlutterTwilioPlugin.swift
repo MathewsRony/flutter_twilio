@@ -445,7 +445,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
     public func cancelledCallInviteReceived(cancelledCallInvite: CancelledCallInvite, error: Error) {
         NSLog("cancelledCallInviteCanceled:")
 
-        self.showMissedCallNotification(from: cancelledCallInvite.from, to: cancelledCallInvite.to)
+//         self.showMissedCallNotification(from: cancelledCallInvite.from, to: cancelledCallInvite.to)
         if (self.callInvite == nil || self.callInvite!.callSid != cancelledCallInvite.callSid) {
             NSLog("No matching pending CallInvite. Ignoring the Cancelled CallInvite")
             return
