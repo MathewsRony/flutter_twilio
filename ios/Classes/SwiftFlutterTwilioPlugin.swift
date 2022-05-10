@@ -502,7 +502,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
 
         DispatchQueue.main.async {
             self.callStatus = "callDisconnected"
-            self.channel?.invokeMethod("callDisconnected", arguments: self.getCallResult())
+            self.channel?.invokeMethod("callDisconnected", arguments: nil)
         }
 
 
@@ -525,7 +525,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
         self.userInitiatedDisconnect = false
 
         DispatchQueue.main.async {
-            self.callStatus = "callMissedCall"
+            self.callStatus = "missedCall"
             self.channel?.invokeMethod("callDisconnectedMissCall", arguments: self.getCallResult())
         }
 
