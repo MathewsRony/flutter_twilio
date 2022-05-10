@@ -453,7 +453,7 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
 
 
         audioDevice.isEnabled = true
-        performEndCallAction(uuid: self.callInvite!.uuid)
+        performMissedCallAction(uuid: self.callInvite!.uuid,cancelledCallInvite: cancelledCallInvite)
         self.incomingPushHandled()
     }
     func showMissedCallNotification(from:String?, to:String?){
@@ -503,6 +503,30 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
         DispatchQueue.main.async {
             self.callStatus = "callDisconnected"
             self.channel?.invokeMethod("callDisconnected", arguments: self.getCallResult())
+        }
+
+
+        var reason = CXCallEndedReason.remoteEnded
+
+        if error != nil {
+            NSLog("Hubo un error en el did disconect, entonces pongo que se corta por un error")
+            reason = .failed
+        }
+
+        self.callKitProvider.reportCall(with: id, endedAt: Date(), reason: reason)
+
+    }
+    func callDisconnectedMissCall(id: UUID, error: String?,cancelledCallInvite: CancelledCallInvite) {
+        self.call = nil
+        self.callInvite = nil
+        self.fromDisplayName = cancelledCallInvite.from
+        self.toDisplayName =  cancelledCallInvite.to
+        self.callKitCompletionCallback = nil
+        self.userInitiatedDisconnect = false
+
+        DispatchQueue.main.async {
+            self.callStatus = "callMissedCall"
+            self.channel?.invokeMethod("callDisconnectedMissCall", arguments: self.getCallResult())
         }
 
 
@@ -691,7 +715,40 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
 //             }
 //         }
     }
-    
+    func performMissedCallAction(uuid: UUID,cancelledCallInvite: CancelledCallInvite) {
+
+            if self.call == nil {
+    //            return;
+            }
+
+            self.call?.disconnect()
+    //         self.call = nil
+    //         self.callInvite = nil
+    //         self.result?("")
+    //         self.result = nil
+
+            self.callDisconnectedMissCall(id: uuid, error: nil,cancelledCallInvite: cancelledCallInvite)
+    //         let endCallAction = CXEndCallAction(call: uuid)
+    //         let transaction = CXTransaction(action: endCallAction)
+    //
+    //         callKitCallController.request(transaction) { error in
+    //             if error != nil {
+    //                 NSLog("Error ending call:")
+    //                 self.result?(FlutterError.init(
+    //                     code: "Error",
+    //                     message: "Error",
+    //                     details: "Error"
+    //                 ))
+    //
+    //                 self.result = nil
+    //             } else {
+    //                 self.call = nil
+    //                 self.callInvite = nil
+    //                 self.result?("")
+    //                 self.result = nil
+    //             }
+    //         }
+        }
     func performVoiceCall(uuid: UUID, completionHandler: @escaping (Bool) -> Swift.Void) {
         guard let accessToken = getAccessToken() else {
             completionHandler(false)
