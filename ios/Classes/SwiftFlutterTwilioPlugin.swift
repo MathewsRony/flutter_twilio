@@ -475,16 +475,6 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
                 }
                 userName = UserDefaults.standard.string(forKey: "_defaultDisplayName") ?? from ?? ""
             }
-            notificationCenter.requestAuthorization(options: authOptions, completionHandler: { (granted, error) in
-                                      if granted {
-                                          // Register after we get the permissions.
-
-             NSLog("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!5")
-                                          UNUserNotificationCenter.current().delegate = self
-                                      }
-
-             NSLog("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!6")
-                                  })
             let title = userName ?? UserDefaults.standard.string(forKey: "_defaultDisplayName") ?? from ?? ""
             content.title = String(format:  NSLocalizedString("Missed Call", comment: ""),from!)
             content.subtitle = String(format:  NSLocalizedString(from!, comment: ""),from!)
