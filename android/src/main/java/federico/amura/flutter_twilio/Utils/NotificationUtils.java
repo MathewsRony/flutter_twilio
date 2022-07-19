@@ -27,6 +27,7 @@ import java.util.Map;
 import federico.amura.flutter_twilio.BackgroundCallJavaActivity;
 import federico.amura.flutter_twilio.IncomingCallNotificationService;
 import federico.amura.flutter_twilio.R;
+
 import androidx.lifecycle.ProcessLifecycleOwner;
 
 public class NotificationUtils {
@@ -51,8 +52,8 @@ public class NotificationUtils {
 
         Log.d(" call getFrom 2", callInvite.getFrom());
         Log.d(" call getFrom 3", callInvite.getCustomParameters().entrySet().toString());
-        if(fromDisplayName.equals("Unknown number"))
-            fromDisplayName=callInvite.getFrom();
+        if (fromDisplayName.equals("Unknown number"))
+            fromDisplayName = callInvite.getFrom();
         Log.d(" fromDisplayName", fromDisplayName);
         String notificationTitle = context.getString(R.string.notification_incoming_call_title);
         String notificationText = fromDisplayName;
@@ -139,9 +140,31 @@ public class NotificationUtils {
         builder.setContentIntent(pendingIntent);
         return builder.build();
     }
-    public static Notification createMissedCallNotification(Context context,  CancelledCallInvite cancelledCallInvite, boolean showHeadsUp) {
 
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 2 " );
+    public static Notification createMissedCallNotification(Context context, CancelledCallInvite cancelledCallInvite, boolean showHeadsUp) {
+        String fromDisplayName = null;
+        for (Map.Entry<String, String> entry : cancelledCallInvite.getCustomParameters().entrySet()) {
+            if (entry.getKey().equals("fromDisplayName")) {
+                fromDisplayName = entry.getValue();
+            }
+        }
+        if (fromDisplayName == null || fromDisplayName.trim().isEmpty()) {
+            final String contactName = PreferencesUtils.getInstance(context).findContactName(cancelledCallInvite.getFrom());
+            if (contactName != null && !contactName.trim().isEmpty()) {
+                fromDisplayName = contactName;
+            } else {
+                fromDisplayName = "Unknown name";
+            }
+        }
+
+        Log.d(" call getFrom 2", cancelledCallInvite.getFrom());
+        Log.d(" call getFrom 3", cancelledCallInvite.getCustomParameters().entrySet().toString());
+        if (fromDisplayName.equals("Unknown number"))
+            fromDisplayName = cancelledCallInvite.getFrom();
+        Log.d(" fromDisplayName", fromDisplayName);
+        String notificationText = fromDisplayName;
+
+        Log.i("TAG", "Call canceled. buildMissedCallNotification 2 ");
         Intent returnCallIntent = new Intent(context, BackgroundCallJavaActivity.class);
         returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
         returnCallIntent.putExtra(cancelledCallInvite.getTo(), "to");
@@ -153,7 +176,7 @@ public class NotificationUtils {
 //                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
 //                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
 //        );
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 3 " );
+        Log.i("TAG", "Call canceled. buildMissedCallNotification 3 ");
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent piReturnCallIntent = PendingIntent.getActivity(
                 context,
@@ -162,26 +185,8 @@ public class NotificationUtils {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
-
-//        Log.i("TAG", "Call canceled. buildMissedCallNotification 4 " );
-//        Intent intent = new Intent(context, BackgroundCallJavaActivity.class);
-////        intent.setAction(Intent.ACTION_MAIN);
-////        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-//        Log.i("TAG", "Call canceled. buildMissedCallNotification 41 " );
-//        intent.setAction(TwilioConstants.ACTION_INCOMING_CALL);
-//        Log.i("TAG", "Call canceled. buildMissedCallNotification 42 " );
-//        intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
-//        Log.i("TAG", "Call canceled. buildMissedCallNotification 43 " );
-////        Log.d(" call Invite 3", callInvite.getCallSid());
-////        Log.i("TAG", "Call canceled. buildMissedCallNotification 44 " );
-//        intent.setFlags(
-//                Intent.FLAG_ACTIVITY_NEW_TASK |
-//                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-//                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
-//                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-//        );
         Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 5 " );
+        Log.i("TAG", "Call canceled. buildMissedCallNotification 5 ");
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context,
@@ -190,8 +195,8 @@ public class NotificationUtils {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 6  " );
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, showHeadsUp));
+        Log.i("TAG", "Call canceled. buildMissedCallNotification 6  ");
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, false));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setSmallIcon(R.drawable.ic_call_end);
             builder.setContentTitle("Missed Call");
@@ -199,28 +204,26 @@ public class NotificationUtils {
             builder.setAutoCancel(true);
             builder.addAction(android.R.drawable.ic_menu_call, "Call Back", piReturnCallIntent);
             builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-            builder.setContentTitle(getApplicationName(context));
-            builder.setContentText("From "+cancelledCallInvite.getFrom());
+            builder.setContentText(notificationText);
             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             builder.setContentIntent(pendingIntent);
-            return builder.build();
+            builder.setOngoing(true);
+//            return builder.build();
         } else {
 //            notification = new NotificationCompat.Builder(context)
             builder.setSmallIcon(R.drawable.ic_call_end);
-            builder.setContentTitle(getApplicationName(context));
-            builder.setContentText("title");
+            builder.setContentTitle("Missed Call");
+            builder.setContentText(notificationText);
             builder.setAutoCancel(true);
-            builder.setOngoing(true);
             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             builder.setPriority(NotificationCompat.PRIORITY_MAX);
-            builder.addAction(android.R.drawable.ic_menu_call,"Decline", piReturnCallIntent);
+            builder.addAction(android.R.drawable.ic_menu_call, "Call Back", piReturnCallIntent);
             builder.setColor(Color.rgb(20, 10, 200));
-//            builder.setContentIntent(pendingIntent);
-            return  builder.build();
+            builder.setContentIntent(pendingIntent);
+            builder.setOngoing(true);
+//            return  builder.build();
         }
-//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-//        notificationManager.notify(100, notification);
-
+        return builder.build();
     }
 
     public static String getApplicationName(Context context) {
@@ -228,6 +231,7 @@ public class NotificationUtils {
         int stringId = applicationInfo.labelRes;
         return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
     }
+
     private static String createChannel(Context context, boolean highPriority) {
         String id = highPriority ? TwilioConstants.VOICE_CHANNEL_HIGH_IMPORTANCE : TwilioConstants.VOICE_CHANNEL_LOW_IMPORTANCE;
 

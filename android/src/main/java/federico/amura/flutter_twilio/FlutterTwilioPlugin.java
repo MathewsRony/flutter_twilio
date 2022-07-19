@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
+import androidx.core.app.NotificationManagerCompat;
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -29,6 +30,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry;
+import federico.amura.flutter_twilio.IncomingCallNotificationService;
 
 public class FlutterTwilioPlugin implements
         FlutterPlugin,
@@ -103,6 +105,7 @@ public class FlutterTwilioPlugin implements
     @Override
     public boolean onNewIntent(Intent intent) {
         Log.d(TAG, "onNewIntent");
+        String action = intent.getAction();
         this.handleIncomingCallIntent(intent);
         return false;
     }
@@ -115,6 +118,12 @@ public class FlutterTwilioPlugin implements
             if (TwilioConstants.ACTION_ACCEPT.equals(action)) {
                 CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
                 answer(callInvite);
+            }else{
+                Log.d(TAG, "!!!!!!!@@@@@@@@@!!!!!");
+                responseChannel.invokeMethod("missedCall", "");
+                Intent acceptIntent = new Intent(context, IncomingCallNotificationService.class);
+                acceptIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
+                context.startService(intent);
             }
         }
     }

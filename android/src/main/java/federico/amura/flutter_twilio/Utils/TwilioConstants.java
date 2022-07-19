@@ -30,6 +30,7 @@ public class TwilioConstants {
     public static final String ACTION_REJECT = "ACTION_REJECT";
     public static final String ACTION_INCOMING_CALL = "ACTION_INCOMING_CALL";
     public static final String ACTION_RETURN_CALL = "ACTION_RETURN_CALL";
+    public static final String ACTION_MISSED_CALL = "ACTION_MISSED_CALL";
     public static final String ACTION_CANCEL_CALL = "ACTION_CANCEL_CALL";
     public static final String ACTION_STOP_SERVICE = "ACTION_STOP_SERVICE";
 }
