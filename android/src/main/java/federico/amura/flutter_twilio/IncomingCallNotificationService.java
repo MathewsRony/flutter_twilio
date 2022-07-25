@@ -281,7 +281,7 @@ public class IncomingCallNotificationService extends Service {
         );
         intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
 
-        Log.e(TAG, "openBackgroundCallActivityForAcceptCall callInvite  "+callInvite.getCallSid());
+        Log.e(TAG, "missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!");
         intent.setAction(TwilioConstants.ACTION_MISSED_CALL);
         startActivity(intent);
     }
