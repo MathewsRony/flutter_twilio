@@ -121,9 +121,6 @@ public class FlutterTwilioPlugin implements
             }else{
                 Log.d(TAG, "!!!!!!!@@@@@@@@@!!!!!");
                 responseChannel.invokeMethod("missedCall", "");
-                Intent acceptIntent = new Intent(context, IncomingCallNotificationService.class);
-                acceptIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
-                context.startService(intent);
             }
         }
     }
