@@ -150,6 +150,11 @@ public class TwilioUtils {
         Log.e("********Twilio ", "#############################7");
     }
 
+    public void missedCall() {
+        this.status = "missedCall";
+        Log.e(TAG, "*******************************************1-0-0-0");
+    }
+
     public void acceptInvite(CallInvite callInvite, Call.Listener listener) {
         Log.e("********Twilio ", "#############################acceptInvite");
         Log.e(TAG,"onCallInvite:"+callInvite.getCallSid());

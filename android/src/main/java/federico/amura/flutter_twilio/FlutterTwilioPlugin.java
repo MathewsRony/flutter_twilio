@@ -106,6 +106,7 @@ public class FlutterTwilioPlugin implements
     public boolean onNewIntent(Intent intent) {
         Log.d(TAG, "onNewIntent");
         String action = intent.getAction();
+        Log.d(TAG, action);
         this.handleIncomingCallIntent(intent);
         return false;
     }
