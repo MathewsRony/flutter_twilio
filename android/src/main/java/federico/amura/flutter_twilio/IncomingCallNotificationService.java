@@ -40,6 +40,7 @@ public class IncomingCallNotificationService extends Service {
 
     private static final String TAG = IncomingCallNotificationService.class.getSimpleName();
 
+    private FlutterTwilioPlugin.CustomBroadcastReceiver broadcastReceiver;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = intent.getAction();
@@ -146,6 +147,7 @@ public class IncomingCallNotificationService extends Service {
         CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
         Log.i(TAG, "Call canceled. App visible: " + isAppVisible() + ". Locked: " + isLocked());
 
+        CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
 
 //        this.stopServiceIncomingCall();
 
@@ -158,12 +160,12 @@ public class IncomingCallNotificationService extends Service {
 //        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
 //        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 //        notificationManager.notify(100, notification);
+
+        TwilioUtils.getInstance(this).missedCall();
 //       startForeground(TwilioConstants.NOTIFICATION_MISSED_CALL, notification);
 //        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
-        Intent intented = new Intent();
-        intented.setAction(TwilioConstants.ACTION_MISSED_CALL);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intented);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
     public static String getApplicationName(Context context) {
         ApplicationInfo applicationInfo = context.getApplicationInfo();
