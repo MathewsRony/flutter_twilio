@@ -143,10 +143,8 @@ public class IncomingCallNotificationService extends Service {
 
     private void handleCancelledCall(Intent intent) {
         SoundUtils.getInstance(this).stopRinging();
-        CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
+        CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
         Log.i(TAG, "Call canceled. App visible: " + isAppVisible() + ". Locked: " + isLocked());
-
-        CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
 
 //        this.stopServiceIncomingCall();
 
@@ -156,7 +154,7 @@ public class IncomingCallNotificationService extends Service {
 //        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
 //        this.informAppCancelCall();
         stopForeground(true);
-        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
+        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, intent,false);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(100, notification);
 //       startForeground(TwilioConstants.NOTIFICATION_MISSED_CALL, notification);
@@ -268,11 +266,23 @@ public class IncomingCallNotificationService extends Service {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancel(100);
     }
-    private void missedCall(Intent intent) {
+    private void missedCall(Intent intents) {
         stopForeground(true);
-        Log.i(TAG, "returning call!!!!");
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        Log.i(TAG, "missed Call!!!!");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intents);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancelAll();
+        Intent intent = new Intent();
+        intent.setFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+        );
+        intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+
+        Log.e(TAG, "openBackgroundCallActivityForAcceptCall callInvite  "+callInvite.getCallSid());
+        intent.setAction(TwilioConstants.ACTION_MISSED_CALL);
+        startActivity(intent);
     }
 }
