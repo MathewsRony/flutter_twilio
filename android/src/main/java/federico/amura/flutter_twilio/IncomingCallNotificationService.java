@@ -279,7 +279,7 @@ public class IncomingCallNotificationService extends Service {
                         Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
                         Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
         );
-        intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+        intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
 
         Log.e(TAG, "missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!");
         intent.setAction(TwilioConstants.ACTION_MISSED_CALL);
