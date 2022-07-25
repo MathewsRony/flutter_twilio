@@ -118,12 +118,6 @@ public class FlutterTwilioPlugin implements
             if (TwilioConstants.ACTION_ACCEPT.equals(action)) {
                 CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
                 answer(callInvite);
-            }else{
-                Log.d(TAG, "!!!!!!!@@@@@@@@@!!!!!");
-                responseChannel.invokeMethod("missedCall", "");
-                Intent acceptIntent = new Intent(context, IncomingCallNotificationService.class);
-                acceptIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
-                context.startService(intent);
             }
         }
     }
