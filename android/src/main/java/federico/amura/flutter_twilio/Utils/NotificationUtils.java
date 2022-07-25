@@ -187,8 +187,8 @@ public class NotificationUtils {
         );
 //        Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
         Intent LaunchIntent = new Intent(context, IncomingCallNotificationService.class);
-        acceptIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
-        acceptIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, cancelledCallInvite);
+        LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
+        LaunchIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, cancelledCallInvite);
         Log.i("TAG", "Call canceled. buildMissedCallNotification 5 ");
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent pendingIntent = PendingIntent.getActivity(
