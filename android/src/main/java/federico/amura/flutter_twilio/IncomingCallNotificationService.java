@@ -40,7 +40,6 @@ public class IncomingCallNotificationService extends Service {
 
     private static final String TAG = IncomingCallNotificationService.class.getSimpleName();
 
-    private FlutterTwilioPlugin.CustomBroadcastReceiver broadcastReceiver;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = intent.getAction();
