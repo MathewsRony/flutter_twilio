@@ -145,8 +145,8 @@ public class IncomingCallNotificationService extends Service {
         SoundUtils.getInstance(this).stopRinging();
         CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
         Log.i(TAG, "Call canceled. App visible: " + isAppVisible() + ". Locked: " + isLocked());
-        Log.i(TAG, "1234567890!@#$%^&*()");
-        FlutterTwilioPlugin.responseChannel.invokeMethod("missedCall", "");
+
+        CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
 
 //        this.stopServiceIncomingCall();
 
