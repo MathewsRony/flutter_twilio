@@ -156,11 +156,9 @@ public class IncomingCallNotificationService extends Service {
 //        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
 //        this.informAppCancelCall();
         stopForeground(true);
-//        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
-//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-//        notificationManager.notify(100, notification);
-
-        TwilioUtils.getInstance(this).missedCall();
+        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(100, notification);
 //       startForeground(TwilioConstants.NOTIFICATION_MISSED_CALL, notification);
 //        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
@@ -244,7 +242,7 @@ public class IncomingCallNotificationService extends Service {
     private void openBackgroundCallActivityForAcceptCall(CallInvite callInvite) {
         try {
             Log.e(TAG, "openBackgroundCallActivityForAcceptCall function inside");
-            Intent intent = new Intent(this, BackgroundCallJavaActivity.class);
+            Intent intent = new Intent(getApplicationContext(), BackgroundCallJavaActivity.class);
             intent.setFlags(
                     Intent.FLAG_ACTIVITY_NEW_TASK |
                             Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
@@ -255,7 +253,7 @@ public class IncomingCallNotificationService extends Service {
 
             Log.e(TAG, "openBackgroundCallActivityForAcceptCall callInvite  "+callInvite.getCallSid());
             intent.setAction(TwilioConstants.ACTION_ACCEPT);
-           startActivity(intent);
+            getApplicationContext().startActivity(intent);
 
             Log.e(TAG, "openBackgroundCallActivityForAcceptCall function after startActivity");
         } catch (Exception e) {
