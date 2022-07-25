@@ -38,7 +38,7 @@ import federico.amura.flutter_twilio.Utils.TwilioConstants;
 import federico.amura.flutter_twilio.Utils.TwilioUtils;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
-public class IncomingCallNotificationService extends Service implements MethodChannel.MethodCallHandler,{
+public class IncomingCallNotificationService extends Service implements MethodChannel.MethodCallHandler{
 
     private static final String TAG = IncomingCallNotificationService.class.getSimpleName();
 
