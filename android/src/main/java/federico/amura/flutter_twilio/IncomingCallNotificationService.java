@@ -143,7 +143,7 @@ public class IncomingCallNotificationService extends Service {
 
     private void handleCancelledCall(Intent intent) {
         SoundUtils.getInstance(this).stopRinging();
-        CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
+        CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
         Log.i(TAG, "Call canceled. App visible: " + isAppVisible() + ". Locked: " + isLocked());
 
 
