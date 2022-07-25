@@ -253,7 +253,7 @@ public class IncomingCallNotificationService extends Service {
 
             Log.e(TAG, "openBackgroundCallActivityForAcceptCall callInvite  "+callInvite.getCallSid());
             intent.setAction(TwilioConstants.ACTION_ACCEPT);
-            getApplicationContext().startActivity(intent);
+            startActivity(intent);
 
             Log.e(TAG, "openBackgroundCallActivityForAcceptCall function after startActivity");
         } catch (Exception e) {
