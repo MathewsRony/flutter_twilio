@@ -269,7 +269,6 @@ public class IncomingCallNotificationService extends Service {
     private void missedCall(Intent intents) {
         stopForeground(true);
         Log.i(TAG, "missed Call!!!!");
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intents);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancelAll();
         Intent intent = new Intent();
@@ -279,7 +278,7 @@ public class IncomingCallNotificationService extends Service {
                         Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
                         Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
         );
-        intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
+        intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE,intents);
 
         Log.e(TAG, "missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!");
         intent.setAction(TwilioConstants.ACTION_MISSED_CALL);
