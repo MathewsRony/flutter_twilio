@@ -96,8 +96,9 @@ public class VoiceFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void handleCanceledCallInvite(CancelledCallInvite cancelledCallInvite) {
+        Log.e("***VoiceFirebaseMessagingService ", "handleCanceledCallInvite");
         Intent intent = new Intent(this, IncomingCallNotificationService.class);
-        intent.setAction(TwilioConstants.ACTION_CANCEL_CALL);
+        intent.setAction(TwilioConstants.ACTION_MISSED_CALL);
         intent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, cancelledCallInvite);
         startService(intent);
     }
