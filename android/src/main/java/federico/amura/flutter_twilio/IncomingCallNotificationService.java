@@ -159,7 +159,6 @@ public class IncomingCallNotificationService extends Service {
         Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(100, notification);
-        intent.setAction(TwilioConstants.ACTION_MISSED_CALL);
 //       startForeground(TwilioConstants.NOTIFICATION_MISSED_CALL, notification);
 //        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
