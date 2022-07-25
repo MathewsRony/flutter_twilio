@@ -28,8 +28,6 @@ import com.twilio.voice.CancelledCallInvite;
 import java.util.List;
 import java.util.Map;
 
-import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.Result;
 import federico.amura.flutter_twilio.Utils.AppForegroundStateUtils;
 import federico.amura.flutter_twilio.Utils.NotificationUtils;
 import federico.amura.flutter_twilio.Utils.PreferencesUtils;
@@ -38,7 +36,7 @@ import federico.amura.flutter_twilio.Utils.TwilioConstants;
 import federico.amura.flutter_twilio.Utils.TwilioUtils;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
-public class IncomingCallNotificationService extends Service implements MethodChannel.MethodCallHandler,{
+public class IncomingCallNotificationService extends Service {
 
     private static final String TAG = IncomingCallNotificationService.class.getSimpleName();
 
