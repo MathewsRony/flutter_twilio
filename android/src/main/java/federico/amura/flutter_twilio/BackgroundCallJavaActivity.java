@@ -327,6 +327,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
     @Override
     protected void onNewIntent(Intent intent) {
+        Log.d(TAG, "onNewIntent");
         super.onNewIntent(intent);
         if (intent == null || intent.getAction() == null) return;
 
