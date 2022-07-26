@@ -146,7 +146,6 @@ public class IncomingCallNotificationService extends Service {
         SoundUtils.getInstance(this).stopRinging();
         CancelledCallInvite cancelledCallInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
         Log.i(TAG, "Call canceled. App visible: " + isAppVisible() + ". Locked: " + isLocked());
-        FlutterTwilioPlugin.missedCall();
 //        this.stopServiceIncomingCall();
 
 //        if (cancelledCallInvite == null) return;
@@ -155,9 +154,10 @@ public class IncomingCallNotificationService extends Service {
 //        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
 //        this.informAppCancelCall();
         stopForeground(true);
-        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(100, notification);
+        FlutterTwilioPlugin.missedCall();
+//        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
+//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+//        notificationManager.notify(100, notification);
 //       startForeground(TwilioConstants.NOTIFICATION_MISSED_CALL, notification);
 //        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
