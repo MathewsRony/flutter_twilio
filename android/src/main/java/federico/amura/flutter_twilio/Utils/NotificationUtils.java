@@ -141,7 +141,7 @@ public class NotificationUtils {
         return builder.build();
     }
 
-    public static Notification createMissedCallNotification(Context context,Intent intent, CancelledCallInvite cancelledCallInvite, boolean showHeadsUp) {
+    public static Notification createMissedCallNotification(Context context, CancelledCallInvite cancelledCallInvite, boolean showHeadsUp) {
         String fromDisplayName = null;
         for (Map.Entry<String, String> entry : cancelledCallInvite.getCustomParameters().entrySet()) {
             if (entry.getKey().equals("fromDisplayName")) {
@@ -188,6 +188,7 @@ public class NotificationUtils {
 //        Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
         Intent LaunchIntent = new Intent(context, IncomingCallNotificationService.class);
         LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
+        LaunchIntent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, cancelledCallInvite);
         Log.i("TAG", "Call canceled. buildMissedCallNotification 5 ");
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent pendingIntent = PendingIntent.getActivity(
