@@ -34,6 +34,7 @@ import federico.amura.flutter_twilio.Utils.PreferencesUtils;
 import federico.amura.flutter_twilio.Utils.SoundUtils;
 import federico.amura.flutter_twilio.Utils.TwilioConstants;
 import federico.amura.flutter_twilio.Utils.TwilioUtils;
+
 import androidx.lifecycle.ProcessLifecycleOwner;
 
 public class IncomingCallNotificationService extends Service {
@@ -49,7 +50,7 @@ public class IncomingCallNotificationService extends Service {
                 case TwilioConstants.ACTION_INCOMING_CALL: {
                     Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_INCOMING_CALL case");
                     CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
-                    Log.e(TAG, "ACTION_INCOMING_CALL call Invite "+ callInvite.getCallSid());
+                    Log.e(TAG, "ACTION_INCOMING_CALL call Invite " + callInvite.getCallSid());
                     handleIncomingCall(callInvite);
                 }
                 break;
@@ -58,7 +59,7 @@ public class IncomingCallNotificationService extends Service {
                     Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_ACCEPT case");
 
                     CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
-                    Log.e(TAG, "ACTION_ACCEPT call Invite "+ callInvite.getCallSid());
+                    Log.e(TAG, "ACTION_ACCEPT call Invite " + callInvite.getCallSid());
                     accept(callInvite);
                 }
                 break;
@@ -155,18 +156,20 @@ public class IncomingCallNotificationService extends Service {
 //        this.informAppCancelCall();
         stopForeground(true);
         Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
-//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-//        notificationManager.notify(100, notification);
-       startForeground(TwilioConstants.NOTIFICATION_MISSED_CALL, notification);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(100, notification);
+//       startForeground(TwilioConstants.NOTIFICATION_MISSED_CALL, notification);
 //        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
     public static String getApplicationName(Context context) {
         ApplicationInfo applicationInfo = context.getApplicationInfo();
         int stringId = applicationInfo.labelRes;
         return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
     }
+
     private static String createChannel(Context context, boolean highPriority) {
         String id = highPriority ? TwilioConstants.VOICE_CHANNEL_HIGH_IMPORTANCE : TwilioConstants.VOICE_CHANNEL_LOW_IMPORTANCE;
 
@@ -193,6 +196,7 @@ public class IncomingCallNotificationService extends Service {
 
         return id;
     }
+
     private void startServiceIncomingCall(CallInvite callInvite) {
         Log.e(TAG, "Start service incoming call");
         SoundUtils.getInstance(this).playRinging();
@@ -249,7 +253,7 @@ public class IncomingCallNotificationService extends Service {
             );
             intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
 
-            Log.e(TAG, "openBackgroundCallActivityForAcceptCall callInvite  "+callInvite.getCallSid());
+            Log.e(TAG, "openBackgroundCallActivityForAcceptCall callInvite  " + callInvite.getCallSid());
             intent.setAction(TwilioConstants.ACTION_ACCEPT);
             startActivity(intent);
 
@@ -259,6 +263,7 @@ public class IncomingCallNotificationService extends Service {
         }
 
     }
+
     private void returnCall(Intent intent) {
         stopForeground(true);
         Log.i(TAG, "returning call!!!!");
@@ -266,22 +271,30 @@ public class IncomingCallNotificationService extends Service {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancel(100);
     }
-    private void missedCall(Intent intents) {
-        stopForeground(true);
-        Log.i(TAG, "missed Call!!!!");
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.cancelAll();
-        Intent intent = new Intent();
-        intent.setFlags(
-                Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
-                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-        );
-        intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE,intents);
 
-        Log.e(TAG, "missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!");
-        intent.setAction(TwilioConstants.ACTION_MISSED_CALL);
-        startActivity(intent);
+    private void missedCall(Intent intents) {
+        if (!isLocked() && isAppVisible()) {
+            Intent intent = new Intent();
+            intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+            intent.setAction(TwilioConstants.ACTION_MISSED_CALL);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        } else {
+            stopForeground(true);
+            Log.i(TAG, "missed Call!!!!");
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            notificationManager.cancelAll();
+            Intent intent = new Intent();
+            intent.setFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK |
+                            Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                            Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+                            Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+            );
+            intent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, intents);
+
+            Log.e(TAG, "missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!");
+            intent.setAction(TwilioConstants.ACTION_MISSED_CALL);
+            startActivity(intent);
+        }
     }
 }
