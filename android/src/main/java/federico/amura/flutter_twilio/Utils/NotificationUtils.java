@@ -186,7 +186,7 @@ public class NotificationUtils {
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 //        Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
-        Intent LaunchIntent = new Intent(context, IncomingCallNotificationService.class);
+        Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
         LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
         LaunchIntent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, cancelledCallInvite);
         Log.i("TAG", "Call canceled. buildMissedCallNotification 5 ");
