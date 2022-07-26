@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Lifecycle;
@@ -141,6 +142,7 @@ public class NotificationUtils {
         return builder.build();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.S)
     public static Notification createMissedCallNotification(Context context, CancelledCallInvite cancelledCallInvite, boolean showHeadsUp) {
         String fromDisplayName = null;
         for (Map.Entry<String, String> entry : cancelledCallInvite.getCustomParameters().entrySet()) {
@@ -186,7 +188,6 @@ public class NotificationUtils {
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
 //        Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
-//        Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
 //        LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
 //        LaunchIntent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, cancelledCallInvite);
 
@@ -201,7 +202,7 @@ public class NotificationUtils {
         );
         Log.i("TAG", "Call canceled. buildMissedCallNotification 5 ");
         @SuppressLint("UnspecifiedImmutableFlag")
-        PendingIntent pendingIntent = PendingIntent.getActivity(
+        PendingIntent pendingIntent = PendingIntent.getService(
                 context,
                 0,
                 acceptIntent,
@@ -213,7 +214,7 @@ public class NotificationUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setSmallIcon(R.drawable.ic_call_end);
             builder.setContentTitle("Missed Call");
-            builder.setCategory(Notification.CATEGORY_CALL);
+            builder.setCategory(Notification.CATEGORY_MISSED_CALL);
             builder.setAutoCancel(true);
             builder.addAction(android.R.drawable.ic_menu_call, "Call Back", piReturnCallIntent);
             builder.setPriority(NotificationCompat.PRIORITY_HIGH);
