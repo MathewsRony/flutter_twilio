@@ -275,7 +275,7 @@ public class IncomingCallNotificationService extends Service {
     private void missedCall(Intent intents) {
         if (!isLocked() && isAppVisible()) {
             Intent intent = new Intent();
-            intent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, callInvite);
+            intent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, intents);
             intent.setAction(TwilioConstants.ACTION_MISSED_CALL);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         } else {
