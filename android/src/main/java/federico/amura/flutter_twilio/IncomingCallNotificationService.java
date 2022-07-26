@@ -154,11 +154,10 @@ public class IncomingCallNotificationService extends Service {
 //        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
 //        this.informAppCancelCall();
         stopForeground(true);
-        FlutterTwilioPlugin.missedCall();
-//        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
-//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-//        notificationManager.notify(100, notification);
-//       startForeground(TwilioConstants.NOTIFICATION_MISSED_CALL, notification);
+        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(100, notification);
+       startForeground(TwilioConstants.NOTIFICATION_MISSED_CALL, notification);
 //        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
@@ -273,28 +272,10 @@ public class IncomingCallNotificationService extends Service {
     }
 
     private void missedCall(Intent intents) {
-        if (!isLocked() && isAppVisible()) {
-            Intent intent = new Intent();
-            intent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, intents);
-            intent.setAction(TwilioConstants.ACTION_MISSED_CALL);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        } else {
-            stopForeground(true);
-            Log.i(TAG, "missed Call!!!!");
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            notificationManager.cancelAll();
-            Intent intent = new Intent();
-            intent.setFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK |
-                            Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                            Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
-                            Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-            );
-            intent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, intents);
+        Intent LaunchIntent = this.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
+        LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
+        startActivity(LaunchIntent);
+        FlutterTwilioPlugin.missedCall();
 
-            Log.e(TAG, "missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!");
-            intent.setAction(TwilioConstants.ACTION_MISSED_CALL);
-            startActivity(intent);
-        }
     }
 }
