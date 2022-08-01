@@ -118,7 +118,7 @@ public class FlutterTwilioPlugin implements
             }
             if (TwilioConstants.ACTION_MISSED_CALL.equals(action)) {
                 Log.d(TAG, "!!!!!!!@@@@@@@@@!!!!!");
-                responseChannel.invokeMethod("missedCall");
+                this.responseChannel.invokeMethod("missedCall");
             }
         }
     }
