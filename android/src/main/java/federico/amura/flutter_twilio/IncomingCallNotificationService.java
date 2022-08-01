@@ -153,7 +153,7 @@ public class IncomingCallNotificationService extends Service {
 //
 //        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
 //        this.informAppCancelCall();
-        FlutterTwilioPlugin.channel.invokeMethod("missedCall", "");
+        FlutterTwilioPlugin.responseChannel.invokeMethod("missedCall", "");
         stopForeground(true);
 //        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
 //        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
