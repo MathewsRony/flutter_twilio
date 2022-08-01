@@ -125,7 +125,6 @@ public class FlutterTwilioPlugin implements
         }
     }
     public static void missedCall() {
-        Log.d(TAG, "!!!!!!!@@@@@@@@@!!!!!");
         responseChannel.invokeMethod("missedCall", "");
     }
     @Override
