@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-import androidx.core.app.NotificationManagerCompat;
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -30,7 +29,6 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry;
-import federico.amura.flutter_twilio.IncomingCallNotificationService;
 
 public class FlutterTwilioPlugin implements
         FlutterPlugin,
@@ -41,7 +39,7 @@ public class FlutterTwilioPlugin implements
     private static final String TAG = "FlutterTwilioPlugin";
 
     private Context context;
-    public static MethodChannel responseChannel;
+    private MethodChannel responseChannel;
     private CustomBroadcastReceiver broadcastReceiver;
     private boolean broadcastReceiverRegistered = false;
 
@@ -105,7 +103,6 @@ public class FlutterTwilioPlugin implements
     @Override
     public boolean onNewIntent(Intent intent) {
         Log.d(TAG, "onNewIntent");
-        String action = intent.getAction();
         this.handleIncomingCallIntent(intent);
         return false;
     }
@@ -118,15 +115,10 @@ public class FlutterTwilioPlugin implements
             if (TwilioConstants.ACTION_ACCEPT.equals(action)) {
                 CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
                 answer(callInvite);
-            }else{
-                Log.d(TAG, "!!!!!!!@@@@@@@@@!!!!!");
-                responseChannel.invokeMethod("missedCall", "");
             }
         }
     }
-    public static void missedCall() {
-        responseChannel.invokeMethod("missedCall", "");
-    }
+
     @Override
     public void onMethodCall(MethodCall call, @NonNull Result result) {
         Log.i(TAG, "onMethodCall. Method: " + call.method);
@@ -436,5 +428,3 @@ public class FlutterTwilioPlugin implements
 
 
 }
-
-
