@@ -94,7 +94,7 @@ public class IncomingCallNotificationService extends Service {
 
                 case TwilioConstants.ACTION_MISSED_CALL:
                     Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_MISSED_CALL case");
-                    returnCall(intent);
+                    missedCall(intent);
                     break;
             }
         }

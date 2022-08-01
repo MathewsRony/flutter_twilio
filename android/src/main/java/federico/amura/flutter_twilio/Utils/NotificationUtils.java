@@ -193,8 +193,8 @@ public class NotificationUtils {
 
         Intent acceptIntent = new Intent(context, IncomingCallNotificationService.class);
         acceptIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
-        acceptIntent.putExtra(cancelledCallInvite.getTo(), "to");
-        acceptIntent.putExtra(cancelledCallInvite.getFrom(), "callerId");
+        returnCallIntent.putExtra(cancelledCallInvite.getTo(), "to");
+        returnCallIntent.putExtra(cancelledCallInvite.getFrom(), "callerId");
         acceptIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, cancelledCallInvite);
 
         Log.i("TAG", "Call canceled. buildMissedCallNotification 5 ");
