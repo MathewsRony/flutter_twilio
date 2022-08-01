@@ -170,6 +170,8 @@ public class IncomingCallNotificationService extends Service {
 //        startActivity(LaunchIntent);
 
 
+        FlutterTwilioPlugin.missedCall();
+        Log.i(TAG, "Call canceled. App visible2222: " + isAppVisible() + ". Locked: " + isLocked());
         Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(100, notification);
@@ -177,7 +179,6 @@ public class IncomingCallNotificationService extends Service {
 //        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
 
-        FlutterTwilioPlugin.missedCall();
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
