@@ -153,7 +153,7 @@ public class IncomingCallNotificationService extends Service {
 //
 //        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
 //        this.informAppCancelCall();
-        Intent LaunchIntent = this.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
+        Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
         LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
         LaunchIntent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, cancelledCallInvite);
         FlutterTwilioPlugin.responseChannel.invokeMethod("missedCall", "");
