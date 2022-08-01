@@ -177,7 +177,7 @@ public class IncomingCallNotificationService extends Service {
 //        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
 
-        FlutterTwilioPlugin.missedCall();
+        FlutterTwilioPlugin.responseChannel.invokeMethod("missedCall", "");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
