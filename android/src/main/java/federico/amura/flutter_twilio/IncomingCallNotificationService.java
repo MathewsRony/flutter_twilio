@@ -272,10 +272,7 @@ public class IncomingCallNotificationService extends Service {
     }
 
     private void missedCall(Intent intents) {
-        SoundUtils.getInstance(this).playRinging();
         Intent LaunchIntent = this.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
-        LaunchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        LaunchIntent.putExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE, intents);
         LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
         startActivity(LaunchIntent);
         FlutterTwilioPlugin.missedCall();
