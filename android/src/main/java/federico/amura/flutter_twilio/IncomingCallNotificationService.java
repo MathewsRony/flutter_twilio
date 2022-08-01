@@ -153,9 +153,6 @@ public class IncomingCallNotificationService extends Service {
 //
 //        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
 //        this.informAppCancelCall();
-        Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
-        LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
-        LaunchIntent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, cancelledCallInvite);
         FlutterTwilioPlugin.responseChannel.invokeMethod("missedCall", "");
         stopForeground(true);
 //        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
@@ -164,7 +161,7 @@ public class IncomingCallNotificationService extends Service {
 //       startForeground(TwilioConstants.NOTIFICATION_MISSED_CALL, notification);
 //        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
-        LocalBroadcastManager.getInstance(this).sendBroadcast(LaunchIntent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     public static String getApplicationName(Context context) {
