@@ -120,16 +120,13 @@ public class FlutterTwilioPlugin implements
                 answer(callInvite);
             }else{
                 Log.d(TAG, "!!!!!!!@@@@@@@@@!!!!!");
-                Log.d(TAG, String.valueOf(TwilioConstants.ACTION_ACCEPT.equals(action)));
                 responseChannel.invokeMethod("missedCall", "");
             }
         }
     }
-
     public static void missedCall() {
         responseChannel.invokeMethod("missedCall", "");
     }
-
     @Override
     public void onMethodCall(MethodCall call, @NonNull Result result) {
         Log.i(TAG, "onMethodCall. Method: " + call.method);
