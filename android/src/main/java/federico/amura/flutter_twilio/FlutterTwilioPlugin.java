@@ -41,7 +41,7 @@ public class FlutterTwilioPlugin implements
     private static final String TAG = "FlutterTwilioPlugin";
 
     private Context context;
-    private MethodChannel responseChannel;
+    private static MethodChannel responseChannel;
     private CustomBroadcastReceiver broadcastReceiver;
     private boolean broadcastReceiverRegistered = false;
 
@@ -126,9 +126,9 @@ public class FlutterTwilioPlugin implements
         }
     }
 
-    public void missedCall() {
+    public static void missedCall() {
         Log.d(TAG, "!!!!!!!2222222222!!!!!");
-        this.responseChannel.invokeMethod("missedCall", "");
+        responseChannel.invokeMethod("missedCall", "");
     }
 
     @Override
