@@ -97,7 +97,7 @@ public class FlutterTwilioPlugin implements
     @Override
     public void onDetachedFromActivity() {
         Log.d(TAG, "onDetachedFromActivity");
-        this.unregisterReceiver();
+//        this.unregisterReceiver();
     }
 
     @Override
