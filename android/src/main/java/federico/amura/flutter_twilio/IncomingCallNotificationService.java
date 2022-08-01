@@ -153,18 +153,30 @@ public class IncomingCallNotificationService extends Service {
 //
 //        Log.i(TAG, "From: " + cancelledCallInvite.getFrom() + ". To: " + cancelledCallInvite.getTo());
 //        this.informAppCancelCall();
-        Intent LaunchIntent = this.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
-        LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
-        LaunchIntent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, cancelledCallInvite);
-        FlutterTwilioPlugin.responseChannel.invokeMethod("missedCall", "");
         stopForeground(true);
+        FlutterTwilioPlugin.responseChannel.invokeMethod("missedCall", "");
+//        Intent LaunchIntent = this.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
+//        LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
+//        LaunchIntent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, cancelledCallInvite);
+//
+//        LaunchIntent.setFlags(
+//                Intent.FLAG_ACTIVITY_NEW_TASK |
+//                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+//                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+//                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+//        );
+//
+//        Log.e(TAG, "openBackgroundCallActivityForAcceptCall callInvite  " + callInvite.getCallSid());
+//        LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
+//        startActivity(LaunchIntent);
+
+
 //        Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
 //        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 //        notificationManager.notify(100, notification);
 //       startForeground(TwilioConstants.NOTIFICATION_MISSED_CALL, notification);
 //        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
-        startActivity(LaunchIntent);
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
