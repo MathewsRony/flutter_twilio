@@ -41,7 +41,7 @@ public class FlutterTwilioPlugin implements
     private static final String TAG = "FlutterTwilioPlugin";
 
     private Context context;
-    public static MethodChannel responseChannel;
+    private MethodChannel responseChannel;
     private CustomBroadcastReceiver broadcastReceiver;
     private boolean broadcastReceiverRegistered = false;
 

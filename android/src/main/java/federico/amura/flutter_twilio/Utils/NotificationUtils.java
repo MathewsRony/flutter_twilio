@@ -188,7 +188,6 @@ public class NotificationUtils {
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
         Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
-        LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
 
 //        Intent acceptIntent = new Intent(context, IncomingCallNotificationService.class);
 //        acceptIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
