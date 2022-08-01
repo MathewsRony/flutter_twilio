@@ -121,14 +121,14 @@ public class FlutterTwilioPlugin implements
             }else{
                 Log.d(TAG, "!!!!!!!@@@@@@@@@!!!!!");
                 Log.d(TAG, String.valueOf(TwilioConstants.ACTION_ACCEPT.equals(action)));
-                this.responseChannel.invokeMethod("missedCall", "");
+                responseChannel.invokeMethod("missedCall", "");
             }
         }
     }
 
-    public void missedCall() {
+    public static void missedCall() {
         Log.d(TAG, "!!!!!!!2222222222!!!!!");
-        this.responseChannel.invokeMethod("missedCall", "");
+        responseChannel.invokeMethod("missedCall", "");
     }
 
     @Override
