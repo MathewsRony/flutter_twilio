@@ -34,7 +34,6 @@ import federico.amura.flutter_twilio.Utils.PreferencesUtils;
 import federico.amura.flutter_twilio.Utils.SoundUtils;
 import federico.amura.flutter_twilio.Utils.TwilioConstants;
 import federico.amura.flutter_twilio.Utils.TwilioUtils;
-import federico.amura.flutter_twilio.FlutterTwilioPlugin;
 
 import androidx.lifecycle.ProcessLifecycleOwner;
 
@@ -172,6 +171,7 @@ public class IncomingCallNotificationService extends Service {
 
 
         FlutterTwilioPlugin.missedCall();
+        Log.i(TAG, "Call canceled. App visible2222: " + isAppVisible() + ". Locked: " + isLocked());
         Notification notification = NotificationUtils.createMissedCallNotification(getApplicationContext(), cancelledCallInvite, false);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(100, notification);

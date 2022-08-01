@@ -42,6 +42,7 @@ public class FlutterTwilioPlugin implements
 
     private Context context;
     public static MethodChannel responseChannel;
+    public static MethodChannel channel;
     private CustomBroadcastReceiver broadcastReceiver;
     private boolean broadcastReceiverRegistered = false;
 
@@ -50,8 +51,8 @@ public class FlutterTwilioPlugin implements
 
     private void setupMethodChannel(BinaryMessenger messenger, Context context) {
         this.context = context;
-        MethodChannel channel = new MethodChannel(messenger, "flutter_twilio");
-        channel.setMethodCallHandler(this);
+        this.channel = new MethodChannel(messenger, "flutter_twilio");
+        this.channel.setMethodCallHandler(this);
         this.responseChannel = new MethodChannel(messenger, "flutter_twilio_response");
     }
 
@@ -127,7 +128,6 @@ public class FlutterTwilioPlugin implements
     }
 
     public static void missedCall() {
-        Log.d(TAG, "!!!!!!!2222222222!!!!!");
         responseChannel.invokeMethod("missedCall", "");
     }
 
