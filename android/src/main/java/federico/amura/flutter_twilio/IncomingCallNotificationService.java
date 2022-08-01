@@ -164,9 +164,7 @@ public class IncomingCallNotificationService extends Service {
 //       startForeground(TwilioConstants.NOTIFICATION_MISSED_CALL, notification);
 //        buildMissedCallNotification(cancelledCallInvite.getFrom(), cancelledCallInvite.getTo(),cancelledCallInvite);
 
-        startActivity(LaunchIntent);
-
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(LaunchIntent);
     }
 
     public static String getApplicationName(Context context) {
