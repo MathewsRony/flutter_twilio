@@ -116,6 +116,10 @@ public class FlutterTwilioPlugin implements
                 CallInvite callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
                 answer(callInvite);
             }
+            if (TwilioConstants.ACTION_MISSED_CALL.equals(action)) {
+                Log.d(TAG, "!!!!!!!@@@@@@@@@!!!!!");
+                responseChannel.invokeMethod("missedCall");
+            }
         }
     }
 
