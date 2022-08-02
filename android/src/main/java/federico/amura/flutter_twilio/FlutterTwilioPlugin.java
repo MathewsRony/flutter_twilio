@@ -41,7 +41,6 @@ public class FlutterTwilioPlugin implements
     private static final String TAG = "FlutterTwilioPlugin";
 
     private Context context;
-    private MethodChannel responseChannel;
     public static MethodChannel channels =  MethodChannel("tch-crm");
     private CustomBroadcastReceiver broadcastReceiver;
     private boolean broadcastReceiverRegistered = false;
@@ -127,7 +126,6 @@ public class FlutterTwilioPlugin implements
     }
     public static void missedCall(){
         Log.d(TAG, "!!!!!!!@@@@@@@@@!!!!!");
-        channels.invokeMethod("missedCall", "");
     }
     @Override
     public void onMethodCall(MethodCall call, @NonNull Result result) {
