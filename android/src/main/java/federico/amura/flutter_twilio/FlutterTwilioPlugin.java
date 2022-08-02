@@ -127,9 +127,6 @@ public class FlutterTwilioPlugin implements
     }
     public static void missedCall(){
         Log.d(TAG, "!!!!!!!@@@@@@@@@!!!!!");
-        responseChannel.invokeMethod("missedCall", "");
-        channels = new MethodChannel("tch-crm");
-        channels.invokeMethod("missedCall", "");
     }
     @Override
     public void onMethodCall(MethodCall call, @NonNull Result result) {
