@@ -185,10 +185,16 @@ public class NotificationUtils {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
-//        Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
+
         Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
         LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
         LaunchIntent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, cancelledCallInvite);
+        LaunchIntent.setFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+        );
         Log.i("TAG", "Call canceled. buildMissedCallNotification 5 ");
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent pendingIntent = PendingIntent.getActivity(
