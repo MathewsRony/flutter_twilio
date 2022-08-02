@@ -42,7 +42,7 @@ public class FlutterTwilioPlugin implements
 
     private Context context;
     private MethodChannel responseChannel;
-    private MethodChannel channels = new MethodChannel("tch-crm");
+    public MethodChannel channels = new MethodChannel("tch-crm");
     private CustomBroadcastReceiver broadcastReceiver;
     private boolean broadcastReceiverRegistered = false;
 
