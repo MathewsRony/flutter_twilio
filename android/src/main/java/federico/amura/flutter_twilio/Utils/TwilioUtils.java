@@ -149,20 +149,22 @@ public class TwilioUtils {
         this.activeCall = Voice.connect(this.context, connectOptions, getCallListener(listener));
         Log.e("********Twilio ", "#############################7");
     }
-    public void sendDigits(String digit){
+
+    public void sendDigits(String digit) {
         if (this.activeCall != null) {
             Log.i(TAG, "sending digit: " + digit);
             this.activeCall.sendDigits(digit);
             Log.i(TAG, "digit sent: ");
-        }else   {
+        } else {
             Log.i(TAG, "Error sending digits, no active call");
         }
     }
+
     public void acceptInvite(CallInvite callInvite, Call.Listener listener) {
         Log.e("********Twilio ", "#############################acceptInvite");
-        Log.e(TAG,"onCallInvite:"+callInvite.getCallSid());
-        String from=callInvite.getFrom();
-        Log.e(TAG,"tw_from:"+from);
+        Log.e(TAG, "onCallInvite:" + callInvite.getCallSid());
+        String from = callInvite.getFrom();
+        Log.e(TAG, "tw_from:" + from);
         Log.e("********Twilio ", "#############################");
         Log.e(TAG, "*******************************************22");
         if (this.activeCall != null) {
@@ -229,12 +231,14 @@ public class TwilioUtils {
     }
 
     public boolean toggleSpeaker() {
+        Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!7");
         if (this.activeCall == null) {
             throw new RuntimeException("No active call");
         }
 
         AudioManager audioManager = (AudioManager) this.context.getSystemService(Context.AUDIO_SERVICE);
         boolean isSpeaker = !audioManager.isSpeakerphoneOn();
+        Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!7" + isSpeaker);
         audioManager.setSpeakerphoneOn(isSpeaker);
         return isSpeaker;
     }

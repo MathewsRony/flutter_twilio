@@ -207,8 +207,11 @@ public class FlutterTwilioPlugin implements
 
             case "toggleSpeaker": {
                 try {
+                    Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!6");
                     boolean isSpeaker = twilioUtils.toggleSpeaker();
                     responseChannel.invokeMethod(twilioUtils.getCallStatus(), twilioUtils.getCallDetails());
+
+                    Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!6"+isSpeaker);
                     result.success(isSpeaker);
                 } catch (Exception exception) {
                     exception.printStackTrace();
