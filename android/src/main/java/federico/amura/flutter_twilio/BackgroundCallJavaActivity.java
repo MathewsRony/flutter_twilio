@@ -444,10 +444,16 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     }
 
     private void toggleSpeaker() {
+        Log.e("*Twilio*", "toggleSpeaker toggleSpeaker!!!!1");
+
         try {
+            Log.e("*Twilio*", "toggleSpeaker toggleSpeaker!!!!2");
             boolean speaker = TwilioUtils.getInstance(this).toggleSpeaker();
             applyColorToButton(this.btnSpeaker, speaker);
+            Log.e("*Twilio*", "toggleSpeaker toggleSpeaker!!!!3");
+            Log.e("*Twilio*", "Speaker"+speaker);
         } catch (Exception exception) {
+            Log.e("*Twilio*", "toggleSpeaker toggleSpeaker!!!!4");
             exception.printStackTrace();
         }
     }
