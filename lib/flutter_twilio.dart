@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'model/call.dart';
@@ -82,6 +81,13 @@ class FlutterTwilio {
 
   static Future<void> hangUp() async {
     await _channel.invokeMethod('hangUp');
+  }
+
+  static Future<void> sendDigits(String digits) async {
+    final args = <String, Object>{
+      "digits": digits,
+    };
+    await _channel.invokeMethod('sendDigits', args);
   }
 
   static Future<void> register({

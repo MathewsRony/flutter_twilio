@@ -10,6 +10,7 @@ class FlutterTwilioCall extends Equatable {
   final FlutterTwilioStatus status;
   final bool mute;
   final bool speaker;
+  final String to;
 
   FlutterTwilioCall({
     required this.id,
@@ -18,7 +19,7 @@ class FlutterTwilioCall extends Equatable {
     required this.mute,
     required this.speaker,
     required this.status,
-    required this.outgoing,
+    required this.outgoing,required this.to,
   });
 
   factory FlutterTwilioCall.fromMap(Map<String, dynamic> data) {
@@ -30,6 +31,7 @@ class FlutterTwilioCall extends Equatable {
       mute: data["mute"] ?? false,
       speaker: data["speaker"] ?? false,
       status: FlutterTwilio.getEventType(data["status"] ?? ""),
+      to: data["to"] ?? "",
     );
   }
 

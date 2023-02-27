@@ -6,7 +6,6 @@ homepage: "https://github.com/fedeamura/flutter_twilio"
 
 environment:
   sdk: ">=2.17.2 <3.0.0"
-  flutter: ">=1.10.0"
 
 dependencies:
   flutter:
