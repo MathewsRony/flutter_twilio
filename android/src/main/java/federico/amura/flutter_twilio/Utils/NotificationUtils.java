@@ -164,7 +164,6 @@ public class NotificationUtils {
         Log.d(" fromDisplayName", fromDisplayName);
         String notificationText = fromDisplayName;
 
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 2 ");
         Intent returnCallIntent = new Intent(context, BackgroundCallJavaActivity.class);
         returnCallIntent.setAction(TwilioConstants.ACTION_RETURN_CALL);
         returnCallIntent.putExtra(cancelledCallInvite.getTo(), "to");
@@ -176,7 +175,6 @@ public class NotificationUtils {
 //                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
 //                        Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
 //        );
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 3 ");
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent piReturnCallIntent = PendingIntent.getActivity(
                 context,
@@ -190,7 +188,6 @@ public class NotificationUtils {
         LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
         LaunchIntent.putExtra("TwilioConstant", "cancelledCallInvite");
         LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 5 ");
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context,
@@ -199,8 +196,7 @@ public class NotificationUtils {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
         );
-        Log.i("TAG", "Call canceled. buildMissedCallNotification 6  ");
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, false));
+         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, false));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setSmallIcon(R.drawable.ic_call_end);
             builder.setContentTitle("Missed Call");

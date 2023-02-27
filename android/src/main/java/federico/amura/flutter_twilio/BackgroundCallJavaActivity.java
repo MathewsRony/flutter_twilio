@@ -130,8 +130,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         this.turnScreenOnAndKeyguardOff();
 
         sharedPreferencesContactData = getApplicationContext().getSharedPreferences(TwilioConstants.SHARED_PREFERENCES_CONTACT_DATA, Context.MODE_PRIVATE);
-        Log.e(TAG, "*******************************************11");
-        handleIntent(getIntent());
+       handleIntent(getIntent());
         registerReceiver();
     }
 
@@ -176,21 +175,15 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
                         textDisplayName.setText(name);
                         if (!name.equals("") || !name.equals(callInvite.getFrom())) {
-                            Log.e("*Twilio*", "!!!!!!!!!!!!!!!!shared!!!!!!!!!!!!!!!!!");
-                            Log.e("*Twilio*", "!!!!!!!!!!!!!!!!shared!!!!!!!!!!!!!!!!!" + sharedPreferencesContactData.getString(callInvite.getFrom(), "") + "!");
 
                             handler.removeCallbacks(runnable);
                         }
                     }else
                     {
-                        Log.e("*Twilio*", "sharedPreferencesContactData !!!!");
-                        Log.e("*Twilio*", "sharedPreferencesContactData !!!!!" + sharedPreferencesContactData.getString(callInvite2.getFrom(), "") + "!");
-                        String name = sharedPreferencesContactData.getString(callInvite2.getFrom(), "");
+                       String name = sharedPreferencesContactData.getString(callInvite2.getFrom(), "");
 
                         textDisplayName.setText(name);
                         if (!name.equals("") || !name.equals(callInvite2.getFrom())) {
-                            Log.e("*Twilio*", "!!!!!!!!!!!!!!!!shared!!!!!!!!!!!!!!!!!");
-                            Log.e("*Twilio*", "!!!!!!!!!!!!!!!!shared!!!!!!!!!!!!!!!!!" + sharedPreferencesContactData.getString(callInvite2.getFrom(), "") + "!");
 
                             handler.removeCallbacks(runnable);
                         }
@@ -282,7 +275,6 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     }
 
     private void handleIntent(Intent intent) {
-        Log.e(TAG, "*******************************************12");
         if (intent == null || intent.getAction() == null) {
             close();
             return;
@@ -290,7 +282,6 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
 
         switch (intent.getAction()) {
             case TwilioConstants.ACTION_INCOMING_CALL: {
-                Log.e(TAG, "*******************************************13");
                 this.callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
                 containerIncomingCall.setVisibility(View.VISIBLE);
                 containerActiveCall.setVisibility(View.GONE);
@@ -299,8 +290,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             break;
 
             case TwilioConstants.ACTION_ACCEPT: {
-                Log.e(TAG, "*******************************************14");
-                this.callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
+               this.callInvite = intent.getParcelableExtra(TwilioConstants.EXTRA_INCOMING_CALL_INVITE);
                 containerIncomingCall.setVisibility(View.GONE);
                 containerActiveCall.setVisibility(View.VISIBLE);
                 updateCallDetails();
@@ -309,14 +299,11 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
             break;
 
             case TwilioConstants.ACTION_CANCEL_CALL: {
-                Log.e(TAG, "*******************************************15");
                 onCallCanceled();
             }
 
             break;
             case TwilioConstants.ACTION_RETURN_CALL:
-                Log.e(TAG, "*******************************************23");
-                Log.e("*Twilio onStartCommand ", "TwilioConstants.ACTION_RETURN_CALL case");
                  callInvite2 = intent.getParcelableExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE);
                 returnCall(intent,callInvite2);
                 break;
@@ -370,25 +357,19 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         }
     }
     private void acceptCall() {
-        Log.e(TAG, "*******************************************16");
         stopServiceIncomingCall();
 
         if (this.callInvite == null) {
-            Log.e(TAG, "*******************************************17");
             Log.i(TAG, "No call invite");
             this.close();
             return;
         }
-        Log.e(TAG, "*******************************************18");
         this.containerActiveCall.setVisibility(View.VISIBLE);
         this.containerIncomingCall.setVisibility(View.GONE);
 
         try {
-            Log.e(TAG, "*******************************************19");
             TwilioUtils.getInstance(this).acceptInvite(this.callInvite, getListener());
-            Log.e(TAG, "*******************************************20");
-        } catch (Exception exception) {
-            Log.e(TAG, "*******************************************21");
+         } catch (Exception exception) {
             exception.printStackTrace();
             this.close();
         }
@@ -444,6 +425,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
     }
 
     private void toggleSpeaker() {
+
         try {
             boolean speaker = TwilioUtils.getInstance(this).toggleSpeaker();
             applyColorToButton(this.btnSpeaker, speaker);
@@ -515,10 +497,7 @@ public class BackgroundCallJavaActivity extends AppCompatActivity implements Sen
         String fromDisplayName = null;
         if (this.callInvite != null) {
 
-            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case.........");
-            Log.e("*Twilio*", "TwilioConstants.callInvite.getCustomParameters().entrySet() case"+callInvite.getFrom());
-            for (Map.Entry<String, String> entry : callInvite.getCustomParameters().entrySet()) {
-                Log.e("*Twilio*", "entry.getKey() "+entry.getKey());
+           for (Map.Entry<String, String> entry : callInvite.getCustomParameters().entrySet()) {
 
                 if (entry.getKey().equals("fromDisplayName")) {
                     fromDisplayName = entry.getValue();

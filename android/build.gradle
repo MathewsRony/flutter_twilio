@@ -37,14 +37,14 @@ android {
         sourceCompatibility versions.java
         targetCompatibility versions.java
     }
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 32
+        minSdkVersion 23
+        targetSdkVersion 33
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

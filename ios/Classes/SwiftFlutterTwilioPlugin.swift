@@ -230,7 +230,15 @@ public class SwiftFlutterTwilioPlugin: NSObject, FlutterPlugin,   NotificationDe
             result("")
             return
         }
-        
+        if flutterCall.method == "sendDigits"
+                {
+                    guard let digits = arguments?["digits"] as? String else {return}
+
+                    self.sendDigits(digits: digits)
+                    result("")
+                    return
+
+                }
     
     }
     
@@ -1015,6 +1023,9 @@ extension SwiftFlutterTwilioPlugin : CallDelegate {
 //         }
         callDisconnected(id: call.uuid!, error: nil)
     }
+    public func sendDigits (digits: String) {
+            self.call?.sendDigits(digits)
+        }
 }
 
 extension UIWindow {
