@@ -228,7 +228,7 @@ public class TwilioUtils {
         AudioManager audioManager = (AudioManager) this.context.getSystemService(Context.AUDIO_SERVICE);
         boolean isSpeaker = !audioManager.isSpeakerphoneOn();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (isSpeaker)
+            if (!isSpeaker)
                 setCommunicationDevice(this.context, AudioDeviceInfo.TYPE_BUILTIN_EARPIECE);
             else
                 setCommunicationDevice(this.context, AudioDeviceInfo.TYPE_BUILTIN_SPEAKER);
