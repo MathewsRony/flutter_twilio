@@ -255,7 +255,7 @@ public class TwilioUtils {
     @RequiresApi(api = Build.VERSION_CODES.S)
     public void setCommunicationDevice(Context context, Integer targetDeviceType) {
         Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!8");
-        AudioManager audioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         List<AudioDeviceInfo> devices = audioManager.getAvailableCommunicationDevices();
         for (AudioDeviceInfo device : devices) {
             if (device.getType() == targetDeviceType) {
