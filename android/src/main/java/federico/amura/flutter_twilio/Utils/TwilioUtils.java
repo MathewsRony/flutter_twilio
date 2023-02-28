@@ -246,7 +246,7 @@ public class TwilioUtils {
 
         Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!7" + isSpeaker);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (isSpeaker)
+            if (!isSpeaker)
                 setCommunicationDevice(this.context, AudioDeviceInfo.TYPE_BUILTIN_EARPIECE);
             else
                 setCommunicationDevice(this.context, AudioDeviceInfo.TYPE_BUILTIN_SPEAKER);
@@ -262,6 +262,8 @@ public class TwilioUtils {
         List<AudioDeviceInfo> devices = audioManager.getAvailableCommunicationDevices();
         for (AudioDeviceInfo device : devices) {
             if (device.getType() == targetDeviceType) {
+                Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!8" + targetDeviceType);
+                Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!8" + device);
                 boolean result = audioManager.setCommunicationDevice(device);
                 Log.d("result: ", "" + result);
             }
