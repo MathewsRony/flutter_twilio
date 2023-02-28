@@ -108,19 +108,16 @@ public class TwilioUtils {
     }
 
     public void makeCall(String to, Map<String, Object> data, Call.Listener listener) {
-        Log.e("********Twilio ", "#############################1");
         if (this.activeCall != null) {
             throw new RuntimeException("There is a call in progress");
         }
 
-        Log.e("********Twilio ", "#############################2");
         String accessToken = PreferencesUtils.getInstance(this.context).getAccessToken();
         if (accessToken == null) {
             throw new RuntimeException("No access token");
         }
 
-        Log.e("********Twilio ", "#############################3");
-        HashMap<String, String> params = new HashMap<>();
+         HashMap<String, String> params = new HashMap<>();
         params.put("To", to);
         if (data != null) {
             for (Map.Entry<String, Object> entry : data.entrySet()) {
@@ -128,13 +125,11 @@ public class TwilioUtils {
             }
         }
 
-        Log.e("********Twilio ", "#############################4");
         ConnectOptions connectOptions = new ConnectOptions.Builder(accessToken)
                 .params(params)
                 .build();
 
 
-        Log.e("********Twilio ", "#############################5");
         String fromDisplayName = null;
         String toDisplayName = null;
         if (data != null && data.containsKey("fromDisplayName")) {
@@ -147,14 +142,12 @@ public class TwilioUtils {
             }
         }
 
-        Log.e("********Twilio ", "#############################6");
         this.status = "callConnecting";
         this.callInvite = null;
         this.fromDisplayName = fromDisplayName;
         this.toDisplayName = toDisplayName;
         this.activeCall = Voice.connect(this.context, connectOptions, getCallListener(listener));
-        Log.e("********Twilio ", "#############################7");
-    }
+        }
 
     public void sendDigits(String digit) {
         if (this.activeCall != null) {
@@ -167,19 +160,13 @@ public class TwilioUtils {
     }
 
     public void acceptInvite(CallInvite callInvite, Call.Listener listener) {
-        Log.e("********Twilio ", "#############################acceptInvite");
-        Log.e(TAG, "onCallInvite:" + callInvite.getCallSid());
+       Log.e(TAG, "onCallInvite:" + callInvite.getCallSid());
         String from = callInvite.getFrom();
         Log.e(TAG, "tw_from:" + from);
-        Log.e("********Twilio ", "#############################");
-        Log.e(TAG, "*******************************************22");
         if (this.activeCall != null) {
-            Log.e(TAG, "*******************************************23");
             throw new RuntimeException("There is a call in progress");
         }
-        Log.e(TAG, "*******************************************24");
         if (callInvite == null) {
-            Log.e(TAG, "*******************************************25");
             throw new RuntimeException("No call invite");
         }
 
@@ -188,8 +175,6 @@ public class TwilioUtils {
         this.toDisplayName = null;
         this.callInvite = callInvite;
         this.activeCall = callInvite.accept(this.context, getCallListener(listener));
-        Log.e(TAG, "*******************************************26");
-
     }
 
     public void rejectInvite(CallInvite callInvite) {
@@ -237,14 +222,11 @@ public class TwilioUtils {
     }
 
     public boolean toggleSpeaker() {
-        Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!7");
         if (this.activeCall == null) {
             throw new RuntimeException("No active call");
         }
         AudioManager audioManager = (AudioManager) this.context.getSystemService(Context.AUDIO_SERVICE);
         boolean isSpeaker = !audioManager.isSpeakerphoneOn();
-
-        Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!7" + isSpeaker);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!isSpeaker)
                 setCommunicationDevice(this.context, AudioDeviceInfo.TYPE_BUILTIN_EARPIECE);
@@ -252,18 +234,14 @@ public class TwilioUtils {
                 setCommunicationDevice(this.context, AudioDeviceInfo.TYPE_BUILTIN_SPEAKER);
         } else
             audioManager.setSpeakerphoneOn(isSpeaker);
-        Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!7" + isSpeaker);
         return isSpeaker;
     }
 
     public void setCommunicationDevice(Context context, Integer targetDeviceType) {
-        Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!8");
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         List<AudioDeviceInfo> devices = audioManager.getAvailableCommunicationDevices();
         for (AudioDeviceInfo device : devices) {
             if (device.getType() == targetDeviceType) {
-                Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!8" + targetDeviceType);
-                Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!8" + device);
                 boolean result = audioManager.setCommunicationDevice(device);
                 Log.d("result: ", "" + result);
             }

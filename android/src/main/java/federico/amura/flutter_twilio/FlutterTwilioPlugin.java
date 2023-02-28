@@ -119,13 +119,11 @@ public class FlutterTwilioPlugin implements
                 answer(callInvite);
             }
             if (TwilioConstants.ACTION_MISSED_CALL.equals(action)) {
-                Log.d(TAG, "!!!!!!!@@@@@@@@@!!!!!");
                 responseChannel.invokeMethod("missedCall", "");
             }
         }
     }
     public static void missedCall(){
-        Log.d(TAG, "!!!!!!!@@@@@@@@@!!!!!");
     }
     @Override
     public void onMethodCall(MethodCall call, @NonNull Result result) {
@@ -207,11 +205,9 @@ public class FlutterTwilioPlugin implements
 
             case "toggleSpeaker": {
                 try {
-                    Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!6");
-                    boolean isSpeaker = twilioUtils.toggleSpeaker();
+                     boolean isSpeaker = twilioUtils.toggleSpeaker();
                     responseChannel.invokeMethod(twilioUtils.getCallStatus(), twilioUtils.getCallDetails());
 
-                    Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!6"+isSpeaker);
                     result.success(isSpeaker);
                 } catch (Exception exception) {
                     exception.printStackTrace();
