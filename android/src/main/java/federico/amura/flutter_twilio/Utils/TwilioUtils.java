@@ -18,6 +18,8 @@ import com.twilio.voice.RegistrationListener;
 import com.twilio.voice.UnregistrationListener;
 import com.twilio.voice.Voice;
 
+import android.os.Build;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -241,26 +243,25 @@ public class TwilioUtils {
         boolean isSpeaker = !audioManager.isSpeakerphoneOn();
 
         Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!7" + isSpeaker);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (isSpeaker)
-                setCommunicationDevice(getContext(), AudioDeviceInfo.TYPE_BUILTIN_EARPIECE);
+                setCommunicationDevice(this.context, AudioDeviceInfo.TYPE_BUILTIN_EARPIECE);
             else
-                setCommunicationDevice(getContext(), AudioDeviceInfo.TYPE_BUILTIN_SPEAKER);
+                setCommunicationDevice(this.context, AudioDeviceInfo.TYPE_BUILTIN_SPEAKER);
         } else
             audioManager.setSpeakerphoneOn(isSpeaker);
         Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!7" + isSpeaker);
         return isSpeaker;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.S)
     public void setCommunicationDevice(Context context, Integer targetDeviceType) {
         Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!8");
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        List<AudioDeviceInfo> devices = audioManager.getAvailableCommunicationDevices();
+        List<AudioDeviceInfo?>devices =[audioManager.getAvailableCommunicationDevices()];
         for (AudioDeviceInfo device : devices) {
             if (device.getType() == targetDeviceType) {
                 boolean result = audioManager.setCommunicationDevice(device);
-                Log.d("result: ", result);
+                Log.d("result: ", "" + result);
             }
         }
     }
