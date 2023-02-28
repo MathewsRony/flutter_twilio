@@ -7,7 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import android.media.AudioDeviceInfo
+import android.media.AudioDeviceInfo;
 
 import com.twilio.voice.Call;
 import com.twilio.voice.CallException;
