@@ -238,8 +238,15 @@ public class TwilioUtils {
 
         AudioManager audioManager = (AudioManager) this.context.getSystemService(Context.AUDIO_SERVICE);
         boolean isSpeaker = !audioManager.isSpeakerphoneOn();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!71" + isSpeaker);
+            if (isSpeaker)
+                Utils.getInstance().setCommunicationDevice(getContext(), AudioDeviceInfo.TYPE_BUILTIN_EARPIECE);
+            else
+                Utils.getInstance().setCommunicationDevice(getContext(), AudioDeviceInfo.TYPE_BUILTIN_SPEAKER);
+        } else
+            audioManager.setSpeakerphoneOn(isSpeaker);
         Log.e("*toggleSpeaker*", "toggleSpeaker toggleSpeaker!!!!7" + isSpeaker);
-        audioManager.setSpeakerphoneOn(isSpeaker);
         return isSpeaker;
     }
 
