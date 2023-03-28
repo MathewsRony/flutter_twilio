@@ -294,8 +294,6 @@ public class IncomingCallNotificationService extends Service {
                             Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
             );
             intent.putExtra(TwilioConstants.EXTRA_CANCELLED_CALL_INVITE, intents);
-
-            Log.e(TAG, "missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!missed Call!!!!");
             intent.setAction(TwilioConstants.ACTION_MISSED_CALL);
             startActivity(intent);
         }

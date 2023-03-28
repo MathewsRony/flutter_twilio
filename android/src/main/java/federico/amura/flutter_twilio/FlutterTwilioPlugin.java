@@ -123,8 +123,6 @@ public class FlutterTwilioPlugin implements
             }
         }
     }
-    public static void missedCall(){
-    }
     @Override
     public void onMethodCall(MethodCall call, @NonNull Result result) {
         Log.i(TAG, "onMethodCall. Method: " + call.method);

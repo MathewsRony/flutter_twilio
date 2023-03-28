@@ -207,7 +207,6 @@ public class NotificationUtils {
             builder.setContentText(notificationText);
             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             builder.setContentIntent(pendingIntent);
-            builder.setOngoing(true);
 //            return builder.build();
         } else {
 //            notification = new NotificationCompat.Builder(context)
@@ -220,7 +219,6 @@ public class NotificationUtils {
             builder.addAction(android.R.drawable.ic_menu_call, "Call Back", piReturnCallIntent);
             builder.setColor(Color.rgb(20, 10, 200));
             builder.setContentIntent(pendingIntent);
-            builder.setOngoing(true);
 //            return  builder.build();
         }
         return builder.build();
