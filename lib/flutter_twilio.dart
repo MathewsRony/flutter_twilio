@@ -13,7 +13,8 @@ import 'model/status.dart';
 class FlutterTwilio {
   static const MethodChannel _channel = MethodChannel('flutter_twilio');
 
-  static const MethodChannel _eventChannel = MethodChannel('flutter_twilio_response');
+  static const MethodChannel _eventChannel =
+      MethodChannel('flutter_twilio_response');
 
   static late StreamController<FlutterTwilioEvent> _streamController;
 
@@ -30,11 +31,13 @@ class FlutterTwilio {
         final eventType = getEventType(event.method);
         FlutterTwilioCall? call;
         try {
-          call = FlutterTwilioCall.fromMap(Map<String, dynamic>.from(event.arguments));
+          call = FlutterTwilioCall.fromMap(
+              Map<String, dynamic>.from(event.arguments));
         } catch (error) {}
         _streamController.add(FlutterTwilioEvent(eventType, call));
       } catch (error, stack) {
-        log("Error parsing call event. ${event.arguments}", error: error, stackTrace: stack);
+        log("Error parsing call event. ${event.arguments}",
+            error: error, stackTrace: stack);
       }
     });
 
@@ -47,10 +50,7 @@ class FlutterTwilio {
     print(event);
     if (event == "callConnecting") return FlutterTwilioStatus.connecting;
     if (event == "callDisconnected") return FlutterTwilioStatus.disconnected;
-    if (event == "missedCall") {
-      print("!!!!!!!!!@@@@@@@#######%%%%%%%%");
-      return FlutterTwilioStatus.missedCall;
-    }
+    if (event == "missedCall") return FlutterTwilioStatus.missedCall;
     if (event == "callRinging") return FlutterTwilioStatus.ringing;
     if (event == "callConnected") return FlutterTwilioStatus.connected;
     if (event == "callReconnecting") return FlutterTwilioStatus.reconnecting;
@@ -63,7 +63,9 @@ class FlutterTwilio {
   }
 
   static Stream<FlutterTwilioEvent> get onCallConnecting {
-    return _streamController.stream.asBroadcastStream().where((event) => event.status == FlutterTwilioStatus.connecting);
+    return _streamController.stream
+        .asBroadcastStream()
+        .where((event) => event.status == FlutterTwilioStatus.connecting);
   }
 
   static Future<FlutterTwilioCall> makeCall({

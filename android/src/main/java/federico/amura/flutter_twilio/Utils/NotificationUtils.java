@@ -203,6 +203,7 @@ public class NotificationUtils {
             builder.setCategory(Notification.CATEGORY_CALL);
             builder.setAutoCancel(true);
             builder.addAction(android.R.drawable.ic_menu_call, "Call Back", piReturnCallIntent);
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
             builder.setContentText(notificationText);
             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             builder.setContentIntent(pendingIntent);
@@ -215,6 +216,7 @@ public class NotificationUtils {
             builder.setContentText(notificationText);
             builder.setAutoCancel(true);
             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+            builder.setPriority(NotificationCompat.PRIORITY_MAX);
             builder.addAction(android.R.drawable.ic_menu_call, "Call Back", piReturnCallIntent);
             builder.setColor(Color.rgb(20, 10, 200));
             builder.setContentIntent(pendingIntent);
