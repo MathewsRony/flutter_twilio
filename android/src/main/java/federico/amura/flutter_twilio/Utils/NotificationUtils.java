@@ -187,14 +187,13 @@ public class NotificationUtils {
         Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("com.tch.crm");
         LaunchIntent.setAction(TwilioConstants.ACTION_MISSED_CALL);
         LaunchIntent.putExtra("TwilioConstant", "cancelledCallInvite");
-        LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        LaunchIntent.setFlags(Intent.FLAG_IMMUTABLE);
         @SuppressLint("UnspecifiedImmutableFlag")
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context,
                 0,
                 LaunchIntent,
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ?
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT
+                FLAG_IMMUTABLE
         );
          NotificationCompat.Builder builder = new NotificationCompat.Builder(context, createChannel(context, false));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -207,6 +206,7 @@ public class NotificationUtils {
             builder.setContentText(notificationText);
             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             builder.setContentIntent(pendingIntent);
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
             builder.setOngoing(false);
 //            return builder.build();
         } else {
@@ -220,6 +220,7 @@ public class NotificationUtils {
             builder.addAction(android.R.drawable.ic_menu_call, "Call Back", piReturnCallIntent);
             builder.setColor(Color.rgb(20, 10, 200));
             builder.setContentIntent(pendingIntent);
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
             builder.setOngoing(false);
 //            return  builder.build();
         }
